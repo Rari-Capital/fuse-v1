@@ -5,8 +5,8 @@ import "../CErc20.sol";
 import "../CToken.sol";
 import "../Comptroller.sol";
 import "../EIP20Interface.sol";
-import "../Governance/GovernorAlpha.sol";
-import "../Governance/Comp.sol";
+import "../governance/GovernorAlpha.sol";
+import "../governance/Comp.sol";
 
 contract CompoundLens {
     struct CTokenMetadata {
