@@ -1,0 +1,46 @@
+name: test
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+env:
+  FOUNDRY_PROFILE: ci
+
+jobs:
+  test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os:
+          - ubuntu-latest
+        node_version:
+          - 16
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          submodules: recursive
+
+      - name: Install Node.js ${{ matrix.node_version }}
+        uses: actions/setup-node@v2
+
+      - name: Install Foundry
+        uses: onbjerg/foundry-toolchain@v1
+        with:
+          version: nightly
+
+      - name: Install dependencies
+        run: make
+
+      - name: Run lint check
+        run: make lint
+
+      - name: Run gas snapshot
+        run: make snapshot
+
+      - name: Run tests
+        run: make test
