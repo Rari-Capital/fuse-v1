@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: AGPL-3.0-only
-pragma solidity 0.5.17;
+pragma solidity 0.8.13;
 
 // Vendor
 import {Test} from "./utilities/Test.sol";

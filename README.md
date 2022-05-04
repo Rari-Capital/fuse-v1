@@ -2,6 +2,10 @@
 
 A naive attempt at porting Fuse V1 to a modern Foundry based stack
 
+## To do
+
+- Merge in `fuse-contracts` to reduce mental overhead
+
 ## Assumptions and recommendations
 
 - Compound master branch is safe and audited
