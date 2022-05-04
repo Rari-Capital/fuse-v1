@@ -19,27 +19,42 @@ contract CErc20Delegator is CDelegationStorage {
      * @param implementation_ The address of the implementation the contract delegates to
      * @param becomeImplementationData The encoded args for becomeImplementation
      */
-    constructor(address underlying_,
-                ComptrollerInterface comptroller_,
-                InterestRateModel interestRateModel_,
-                string memory name_,
-                string memory symbol_,
-                address implementation_,
-                bytes memory becomeImplementationData,
-                uint256 reserveFactorMantissa_,
-                uint256 adminFeeMantissa_) public {
+    constructor(
+        address underlying_,
+        ComptrollerInterface comptroller_,
+        InterestRateModel interestRateModel_,
+        string memory name_,
+        string memory symbol_,
+        address implementation_,
+        bytes memory becomeImplementationData,
+        uint256 reserveFactorMantissa_,
+        uint256 adminFeeMantissa_
+    ) public {
         // First delegate gets to initialize the delegator (i.e. storage contract)
-        delegateTo(implementation_, abi.encodeWithSignature("initialize(address,address,address,string,string,uint256,uint256)",
-                                                            underlying_,
-                                                            comptroller_,
-                                                            interestRateModel_,
-                                                            name_,
-                                                            symbol_,
-                                                            reserveFactorMantissa_,
-                                                            adminFeeMantissa_));
+        delegateTo(
+            implementation_,
+            abi.encodeWithSignature(
+                "initialize(address,address,address,string,string,uint256,uint256)",
+                underlying_,
+                comptroller_,
+                interestRateModel_,
+                name_,
+                symbol_,
+                reserveFactorMantissa_,
+                adminFeeMantissa_
+            )
+        );
 
         // New implementations always get set via the settor (post-initialize)
-        delegateTo(implementation_, abi.encodeWithSignature("_setImplementationSafe(address,bool,bytes)", implementation_, false, becomeImplementationData));
+        delegateTo(
+            implementation_,
+            abi.encodeWithSignature(
+                "_setImplementationSafe(address,bool,bytes)",
+                implementation_,
+                false,
+                becomeImplementationData
+            )
+        );
     }
 
     /**
@@ -49,7 +64,10 @@ contract CErc20Delegator is CDelegationStorage {
      * @param data The raw data to delegatecall
      * @return The returned bytes from the delegatecall
      */
-    function delegateTo(address callee, bytes memory data) internal returns (bytes memory) {
+    function delegateTo(address callee, bytes memory data)
+        internal
+        returns (bytes memory)
+    {
         (bool success, bytes memory returnData) = callee.delegatecall(data);
         assembly {
             if eq(success, 0) {
@@ -63,9 +81,12 @@ contract CErc20Delegator is CDelegationStorage {
      * @notice Delegates execution to an implementation contract
      * @dev It returns to the external caller whatever the implementation returns or forwards reverts
      */
-    function () external payable {
+    function() external payable {
         // Cannot send value to CErc20Delegator
-        require(msg.value == 0, "CErc20Delegator:fallback: cannot send value to fallback");
+        require(
+            msg.value == 0,
+            "CErc20Delegator:fallback: cannot send value to fallback"
+        );
 
         // Check for automatic implementation
         delegateTo(implementation, abi.encodeWithSignature("_prepare()"));
@@ -78,8 +99,12 @@ contract CErc20Delegator is CDelegationStorage {
             returndatacopy(free_mem_ptr, 0, returndatasize)
 
             switch success
-            case 0 { revert(free_mem_ptr, returndatasize) }
-            default { return(free_mem_ptr, returndatasize) }
+            case 0 {
+                revert(free_mem_ptr, returndatasize)
+            }
+            default {
+                return(free_mem_ptr, returndatasize)
+            }
         }
     }
 }

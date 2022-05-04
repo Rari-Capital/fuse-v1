@@ -50,9 +50,20 @@ contract CEtherDelegate is CDelegateInterface, CEther {
      * @param allowResign Flag to indicate whether to call _resignImplementation on the old implementation
      * @param becomeImplementationData The encoded bytes data to be passed to _becomeImplementation
      */
-    function _setImplementationInternal(address implementation_, bool allowResign, bytes memory becomeImplementationData) internal {
+    function _setImplementationInternal(
+        address implementation_,
+        bool allowResign,
+        bytes memory becomeImplementationData
+    ) internal {
         // Check whitelist
-        require(fuseAdmin.cEtherDelegateWhitelist(implementation, implementation_, allowResign), "!impl");
+        require(
+            fuseAdmin.cEtherDelegateWhitelist(
+                implementation,
+                implementation_,
+                allowResign
+            ),
+            "!impl"
+        );
 
         // Call _resignImplementation internally (this delegate's code)
         if (allowResign) _resignImplementation();
@@ -64,7 +75,14 @@ contract CEtherDelegate is CDelegateInterface, CEther {
         implementation = implementation_;
 
         // Call _becomeImplementation externally (delegating to new delegate's code)
-        _functionCall(address(this), abi.encodeWithSignature("_becomeImplementation(bytes)", becomeImplementationData), "!become");
+        _functionCall(
+            address(this),
+            abi.encodeWithSignature(
+                "_becomeImplementation(bytes)",
+                becomeImplementationData
+            ),
+            "!become"
+        );
 
         // Emit event
         emit NewImplementation(oldImplementation, implementation);
@@ -76,12 +94,20 @@ contract CEtherDelegate is CDelegateInterface, CEther {
      * @param allowResign Flag to indicate whether to call _resignImplementation on the old implementation
      * @param becomeImplementationData The encoded bytes data to be passed to _becomeImplementation
      */
-    function _setImplementationSafe(address implementation_, bool allowResign, bytes calldata becomeImplementationData) external {
+    function _setImplementationSafe(
+        address implementation_,
+        bool allowResign,
+        bytes calldata becomeImplementationData
+    ) external {
         // Check admin rights
         require(hasAdminRights(), "!admin");
 
         // Set implementation
-        _setImplementationInternal(implementation_, allowResign, becomeImplementationData);
+        _setImplementationInternal(
+            implementation_,
+            allowResign,
+            becomeImplementationData
+        );
     }
 
     /**
@@ -89,9 +115,21 @@ contract CEtherDelegate is CDelegateInterface, CEther {
      * @dev Checks comptroller.autoImplementation and upgrades the implementation if necessary
      */
     function _prepare() external payable {
-        if (msg.sender != address(this) && ComptrollerV3Storage(address(comptroller)).autoImplementation()) {
-            (address latestCEtherDelegate, bool allowResign, bytes memory becomeImplementationData) = fuseAdmin.latestCEtherDelegate(implementation);
-            if (implementation != latestCEtherDelegate) _setImplementationInternal(latestCEtherDelegate, allowResign, becomeImplementationData);
+        if (
+            msg.sender != address(this) &&
+            ComptrollerV3Storage(address(comptroller)).autoImplementation()
+        ) {
+            (
+                address latestCEtherDelegate,
+                bool allowResign,
+                bytes memory becomeImplementationData
+            ) = fuseAdmin.latestCEtherDelegate(implementation);
+            if (implementation != latestCEtherDelegate)
+                _setImplementationInternal(
+                    latestCEtherDelegate,
+                    allowResign,
+                    becomeImplementationData
+                );
         }
     }
 }

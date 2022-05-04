@@ -19,14 +19,15 @@ contract RewardsDistributorDelegatorStorage {
  * contract which implements RewardsDistributorDelegateStorageV1 and following the naming convention
  * RewardsDistributorDelegateStorageVX.
  */
-contract RewardsDistributorDelegateStorageV1 is RewardsDistributorDelegatorStorage {
+contract RewardsDistributorDelegateStorageV1 is
+    RewardsDistributorDelegatorStorage
+{
     /// @dev The token to reward (i.e., COMP)
     address public rewardToken;
 
     struct CompMarketState {
         /// @notice The market's last updated compBorrowIndex or compSupplyIndex
         uint224 index;
-
         /// @notice The block number the index was last updated at
         uint32 block;
     }
@@ -35,10 +36,10 @@ contract RewardsDistributorDelegateStorageV1 is RewardsDistributorDelegatorStora
     CToken[] public allMarkets;
 
     /// @notice Rewards per block that each market currently receives
-    mapping(address => uint) public compSupplySpeeds;
+    mapping(address => uint256) public compSupplySpeeds;
 
     /// @notice Rewards per block that each market currently receives
-    mapping(address => uint) public compBorrowSpeeds;
+    mapping(address => uint256) public compBorrowSpeeds;
 
     /// @notice The COMP market supply state for each market
     mapping(address => CompMarketState) public compSupplyState;
@@ -47,17 +48,17 @@ contract RewardsDistributorDelegateStorageV1 is RewardsDistributorDelegatorStora
     mapping(address => CompMarketState) public compBorrowState;
 
     /// @notice The COMP borrow index for each market for each supplier as of the last time they accrued COMP
-    mapping(address => mapping(address => uint)) public compSupplierIndex;
+    mapping(address => mapping(address => uint256)) public compSupplierIndex;
 
     /// @notice The COMP borrow index for each market for each borrower as of the last time they accrued COMP
-    mapping(address => mapping(address => uint)) public compBorrowerIndex;
+    mapping(address => mapping(address => uint256)) public compBorrowerIndex;
 
     /// @notice The COMP accrued but not yet transferred to each user
-    mapping(address => uint) public compAccrued;
+    mapping(address => uint256) public compAccrued;
 
     /// @notice The portion of COMP that each contributor receives per block
-    mapping(address => uint) public compContributorSpeeds;
+    mapping(address => uint256) public compContributorSpeeds;
 
     /// @notice Last block at which a contributor's COMP rewards have been allocated
-    mapping(address => uint) public lastContributorBlock;
+    mapping(address => uint256) public lastContributorBlock;
 }
