@@ -1,6 +1,6 @@
 # Fuse V1
 
-An attempt at porting Fuse V1 to a modern Foundry based stack
+A naive attempt at porting Fuse V1 to a modern Foundry based stack
 
 ## Assumptions and recommendations
 
