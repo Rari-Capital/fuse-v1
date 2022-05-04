@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.4.22 <0.9.0;
 
+// NOTE: ported from https://github.com/foundry-rs/forge-std/blob/master/src/console.sol (e26ae2954bb6d883643b92760d443dd07f413647)
+
 library console {
     address constant CONSOLE_ADDRESS =
         address(0x000000000000000000636F6e736F6c652e6c6f67);

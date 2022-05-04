@@ -4,7 +4,6 @@
   "rules": {
     "avoid-low-level-calls": "off",
     "no-inline-assembly": "off",
-    "compiler-version": ["error", "0.5.17"],
     "const-name-snakecase": "off",
     "constructor-syntax": "error"
   }

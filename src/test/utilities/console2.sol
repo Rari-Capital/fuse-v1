@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.4.22 <0.9.0;
 
+// NOTE: ported from https://github.com/foundry-rs/forge-std/blob/master/src/console2.sol (e26ae2954bb6d883643b92760d443dd07f413647)
+
 // The orignal console.sol uses `int` and `uint` for computing function selectors, but it should
 // use `int256` and `uint256`. This modified version fixes that. This version is recommended
 // over `console.sol` if you don't need compatibility with Hardhat as the logs will show up in

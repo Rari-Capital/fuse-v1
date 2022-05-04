@@ -2,6 +2,8 @@
 pragma solidity >=0.5.0;
 pragma experimental ABIEncoderV2;
 
+// NOTE: ported from https://github.com/foundry-rs/forge-std/blob/master/src/Vm.sol (e26ae2954bb6d883643b92760d443dd07f413647)
+
 interface Vm {
     // Set block.timestamp (newTimestamp)
     function warp(uint256) external;
