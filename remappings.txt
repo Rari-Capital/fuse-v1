@@ -1,1 +1,3 @@
 ds-test/=lib/ds-test/src/
+fuse-contracts/=lib/fuse-contracts/contracts/
+solmate/=lib/solmate/src/
