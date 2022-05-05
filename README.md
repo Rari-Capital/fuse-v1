@@ -2,6 +2,12 @@
 
 A naive attempt at porting Fuse V1 to a modern Foundry based stack
 
+## Setup
+
+Copy `.env.template` into `.env` and add your details.
+
+Run `make build` to build and `make test` to test, `make trace` to verbose test.
+
 ## To do
 
 - Merge in `fuse-contracts` to reduce mental overhead
@@ -15,3 +21,8 @@ A naive attempt at porting Fuse V1 to a modern Foundry based stack
 ## Changelog
 
 - Ported foundry-rs/forge-std to 0.5.17 (fairly untested) and moved into src/test/utilities
+
+## Tips
+
+- Get ABI from Etherscan or `forge inspect CONTRACT abi > abi.json`
+- `cast interface abi.json > IFace.sol`
