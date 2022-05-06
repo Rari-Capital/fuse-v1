@@ -21,4 +21,4 @@ Run `make build` to build and `make test` to test, `make trace` to verbose test.
 ## To do
 
 - Merge in `fuse-contracts` to reduce mental overhead
-- Investigate `src/liquidators/BalancerPoolTokenLiquidator.sol` lint issue, `CurveMetapoolLpTokenLiquidator` crash
+- Investigate `src/liquidators/BalancerPoolTokenLiquidator.sol` lint issue
