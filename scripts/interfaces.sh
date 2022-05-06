@@ -11,7 +11,9 @@ mkdir -p generated/abi
 mkdir -p generated/interfaces
 
 for f in src/core/*.sol; do
-    forge inspect ${f//+(*\/|.*)} abi > generated/abi/${f//+(*\/|.*)}.json
+    name=${f//+(*\/|.*)}
+
+    forge inspect ${name)} abi > generated/abi/${name)}.json
 done;
 
 # Clean up
@@ -27,7 +29,9 @@ rm -rf generated/abi/RewardsDistributorStorage.json
 rm -rf generated/abi/SafeMath.json
 
 for f in generated/abi/*.json; do
-    cast interface generated/abi/${f//+(*\/|.*)}.json > generated/interfaces/${f//+(*\/|.*)}.sol
+    name=${f//+(*\/|.*)}
+
+    cast interface generated/abi/${name}.json > generated/interfaces/${name}.sol
 done;
 
 make lint-fix
