@@ -26,4 +26,4 @@ abstract contract F$name is Test {
 EOF
 done;
 
-# Run make lint-fix after
+make lint-fix
