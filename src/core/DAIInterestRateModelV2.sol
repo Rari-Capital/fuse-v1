@@ -81,11 +81,7 @@ contract DAIInterestRateModelV2 is JumpRateModel {
      * @return The Dai savings rate per block (as a percentage, and scaled by 1e18)
      */
     function dsrPerBlock() public view returns (uint256) {
-        return
-            pot
-            .dsr()
-            .sub(1e27) // scaled 1e27 aka RAY, and includes an extra "ONE" before subraction
-            .div(1e9).mul(15); // descale to 1e18 // 15 seconds per block
+        return pot.dsr().sub(1e27).div(1e9).mul(15); // scaled 1e27 aka RAY, and includes an extra "ONE" before subraction // descale to 1e18 // 15 seconds per block
     }
 
     /**

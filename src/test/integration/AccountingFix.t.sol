@@ -1,7 +1,7 @@
 pragma solidity 0.8.13;
 
-// Test utilities
-import {Test} from "../utilities/Test.sol";
+// Vendor
+import {Test} from "forge-std/Test.sol";
 
 contract AccountingFix is Test {
     function setUp() public {}

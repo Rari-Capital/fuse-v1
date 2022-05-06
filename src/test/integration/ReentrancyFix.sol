@@ -1,12 +1,11 @@
 pragma solidity 0.8.13;
 
+// Vendor
+import {Test} from "forge-std/Test.sol";
+
 // Interfaces
 import {ICEtherDelegate} from "../interfaces/ICEtherDelegate.sol";
 import {ICEtherDelegator} from "../interfaces/ICEtherDelegator.sol";
-
-// Test utilities
-import {Test} from "../utilities/Test.sol";
-import {console2} from "../utilities/console2.sol";
 
 contract ReentrancyFix is Test {
     // Tetranode's Flavor of the Month Ethereum Network Token
