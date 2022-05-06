@@ -21,7 +21,11 @@ contract BalancerPoolTokenLiquidator is IRedemptionStrategy {
     /**
      * @dev Internal function to approve unlimited tokens of `erc20Contract` to `to`.
      */
-    function safeApprove(IERC20Upgradeable token, address to, uint256 minAmount) private {
+    function safeApprove(
+        IERC20Upgradeable token,
+        address to,
+        uint256 minAmount
+    ) private {
         uint256 allowance = token.allowance(address(this), to);
 
         if (allowance < minAmount) {
@@ -46,7 +50,7 @@ contract BalancerPoolTokenLiquidator is IRedemptionStrategy {
         balancerPool.exitPool(inputAmount, minAmountsOut);
 
         // Swap underlying tokens
-        (IUniswapV2Router02 uniswapV2Router, address[][] memory swapPaths) = abi.decode(strategyData, (IUniswapV2Router02, address[][]));
+        (IUniswapV2Router02 uniswapV2Router, address[][] memory swapPaths) = abi.decode(strategyData, (IUniswapV2Router02, address[][])); // TODO: this somehow breaks solhint? (Error: Unrecognized expression)
         require(swapPaths.length == tokens.length, "Swap paths array length must match the number of underlying tokens in the Balancer pool.");
         for (uint256 i = 1; i < swapPaths.length; i++)
             require((swapPaths[0].length > 0 ? swapPaths[0][swapPaths[0].length - 1] : tokens[0]) == (swapPaths[i].length > 0 ? swapPaths[i][swapPaths[i].length - 1] : tokens[i]), "All underlying token swap paths must output the same token.");
