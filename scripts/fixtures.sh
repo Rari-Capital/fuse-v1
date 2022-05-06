@@ -8,13 +8,14 @@ rm -rf generated/fixtures
 mkdir -p generated/fixtures
 
 for f in generated/interfaces/*.sol; do
-    sed "s/interface Interface/interface I${f//+(*\/|.*)}/g" generated/interfaces/${f//+(*\/|.*)}.sol > generated/fixtures/${f//+(*\/|.*)}.sol
-    sed -i 1d generated/fixtures/${f//+(*\/|.*)}.sol
+    name=${f//+(*\/|.*)}
+
+    sed "s/interface Interface/interface I${name}/g" generated/interfaces/${name}.sol > generated/fixtures/${name}.sol
+    sed -i 1d generated/fixtures/${name}.sol
 
     version="^0.8.10"
-    interface=$(cat generated/fixtures/${f//+(*\/|.*)}.sol)
-    name=${f//+(*\/|.*)}
-    cat > generated/fixtures/${f//+(*\/|.*)}.sol <<-EOF
+    interface=$(cat generated/fixtures/${name}.sol)
+    cat > generated/fixtures/${name}.sol <<-EOF
 pragma solidity $version;
 
 import {Test} from "forge-std/Test.sol";
