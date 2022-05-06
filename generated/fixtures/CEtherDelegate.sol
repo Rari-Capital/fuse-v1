@@ -233,5 +233,6 @@ interface ICEtherDelegate {
 }
 
 abstract contract FCEtherDelegate is Test {
-    address CEtherDelegate = deployCode("CEtherDelegate.sol:CEtherDelegate");
+    ICEtherDelegate public CEtherDelegate =
+        ICEtherDelegate(deployCode("CEtherDelegate.sol:CEtherDelegate"));
 }

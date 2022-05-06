@@ -13,5 +13,6 @@ interface IMaximillion {
 }
 
 abstract contract FMaximillion is Test {
-    address Maximillion = deployCode("Maximillion.sol:Maximillion");
+    IMaximillion public Maximillion =
+        IMaximillion(deployCode("Maximillion.sol:Maximillion"));
 }

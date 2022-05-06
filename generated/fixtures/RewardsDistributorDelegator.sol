@@ -18,8 +18,10 @@ interface IRewardsDistributorDelegator {
 }
 
 abstract contract FRewardsDistributorDelegator is Test {
-    address RewardsDistributorDelegator =
-        deployCode(
-            "RewardsDistributorDelegator.sol:RewardsDistributorDelegator"
+    IRewardsDistributorDelegator public RewardsDistributorDelegator =
+        IRewardsDistributorDelegator(
+            deployCode(
+                "RewardsDistributorDelegator.sol:RewardsDistributorDelegator"
+            )
         );
 }

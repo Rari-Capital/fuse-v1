@@ -43,5 +43,6 @@ interface IJumpRateModel {
 }
 
 abstract contract FJumpRateModel is Test {
-    address JumpRateModel = deployCode("JumpRateModel.sol:JumpRateModel");
+    IJumpRateModel public JumpRateModel =
+        IJumpRateModel(deployCode("JumpRateModel.sol:JumpRateModel"));
 }

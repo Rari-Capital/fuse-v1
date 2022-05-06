@@ -9,5 +9,6 @@ interface IPriceOracle {
 }
 
 abstract contract FPriceOracle is Test {
-    address PriceOracle = deployCode("PriceOracle.sol:PriceOracle");
+    IPriceOracle public PriceOracle =
+        IPriceOracle(deployCode("PriceOracle.sol:PriceOracle"));
 }

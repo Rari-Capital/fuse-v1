@@ -190,5 +190,5 @@ interface ICToken {
 }
 
 abstract contract FCToken is Test {
-    address CToken = deployCode("CToken.sol:CToken");
+    ICToken public CToken = ICToken(deployCode("CToken.sol:CToken"));
 }

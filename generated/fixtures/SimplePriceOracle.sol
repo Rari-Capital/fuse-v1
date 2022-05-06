@@ -23,6 +23,8 @@ interface ISimplePriceOracle {
 }
 
 abstract contract FSimplePriceOracle is Test {
-    address SimplePriceOracle =
-        deployCode("SimplePriceOracle.sol:SimplePriceOracle");
+    ISimplePriceOracle public SimplePriceOracle =
+        ISimplePriceOracle(
+            deployCode("SimplePriceOracle.sol:SimplePriceOracle")
+        );
 }

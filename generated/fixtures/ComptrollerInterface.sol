@@ -134,6 +134,8 @@ interface IComptrollerInterface {
 }
 
 abstract contract FComptrollerInterface is Test {
-    address ComptrollerInterface =
-        deployCode("ComptrollerInterface.sol:ComptrollerInterface");
+    IComptrollerInterface public ComptrollerInterface =
+        IComptrollerInterface(
+            deployCode("ComptrollerInterface.sol:ComptrollerInterface")
+        );
 }

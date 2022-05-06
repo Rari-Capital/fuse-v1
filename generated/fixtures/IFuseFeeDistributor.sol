@@ -61,6 +61,8 @@ interface IIFuseFeeDistributor {
 }
 
 abstract contract FIFuseFeeDistributor is Test {
-    address IFuseFeeDistributor =
-        deployCode("IFuseFeeDistributor.sol:IFuseFeeDistributor");
+    IIFuseFeeDistributor public IFuseFeeDistributor =
+        IIFuseFeeDistributor(
+            deployCode("IFuseFeeDistributor.sol:IFuseFeeDistributor")
+        );
 }

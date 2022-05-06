@@ -20,6 +20,8 @@ interface IInterestRateModel {
 }
 
 abstract contract FInterestRateModel is Test {
-    address InterestRateModel =
-        deployCode("InterestRateModel.sol:InterestRateModel");
+    IInterestRateModel public InterestRateModel =
+        IInterestRateModel(
+            deployCode("InterestRateModel.sol:InterestRateModel")
+        );
 }

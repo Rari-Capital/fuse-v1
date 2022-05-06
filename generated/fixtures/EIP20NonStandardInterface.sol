@@ -33,6 +33,10 @@ interface IEIP20NonStandardInterface {
 }
 
 abstract contract FEIP20NonStandardInterface is Test {
-    address EIP20NonStandardInterface =
-        deployCode("EIP20NonStandardInterface.sol:EIP20NonStandardInterface");
+    IEIP20NonStandardInterface public EIP20NonStandardInterface =
+        IEIP20NonStandardInterface(
+            deployCode(
+                "EIP20NonStandardInterface.sol:EIP20NonStandardInterface"
+            )
+        );
 }

@@ -17,5 +17,6 @@ interface IReservoir {
 }
 
 abstract contract FReservoir is Test {
-    address Reservoir = deployCode("Reservoir.sol:Reservoir");
+    IReservoir public Reservoir =
+        IReservoir(deployCode("Reservoir.sol:Reservoir"));
 }

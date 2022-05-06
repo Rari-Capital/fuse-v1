@@ -41,5 +41,6 @@ interface IEIP20Interface {
 }
 
 abstract contract FEIP20Interface is Test {
-    address EIP20Interface = deployCode("EIP20Interface.sol:EIP20Interface");
+    IEIP20Interface public EIP20Interface =
+        IEIP20Interface(deployCode("EIP20Interface.sol:EIP20Interface"));
 }

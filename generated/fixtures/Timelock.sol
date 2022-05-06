@@ -77,5 +77,5 @@ interface ITimelock {
 }
 
 abstract contract FTimelock is Test {
-    address Timelock = deployCode("Timelock.sol:Timelock");
+    ITimelock public Timelock = ITimelock(deployCode("Timelock.sol:Timelock"));
 }

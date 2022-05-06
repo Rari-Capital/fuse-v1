@@ -44,6 +44,8 @@ interface IBaseJumpRateModelV2 {
 }
 
 abstract contract FBaseJumpRateModelV2 is Test {
-    address BaseJumpRateModelV2 =
-        deployCode("BaseJumpRateModelV2.sol:BaseJumpRateModelV2");
+    IBaseJumpRateModelV2 public BaseJumpRateModelV2 =
+        IBaseJumpRateModelV2(
+            deployCode("BaseJumpRateModelV2.sol:BaseJumpRateModelV2")
+        );
 }

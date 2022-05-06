@@ -21,7 +21,7 @@ import {Test} from "forge-std/Test.sol";
 $interface
 
 abstract contract F$name is Test {
-    address $name = deployCode("$name.sol:$name");
+    I$name public $name = I$name(deployCode("$name.sol:$name"));
 }
 EOF
 done;

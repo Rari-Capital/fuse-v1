@@ -37,8 +37,10 @@ interface IWhitePaperInterestRateModel {
 }
 
 abstract contract FWhitePaperInterestRateModel is Test {
-    address WhitePaperInterestRateModel =
-        deployCode(
-            "WhitePaperInterestRateModel.sol:WhitePaperInterestRateModel"
+    IWhitePaperInterestRateModel public WhitePaperInterestRateModel =
+        IWhitePaperInterestRateModel(
+            deployCode(
+                "WhitePaperInterestRateModel.sol:WhitePaperInterestRateModel"
+            )
         );
 }

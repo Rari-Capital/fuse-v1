@@ -240,5 +240,6 @@ interface ICErc20Delegate {
 }
 
 abstract contract FCErc20Delegate is Test {
-    address CErc20Delegate = deployCode("CErc20Delegate.sol:CErc20Delegate");
+    ICErc20Delegate public CErc20Delegate =
+        ICErc20Delegate(deployCode("CErc20Delegate.sol:CErc20Delegate"));
 }

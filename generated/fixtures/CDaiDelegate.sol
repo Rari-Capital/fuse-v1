@@ -246,5 +246,6 @@ interface ICDaiDelegate {
 }
 
 abstract contract FCDaiDelegate is Test {
-    address CDaiDelegate = deployCode("CDaiDelegate.sol:CDaiDelegate");
+    ICDaiDelegate public CDaiDelegate =
+        ICDaiDelegate(deployCode("CDaiDelegate.sol:CDaiDelegate"));
 }

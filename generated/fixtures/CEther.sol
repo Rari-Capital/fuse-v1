@@ -217,5 +217,5 @@ interface ICEther {
 }
 
 abstract contract FCEther is Test {
-    address CEther = deployCode("CEther.sol:CEther");
+    ICEther public CEther = ICEther(deployCode("CEther.sol:CEther"));
 }

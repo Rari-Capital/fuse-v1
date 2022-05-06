@@ -60,6 +60,8 @@ interface IReactiveJumpRateModelV2 {
 }
 
 abstract contract FReactiveJumpRateModelV2 is Test {
-    address ReactiveJumpRateModelV2 =
-        deployCode("ReactiveJumpRateModelV2.sol:ReactiveJumpRateModelV2");
+    IReactiveJumpRateModelV2 public ReactiveJumpRateModelV2 =
+        IReactiveJumpRateModelV2(
+            deployCode("ReactiveJumpRateModelV2.sol:ReactiveJumpRateModelV2")
+        );
 }

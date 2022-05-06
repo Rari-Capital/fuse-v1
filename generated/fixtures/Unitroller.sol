@@ -47,5 +47,6 @@ interface IUnitroller {
 }
 
 abstract contract FUnitroller is Test {
-    address Unitroller = deployCode("Unitroller.sol:Unitroller");
+    IUnitroller public Unitroller =
+        IUnitroller(deployCode("Unitroller.sol:Unitroller"));
 }

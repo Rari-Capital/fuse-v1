@@ -224,5 +224,5 @@ interface ICErc20 {
 }
 
 abstract contract FCErc20 is Test {
-    address CErc20 = deployCode("CErc20.sol:CErc20");
+    ICErc20 public CErc20 = ICErc20(deployCode("CErc20.sol:CErc20"));
 }

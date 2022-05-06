@@ -54,6 +54,8 @@ interface IDAIInterestRateModelV2 {
 }
 
 abstract contract FDAIInterestRateModelV2 is Test {
-    address DAIInterestRateModelV2 =
-        deployCode("DAIInterestRateModelV2.sol:DAIInterestRateModelV2");
+    IDAIInterestRateModelV2 public DAIInterestRateModelV2 =
+        IDAIInterestRateModelV2(
+            deployCode("DAIInterestRateModelV2.sol:DAIInterestRateModelV2")
+        );
 }

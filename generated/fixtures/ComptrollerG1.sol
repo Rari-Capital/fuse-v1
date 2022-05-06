@@ -225,5 +225,6 @@ interface IComptrollerG1 {
 }
 
 abstract contract FComptrollerG1 is Test {
-    address ComptrollerG1 = deployCode("ComptrollerG1.sol:ComptrollerG1");
+    IComptrollerG1 public ComptrollerG1 =
+        IComptrollerG1(deployCode("ComptrollerG1.sol:ComptrollerG1"));
 }
