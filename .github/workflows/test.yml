@@ -39,8 +39,5 @@ jobs:
       - name: Run lint check
         run: make lint
 
-      - name: Run gas snapshot
-        run: make snapshot
-
       - name: Run tests
         run: make test

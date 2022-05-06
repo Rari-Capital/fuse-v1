@@ -7,7 +7,9 @@ import {Test} from "forge-std/Test.sol";
 import {ICEther, FCEther} from "../../generated/fixtures/CEther.sol";
 
 contract CEther is FCEther {
-    function setUp() public {}
+    function setUp() public {
+        vm.label(address(CEther), "CEther");
+    }
 
     function testExample() public {
         assertTrue(true);
