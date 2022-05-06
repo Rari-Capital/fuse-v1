@@ -4,16 +4,26 @@ shopt -s extglob
 
 # Run from root
 
-# Expected to fail:
-#
-# - ComptrollerStorage
-# - CTokenInterfaces
-# - ErrorReporter
-# - RewardsDistributorStorage
+rm -rf generated/fixtures
+mkdir -p generated/fixtures
 
-for f in src/core/*.sol; do
-    forge inspect ${f//+(*\/|.*)} abi > generated/abi/${f//+(*\/|.*)}.json
-    cast interface generated/abi/${f//+(*\/|.*)}.json > generated/interfaces/${f//+(*\/|.*)}.sol
+for f in generated/interfaces/*.sol; do
+    sed "s/interface Interface/interface I${f//+(*\/|.*)}/g" generated/interfaces/${f//+(*\/|.*)}.sol > generated/fixtures/${f//+(*\/|.*)}.sol
+    sed -i 1d generated/fixtures/${f//+(*\/|.*)}.sol
+
+    version="^0.8.10"
+    interface=$(cat generated/fixtures/${f//+(*\/|.*)}.sol)
+    name=${f//+(*\/|.*)}
+    cat > generated/fixtures/${f//+(*\/|.*)}.sol <<-EOF
+pragma solidity $version;
+
+import {Test} from "forge-std/Test.sol";
+$interface
+
+abstract contract F$name is Test {
+    address $name = deployCode("$name.sol:$name");
+}
+EOF
 done;
 
 # Run make lint-fix after

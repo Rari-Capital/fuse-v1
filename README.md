@@ -20,7 +20,7 @@ Run `make build` to build and `make test` to test, `make trace` to verbose test.
 
 ## Fixtures
 
-Scripts to generate interfaces
+Scripts to generate abi's, interfaces and the glue layer
 
 ## Tips
 
