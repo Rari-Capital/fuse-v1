@@ -13,7 +13,7 @@ mkdir -p generated/interfaces
 for f in src/core/*.sol; do
     name=${f//+(*\/|.*)}
 
-    # forge inspect ${name} abi > generated/abi/${name}.json
+    forge inspect ${name} abi > generated/abi/${name}.json
     cast interface generated/abi/${name}.json > generated/interfaces/I${name}.sol
     sed -i "s/interface Interface/interface I${name}/g" generated/interfaces/I${name}.sol
 done;

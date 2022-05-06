@@ -1,3 +1,5 @@
 forge-std/=lib/forge-std/src/
-fuse-contracts/=lib/fuse-contracts/contracts/
 solmate/=lib/solmate/src/
+@openzeppelin/contracts-upgradeable/=node_modules/@openzeppelin/contracts-upgradeable/
+@uniswap/v3-core/=node_modules/@uniswap/v3-core/
+@uniswap/v3-periphery=node_modules/@uniswap/v3-periphery/
