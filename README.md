@@ -8,10 +8,6 @@ Copy `.env.template` into `.env` and add your details.
 
 Run `make build` to build and `make test` to test, `make trace` to verbose test.
 
-## To do
-
-- Merge in `fuse-contracts` to reduce mental overhead
-
 ## Assumptions and recommendations
 
 - Compound master branch is safe and audited
@@ -21,4 +17,8 @@ Run `make build` to build and `make test` to test, `make trace` to verbose test.
 ## Scripts
 
 - `interfaces.sh`, generates `abi` and `interface` of all files in `src/core`
-- `fixtures.sh`, generates custom `fixture` you can use in your tests with `deployCode(...)` from the `interface`
+
+## To do
+
+- Merge in `fuse-contracts` to reduce mental overhead
+- Investigate `src/liquidators/BalancerPoolTokenLiquidator.sol` lint issue, `CurveMetapoolLpTokenLiquidator` crash

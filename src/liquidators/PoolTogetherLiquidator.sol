@@ -22,11 +22,26 @@ contract PoolTogetherLiquidator is IRedemptionStrategy {
      * @return outputToken The underlying ERC20 token outputted.
      * @return outputAmount The quantity of underlying tokens outputted.
      */
-    function redeem(IERC20Upgradeable inputToken, uint256 inputAmount, bytes memory strategyData) external override returns (IERC20Upgradeable outputToken, uint256 outputAmount) {
+    function redeem(
+        IERC20Upgradeable inputToken,
+        uint256 inputAmount,
+        bytes memory strategyData
+    )
+        external
+        override
+        returns (IERC20Upgradeable outputToken, uint256 outputAmount)
+    {
         // Redeem PcToken (and store output as new collateral)
-        ControlledTokenInterface token = ControlledTokenInterface(address(inputToken));
+        ControlledTokenInterface token = ControlledTokenInterface(
+            address(inputToken)
+        );
         PrizePoolInterface controller = PrizePoolInterface(token.controller());
-        controller.withdrawInstantlyFrom(address(this), inputAmount, address(token), uint256(-1));
+        controller.withdrawInstantlyFrom(
+            address(this),
+            inputAmount,
+            address(token),
+            uint256(-1)
+        );
         outputToken = IERC20Upgradeable(controller.token());
         outputAmount = inputAmount;
     }

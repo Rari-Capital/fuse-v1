@@ -22,7 +22,12 @@ contract FixedEthPriceOracle is PriceOracle, BasePriceOracle {
     /**
      * @dev Returns the price in ETH of `underlying` (implements `BasePriceOracle`).
      */
-    function price(address underlying) external override view returns (uint) {
+    function price(address underlying)
+        external
+        view
+        override
+        returns (uint256)
+    {
         return 1e18;
     }
 
@@ -31,11 +36,19 @@ contract FixedEthPriceOracle is PriceOracle, BasePriceOracle {
      * @dev Implements the `PriceOracle` interface for Fuse pools (and Compound v2).
      * @return Price in ETH of the token underlying `cToken`, scaled by `10 ** (36 - underlyingDecimals)`.
      */
-    function getUnderlyingPrice(CToken cToken) external override view returns (uint) {
+    function getUnderlyingPrice(CToken cToken)
+        external
+        view
+        override
+        returns (uint256)
+    {
         // Get underlying token address
         address underlying = CErc20(address(cToken)).underlying();
 
         // Format and return price
-        return uint256(1e36).div(10 ** uint256(ERC20Upgradeable(underlying).decimals()));
+        return
+            uint256(1e36).div(
+                10**uint256(ERC20Upgradeable(underlying).decimals())
+            );
     }
 }

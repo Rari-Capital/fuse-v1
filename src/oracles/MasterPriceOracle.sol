@@ -36,12 +36,21 @@ contract MasterPriceOracle is PriceOracle, BasePriceOracle {
      * @param _admin The admin who can assign oracles to underlying tokens.
      * @param _canAdminOverwrite Controls if `admin` can overwrite existing assignments of oracles to underlying tokens.
      */
-    constructor (address[] memory underlyings, PriceOracle[] memory _oracles, address _admin, bool _canAdminOverwrite) public {
+    constructor(
+        address[] memory underlyings,
+        PriceOracle[] memory _oracles,
+        address _admin,
+        bool _canAdminOverwrite
+    ) public {
         // Input validation
-        require(underlyings.length > 0 && underlyings.length == _oracles.length, "Lengths of both arrays must be equal and greater than 0.");
+        require(
+            underlyings.length > 0 && underlyings.length == _oracles.length,
+            "Lengths of both arrays must be equal and greater than 0."
+        );
 
         // Initialize state variables
-        for (uint256 i = 0; i < underlyings.length; i++) oracles[underlyings[i]] = _oracles[i];
+        for (uint256 i = 0; i < underlyings.length; i++)
+            oracles[underlyings[i]] = _oracles[i];
         admin = _admin;
         canAdminOverwrite = _canAdminOverwrite;
     }
@@ -49,13 +58,23 @@ contract MasterPriceOracle is PriceOracle, BasePriceOracle {
     /**
      * @dev Sets `_oracles` for `underlyings`.
      */
-    function add(address[] calldata underlyings, PriceOracle[] calldata _oracles) external onlyAdmin {
+    function add(
+        address[] calldata underlyings,
+        PriceOracle[] calldata _oracles
+    ) external onlyAdmin {
         // Input validation
-        require(underlyings.length > 0 && underlyings.length == _oracles.length, "Lengths of both arrays must be equal and greater than 0.");
+        require(
+            underlyings.length > 0 && underlyings.length == _oracles.length,
+            "Lengths of both arrays must be equal and greater than 0."
+        );
 
         // Assign oracles to underlying tokens
         for (uint256 i = 0; i < underlyings.length; i++) {
-            if (!canAdminOverwrite) require(address(oracles[underlyings[i]]) == address(0), "Admin cannot overwrite existing assignments of oracles to underlying tokens.");
+            if (!canAdminOverwrite)
+                require(
+                    address(oracles[underlyings[i]]) == address(0),
+                    "Admin cannot overwrite existing assignments of oracles to underlying tokens."
+                );
             oracles[underlyings[i]] = _oracles[i];
         }
     }
@@ -77,7 +96,7 @@ contract MasterPriceOracle is PriceOracle, BasePriceOracle {
     /**
      * @dev Modifier that checks if `msg.sender == admin`.
      */
-    modifier onlyAdmin {
+    modifier onlyAdmin() {
         require(msg.sender == admin, "Sender is not the admin.");
         _;
     }
@@ -87,7 +106,12 @@ contract MasterPriceOracle is PriceOracle, BasePriceOracle {
      * @dev Implements the `PriceOracle` interface for Fuse pools (and Compound v2).
      * @return Price in ETH of the token underlying `cToken`, scaled by `10 ** (36 - underlyingDecimals)`.
      */
-    function getUnderlyingPrice(CToken cToken) external override view returns (uint) {
+    function getUnderlyingPrice(CToken cToken)
+        external
+        view
+        override
+        returns (uint256)
+    {
         // Return 1e18 for ETH
         if (cToken.isCEther()) return 1e18;
 
@@ -95,22 +119,35 @@ contract MasterPriceOracle is PriceOracle, BasePriceOracle {
         address underlying = address(CErc20(address(cToken)).underlying());
 
         // Return 1e18 for WETH
-        if (underlying == 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2) return 1e18;
+        if (underlying == 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2)
+            return 1e18;
 
         // Get underlying price from assigned oracle
-        require(address(oracles[underlying]) != address(0), "Price oracle not found for this underlying token address.");
+        require(
+            address(oracles[underlying]) != address(0),
+            "Price oracle not found for this underlying token address."
+        );
         return oracles[underlying].getUnderlyingPrice(cToken);
     }
 
     /**
      * @dev Attempts to return the price in ETH of `underlying` (implements `BasePriceOracle`).
      */
-    function price(address underlying) external override view returns (uint) {
+    function price(address underlying)
+        external
+        view
+        override
+        returns (uint256)
+    {
         // Return 1e18 for WETH
-        if (underlying == 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2) return 1e18;
+        if (underlying == 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2)
+            return 1e18;
 
         // Get underlying price from assigned oracle
-        require(address(oracles[underlying]) != address(0), "Price oracle not found for this underlying token address.");
+        require(
+            address(oracles[underlying]) != address(0),
+            "Price oracle not found for this underlying token address."
+        );
         return BasePriceOracle(address(oracles[underlying])).price(underlying);
     }
 }

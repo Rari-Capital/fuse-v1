@@ -4,10 +4,12 @@ shopt -s extglob
 
 # Run from root
 
-# rm -rf generated/abi
+rm -rf generated
+rm -rf generated/abi
 rm -rf generated/interfaces
 
-# mkdir -p generated/abi
+mkdir -p generated
+mkdir -p generated/abi
 mkdir -p generated/interfaces
 
 for f in src/core/*.sol; do

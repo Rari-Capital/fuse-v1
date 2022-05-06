@@ -25,7 +25,7 @@ contract FixedEurPriceOracle is PriceOracle, BasePriceOracle {
      * @notice The maxmimum number of seconds elapsed since the round was last updated before the price is considered stale. If set to 0, no limit is enforced.
      */
     uint256 public maxSecondsBeforePriceIsStale;
-    
+
     /**
      * @dev Constructor to set `maxSecondsBeforePriceIsStale`.
      */
@@ -36,26 +36,37 @@ contract FixedEurPriceOracle is PriceOracle, BasePriceOracle {
     /**
      * @notice Chainlink ETH/USD price feed contracts.
      */
-    AggregatorV3Interface public constant ETH_USD_PRICE_FEED = AggregatorV3Interface(0x5f4eC3Df9cbd43714FE2740f5E3616155c5b8419);
+    AggregatorV3Interface public constant ETH_USD_PRICE_FEED =
+        AggregatorV3Interface(0x5f4eC3Df9cbd43714FE2740f5E3616155c5b8419);
 
     /**
      * @notice Chainlink EUR/USD price feed contracts.
      */
-    AggregatorV3Interface public constant EUR_USD_PRICE_FEED = AggregatorV3Interface(0xb49f677943BC038e9857d61E7d053CaA2C1734C1);
+    AggregatorV3Interface public constant EUR_USD_PRICE_FEED =
+        AggregatorV3Interface(0xb49f677943BC038e9857d61E7d053CaA2C1734C1);
 
     /**
      * @dev Internal function returning the price in ETH of `underlying`.
      */
-    function _price(address underlying) internal view returns (uint) {
+    function _price(address underlying) internal view returns (uint256) {
         // Get ETH/USD price from Chainlink
-        (, int256 ethUsdPrice, , uint256 updatedAt, ) = ETH_USD_PRICE_FEED.latestRoundData();
-        if (maxSecondsBeforePriceIsStale > 0) require(block.timestamp <= updatedAt + maxSecondsBeforePriceIsStale, "ETH/USD Chainlink price is stale.");
+        (, int256 ethUsdPrice, , uint256 updatedAt, ) = ETH_USD_PRICE_FEED
+            .latestRoundData();
+        if (maxSecondsBeforePriceIsStale > 0)
+            require(
+                block.timestamp <= updatedAt + maxSecondsBeforePriceIsStale,
+                "ETH/USD Chainlink price is stale."
+            );
         if (ethUsdPrice <= 0) return 0;
 
         // Get EUR/USD price from Chainlink
         int256 eurUsdPrice;
         (, eurUsdPrice, , updatedAt, ) = EUR_USD_PRICE_FEED.latestRoundData();
-        if (maxSecondsBeforePriceIsStale > 0) require(block.timestamp <= updatedAt + maxSecondsBeforePriceIsStale, "EUR/USD Chainlink price is stale.");
+        if (maxSecondsBeforePriceIsStale > 0)
+            require(
+                block.timestamp <= updatedAt + maxSecondsBeforePriceIsStale,
+                "EUR/USD Chainlink price is stale."
+            );
         if (eurUsdPrice <= 0) return 0;
 
         // Return EUR/ETH price = EUR/USD price / ETH/USD price
@@ -65,7 +76,12 @@ contract FixedEurPriceOracle is PriceOracle, BasePriceOracle {
     /**
      * @dev Returns the price in ETH of `underlying` (implements `BasePriceOracle`).
      */
-    function price(address underlying) external override view returns (uint) {
+    function price(address underlying)
+        external
+        view
+        override
+        returns (uint256)
+    {
         return _price(underlying);
     }
 
@@ -74,13 +90,21 @@ contract FixedEurPriceOracle is PriceOracle, BasePriceOracle {
      * @dev Implements the `PriceOracle` interface for Fuse pools (and Compound v2).
      * @return Price in ETH of the token underlying `cToken`, scaled by `10 ** (36 - underlyingDecimals)`.
      */
-    function getUnderlyingPrice(CToken cToken) external override view returns (uint) {
+    function getUnderlyingPrice(CToken cToken)
+        external
+        view
+        override
+        returns (uint256)
+    {
         // Get underlying token address
         address underlying = CErc20(address(cToken)).underlying();
 
         // Format and return price
         // Comptroller needs prices to be scaled by 1e(36 - decimals)
         // Since `_price` returns prices scaled by 18 decimals, we must scale them by 1e(36 - 18 - decimals)
-        return _price(underlying).mul(1e18).div(10 ** uint256(ERC20Upgradeable(underlying).decimals()));
+        return
+            _price(underlying).mul(1e18).div(
+                10**uint256(ERC20Upgradeable(underlying).decimals())
+            );
     }
 }

@@ -24,7 +24,7 @@ contract UniswapV3TwapPriceOracleV2 is BasePriceOracle {
     /**
      * @dev WETH token contract address.
      */
-    address constant public WETH = 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2;
+    address public constant WETH = 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2;
 
     /**
      * @dev Ideal TWAP interval.
@@ -34,48 +34,71 @@ contract UniswapV3TwapPriceOracleV2 is BasePriceOracle {
     /**
      * @dev IUniswapV3Factory contract address.
      */
-    address immutable public uniswapV3Factory;
+    address public immutable uniswapV3Factory;
 
     /**
      * @dev Uniswap V3 fee tier.
      */
-    uint24 immutable public feeTier;
+    uint24 public immutable feeTier;
 
     /**
      * @dev Base token (WETH by default).
      */
-    address immutable public baseToken;
-    
+    address public immutable baseToken;
+
     /**
      * @dev Returns the price in ETH of `underlying` given `factory`.
      */
-    function _price(address underlying) internal view returns (uint) {
+    function _price(address underlying) internal view returns (uint256) {
         // Return 1e18 for WETH
         if (underlying == WETH) return 1e18;
 
         // Return token/WETH TWAP
-        address pool = IUniswapV3Factory(uniswapV3Factory).getPool(underlying, baseToken, feeTier);
+        address pool = IUniswapV3Factory(uniswapV3Factory).getPool(
+            underlying,
+            baseToken,
+            feeTier
+        );
         (int24 arithmeticMeanTick, ) = OracleLibrary.consult(pool, TWAP_PERIOD);
-        uint128 baseUnit = 10 ** uint128(ERC20Upgradeable(underlying).decimals());
-        uint256 quote = OracleLibrary.getQuoteAtTick(arithmeticMeanTick, baseUnit, underlying, baseToken);
-        return baseToken == address(WETH) ? quote : quote.mul(BasePriceOracle(msg.sender).price(baseToken)).div(10 ** uint256(ERC20Upgradeable(baseToken).decimals()));
+        uint128 baseUnit = 10**uint128(ERC20Upgradeable(underlying).decimals());
+        uint256 quote = OracleLibrary.getQuoteAtTick(
+            arithmeticMeanTick,
+            baseUnit,
+            underlying,
+            baseToken
+        );
+        return
+            baseToken == address(WETH)
+                ? quote
+                : quote.mul(BasePriceOracle(msg.sender).price(baseToken)).div(
+                    10**uint256(ERC20Upgradeable(baseToken).decimals())
+                );
     }
 
     /**
      * @dev Constructor that sets the UniswapV3Factory and fee tier.
      */
-    constructor (address _uniswapV3Factory, uint24 _feeTier, address _baseToken) public {
+    constructor(
+        address _uniswapV3Factory,
+        uint24 _feeTier,
+        address _baseToken
+    ) public {
         uniswapV3Factory = _uniswapV3Factory;
         feeTier = _feeTier;
         baseToken = _baseToken == address(0) ? address(WETH) : _baseToken;
     }
-    
+
     /**
      * @notice Returns the price in ETH of the token underlying `cToken`.
      * @dev Implements the `PriceOracle` interface for Fuse pools (and Compound v2).
      * @return Price in ETH of the token underlying `cToken`, scaled by `10 ** (36 - underlyingDecimals)`.
      */
-    function getUnderlyingPrice(CToken cToken) external override view returns (uint) {
+    function getUnderlyingPrice(CToken cToken)
+        external
+        view
+        override
+        returns (uint256)
+    {
         // Return 1e18 for ETH
         if (cToken.isCEther()) return 1e18;
 
@@ -83,14 +106,19 @@ contract UniswapV3TwapPriceOracleV2 is BasePriceOracle {
         address underlying = CErc20(address(cToken)).underlying();
 
         // Get price, format, and return
-        uint256 baseUnit = 10 ** uint256(ERC20Upgradeable(underlying).decimals());
+        uint256 baseUnit = 10**uint256(ERC20Upgradeable(underlying).decimals());
         return _price(underlying).mul(1e18).div(baseUnit);
     }
 
     /**
      * @dev Returns the price in ETH of `underlying` (implements `BasePriceOracle`).
      */
-    function price(address underlying) external override view returns (uint) {
+    function price(address underlying)
+        external
+        view
+        override
+        returns (uint256)
+    {
         return _price(underlying);
     }
 }

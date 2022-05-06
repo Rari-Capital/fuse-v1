@@ -27,7 +27,12 @@ contract CurveLpTokenPriceOracle is PriceOracle, BasePriceOracle {
      * @param underlying The underlying token address for which to get the price (set to zero address for ETH).
      * @return Price denominated in ETH (scaled by 1e18).
      */
-    function price(address underlying) external override view returns (uint) {
+    function price(address underlying)
+        external
+        view
+        override
+        returns (uint256)
+    {
         return _price(underlying);
     }
 
@@ -36,11 +41,19 @@ contract CurveLpTokenPriceOracle is PriceOracle, BasePriceOracle {
      * @dev Implements the `PriceOracle` interface for Fuse pools (and Compound v2).
      * @return Price in ETH of the token underlying `cToken`, scaled by `10 ** (36 - underlyingDecimals)`.
      */
-    function getUnderlyingPrice(CToken cToken) external override view returns (uint) {
+    function getUnderlyingPrice(CToken cToken)
+        external
+        view
+        override
+        returns (uint256)
+    {
         address underlying = CErc20(address(cToken)).underlying();
         // Comptroller needs prices to be scaled by 1e(36 - decimals)
         // Since `_price` returns prices scaled by 18 decimals, we must scale them by 1e(36 - 18 - decimals)
-        return _price(underlying).mul(1e18).div(10 ** uint256(ERC20Upgradeable(underlying).decimals()));
+        return
+            _price(underlying).mul(1e18).div(
+                10**uint256(ERC20Upgradeable(underlying).decimals())
+            );
     }
 
     /**
@@ -48,7 +61,7 @@ contract CurveLpTokenPriceOracle is PriceOracle, BasePriceOracle {
      * Source: https://github.com/AlphaFinanceLab/homora-v2/blob/master/contracts/oracle/CurveOracle.sol
      * @param lpToken The LP token contract address for price retrieval.
      */
-    function _price(address lpToken) internal view returns (uint) {
+    function _price(address lpToken) internal view returns (uint256) {
         address pool = poolOf[lpToken];
         require(pool != address(0), "LP token is not registered.");
         address[] memory tokens = underlyingTokens[lpToken];
@@ -61,14 +74,18 @@ contract CurveLpTokenPriceOracle is PriceOracle, BasePriceOracle {
             if (tokenPx < minPx) minPx = tokenPx;
         }
 
-        require(minPx != uint256(-1), "No minimum underlying token price found.");      
+        require(
+            minPx != uint256(-1),
+            "No minimum underlying token price found."
+        );
         return minPx.mul(ICurvePool(pool).get_virtual_price()).div(1e18); // Use min underlying token prices
     }
 
     /**
      * @dev The Curve registry.
      */
-    ICurveRegistry public constant registry = ICurveRegistry(0x7D86446dDb609eD0F5f8684AcF30380a356b2B4c);
+    ICurveRegistry public constant registry =
+        ICurveRegistry(0x7D86446dDb609eD0F5f8684AcF30380a356b2B4c);
 
     /**
      * @dev Maps Curve LP token addresses to underlying token addresses.
@@ -89,10 +106,14 @@ contract CurveLpTokenPriceOracle is PriceOracle, BasePriceOracle {
         address pool = poolOf[lpToken];
         require(pool == address(0), "This LP token is already registered.");
         pool = registry.get_pool_from_lp_token(lpToken);
-        require(pool != address(0), "No corresponding pool found for this LP token in the Curve registry.");
+        require(
+            pool != address(0),
+            "No corresponding pool found for this LP token in the Curve registry."
+        );
         poolOf[lpToken] = pool;
-        uint n = registry.get_n_coins(pool);
+        uint256 n = registry.get_n_coins(pool);
         address[8] memory tokens = registry.get_coins(pool);
-        for (uint256 i = 0; i < n; i++) underlyingTokens[lpToken].push(tokens[i]);
+        for (uint256 i = 0; i < n; i++)
+            underlyingTokens[lpToken].push(tokens[i]);
     }
 }
