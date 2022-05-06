@@ -3,8 +3,8 @@ pragma solidity 0.8.13;
 // Vendor
 import {Test} from "forge-std/Test.sol";
 
-// Fixtures
-import {ICEther} from "../../generated/interfaces/CEther.sol";
+// Interfaces
+import {ICEther} from "../interfaces/CEther.sol";
 
 contract CEther is Test {
     ICEther public cEther;
