@@ -4,11 +4,15 @@ pragma solidity 0.8.13;
 import {Test} from "forge-std/Test.sol";
 
 // Fixtures
-import {ICEther, FCEther} from "../../generated/fixtures/CEther.sol";
+import {ICEther} from "../../generated/interfaces/CEther.sol";
 
-contract CEther is FCEther {
+contract CEther is Test {
+    ICEther public cEther;
+
     function setUp() public {
-        vm.label(address(CEther), "CEther");
+        cEther = ICEther(deployCode("CEther.sol:CEther"));
+
+        vm.label(address(cEther), "CEther");
     }
 
     function testExample() public {
