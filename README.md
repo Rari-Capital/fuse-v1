@@ -18,11 +18,7 @@ Run `make build` to build and `make test` to test, `make trace` to verbose test.
 - Our changes to the fork are relatively minimal, we mostly selectively include files or apply minimal modifications to the files
 - We should attempt to keep the diff as minimal as possible and don't change files we don't have to
 
-## Fixtures
+## Scripts
 
-Scripts to generate abi's, interfaces and the glue layer
-
-## Tips
-
-- Get ABI from Etherscan or `forge inspect CONTRACT abi > abi.json`
-- `cast interface abi.json > IFace.sol`
+- `interfaces.sh`, generates `abi` and `interface` of all files in `src/core`
+- `fixtures.sh`, generates custom `fixture` you can use in your tests with `deployCode(...)` from the `interface`
