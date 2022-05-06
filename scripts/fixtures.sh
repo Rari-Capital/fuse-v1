@@ -16,3 +16,4 @@ for f in src/core/*.sol; do
     cast interface generated/abi/${f//+(*\/|.*)}.json > generated/interfaces/${f//+(*\/|.*)}.sol
 done;
 
+# Run make lint-fix after
