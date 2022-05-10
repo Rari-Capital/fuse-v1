@@ -42,7 +42,7 @@ contract FusePool79 is Test {
 
     // ICHIVault oneFOX-FOX: https://etherscan.io/address/0x202a4a99ab3833528e2dda446730e95cb004093e#readContract
     // https://angel.ichi.org/
-    IICHIVault internal constant ICHIVaultoneFOXFOXLPToken =
+    IICHIVault internal constant ICHIVault =
         IICHIVault(0x779F9BAd1f4B1Ef5198AD9361DBf3791F9e0D596);
 
     function setUp() public {
@@ -51,20 +51,22 @@ contract FusePool79 is Test {
         vm.label(address(comptroller), "comptroller");
         vm.label(address(oneFoxToken), "oneFoxToken");
         vm.label(address(foxToken), "foxToken");
-        vm.label(
-            address(ICHIVaultoneFOXFOXLPToken),
-            "ICHIVaultoneFOXFOXLPToken"
-        );
+        vm.label(address(ICHIVault), "ICHIVault");
     }
 
     function testPool79() public {
         vm.startPrank(user);
 
         deal(address(oneFoxToken), user, 100e18);
-        deal(address(foxToken), user, 100e18);
 
-        ICHIVaultoneFOXFOXLPToken.deposit(100e18, 100e18, user);
+        assertEq(oneFoxToken.balanceOf(user), 100e18);
 
-        assertTrue(true);
+        oneFoxToken.approve(address(ICHIVault), type(uint256).max);
+
+        // NOTE: vault does not allow depositing on foxToken, only oneFoxToken
+        uint256 shares = ICHIVault.deposit(100e18, 0, user);
+        require(shares > 0, "Should receive shares");
+
+        console2.log(shares);
     }
 }
