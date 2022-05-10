@@ -9,6 +9,7 @@ import {ERC20} from "solmate/tokens/ERC20.sol";
 import {IICHIVault} from "../../interfaces/external/ichi/IICHIVault.sol";
 
 // Interfaces
+import {IFuseSafeLiquidator} from "../../interfaces/IFuseSafeLiquidator.sol";
 import {ICErc20} from "../../interfaces/core/ICErc20.sol";
 import {IUnitroller} from "../../interfaces/core/IUnitroller.sol";
 import {IIFuseFeeDistributor} from "../../interfaces/core/IIFuseFeeDistributor.sol";
@@ -29,6 +30,9 @@ contract FusePool79 is Test {
 
     IIFuseFeeDistributor internal constant fuseAdmin =
         IIFuseFeeDistributor(0x90A48D5CF7343B08dA12E067680B4C6dbfE551Be);
+
+    IFuseSafeLiquidator internal constant fuseSafeLiquidator =
+        IFuseSafeLiquidator(0xF0f3a1494aE00B5350535b7777abB2f499fC13d4);
 
     IComptroller internal constant comptroller =
         IComptroller(0x613Ea1dC49E83eAd05db49DcFcF57b22Fb5510bD);
@@ -57,6 +61,7 @@ contract FusePool79 is Test {
     function setUp() public {
         vm.label(address(pool), "pool");
         vm.label(address(fuseAdmin), "fuseAdmin");
+        vm.label(address(fuseSafeLiquidator), "fuseSafeLiquidator");
         vm.label(address(comptroller), "comptroller");
         vm.label(address(oneFoxToken), "oneFoxToken");
         // vm.label(address(foxToken), "foxToken");
