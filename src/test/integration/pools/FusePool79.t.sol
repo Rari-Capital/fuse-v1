@@ -15,10 +15,7 @@ import {IIFuseFeeDistributor} from "../../interfaces/core/IIFuseFeeDistributor.s
 import {IComptroller} from "../../interfaces/core/IComptroller.sol";
 
 // Pool 79: Fox and Frens
-// https://etherscan.io/address/0x41c7B863FdDa5eb7CF8D8f748B136d10d7AEC631 (pool)
 // https://app.rari.capital/token/0x779f9bad1f4b1ef5198ad9361dbf3791f9e0d596 (token)
-
-// Specifically we are interested in Uniswap V2 oneFOX-FOX LP
 
 contract FusePool79 is Test {
     address user = 0xB290f2F3FAd4E540D0550985951Cdad2711ac34A;
@@ -66,6 +63,7 @@ contract FusePool79 is Test {
 
         oneFoxToken.approve(address(ICHIVault), type(uint256).max);
 
+        // TODO: investigate why ICHIVault only allows token0, not token1
         uint256 ICHIVaultShares = ICHIVault.deposit(100e18, 0, user);
         require(ICHIVaultShares > 0, "Should receive shares");
 
