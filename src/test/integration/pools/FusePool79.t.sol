@@ -40,10 +40,13 @@ contract FusePool79 is Test {
     ERC20 internal constant foxToken =
         ERC20(0xc770EEfAd204B5180dF6a14Ee197D99d808ee52d);
 
-    // ICHIVault oneFOX-FOX: https://etherscan.io/address/0x202a4a99ab3833528e2dda446730e95cb004093e#readContract
+    // ICHIVault oneFOX-FOX: https://etherscan.io/address/0x779F9BAd1f4B1Ef5198AD9361DBf3791F9e0D596
     // https://angel.ichi.org/
     IICHIVault internal constant ICHIVault =
         IICHIVault(0x779F9BAd1f4B1Ef5198AD9361DBf3791F9e0D596);
+
+    // Fox and Frens Fei Protocol (fFEI-79): https://etherscan.io/address/0x41c7B863FdDa5eb7CF8D8f748B136d10d7AEC631
+    ICErc20 cOneFoxFoxLP = ICErc20(0x41c7B863FdDa5eb7CF8D8f748B136d10d7AEC631);
 
     function setUp() public {
         vm.label(address(pool), "pool");
@@ -63,10 +66,24 @@ contract FusePool79 is Test {
 
         oneFoxToken.approve(address(ICHIVault), type(uint256).max);
 
-        // NOTE: vault does not allow depositing on foxToken, only oneFoxToken
-        uint256 shares = ICHIVault.deposit(100e18, 0, user);
-        require(shares > 0, "Should receive shares");
+        // NOTE: vault does not allow depositing on foxToken, only oneFoxToken?
+        // TODO: investigate
+        uint256 ICHIVaultShares = ICHIVault.deposit(100e18, 0, user);
+        require(ICHIVaultShares > 0, "Should receive shares");
 
-        console2.log(shares);
+        console2.log(ICHIVaultShares);
+
+        // NOTE: for some reason cOneFoxFoxLP when asked to `mint()` it transfers FEI?
+
+        // ICHIVault.approve(address(cOneFoxFoxLP), type(uint256).max);
+
+        // ICHIVault.approve(
+        //     address(0x956F47F50A910163D8BF957Cf5846D573E7f87CA),
+        //     type(uint256).max
+        // );
+
+        // deal(address(cOneFoxFoxLP), user, 100e18);
+        // uint256 cOneFoxFoxLPShares = cOneFoxFoxLP.mint(100);
+        // require(cOneFoxFoxLPShares > 0, "mint failed");
     }
 }
