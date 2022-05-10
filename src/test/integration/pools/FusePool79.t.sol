@@ -71,6 +71,8 @@ contract FusePool79 is Test {
 
         deal(address(cICHIVault), user, 100e18);
         uint256 cICHIVaultShares = cICHIVault.mint(100e18);
+
+        // TODO: this currently fails
         require(cICHIVaultShares > 0, "mint failed");
     }
 }
