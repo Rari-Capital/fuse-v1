@@ -91,14 +91,9 @@ contract FusePool79 is Test {
         uint256 cICHIVaultLPShares = cICHIVaultLP.mint(100e18);
         require(cICHIVaultLPShares == 0, "Mint failed");
 
-        // TODO: somehow register the new liquidator so that when I redeem using the ?
-        // Call redeem?
+        // Currently the borrow is paused
+        cICHIVaultLP.borrow(100e18);
 
-        // oneFoxLiquidator.redeem(address(C), inputAmount, strategyData);
-
-        // require(
-        //     cICHIVaultLP.redeem(cICHIVaultLP.balanceOf(user)) == 0,
-        //     "ICHIVaultLP redeem"
-        // );
+        // fuseSafeLiquidator.redeemCustomCollateral(underlyingCollateral, underlyingCollateralSeized, strategy, strategyData);
     }
 }
