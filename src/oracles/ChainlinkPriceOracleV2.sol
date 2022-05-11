@@ -43,14 +43,12 @@ contract ChainlinkPriceOracleV2 is PriceOracle, BasePriceOracle {
     /**
      * @notice Chainlink ETH/USD price feed contracts.
      */
-    AggregatorV3Interface public constant ETH_USD_PRICE_FEED =
-        AggregatorV3Interface(0x5f4eC3Df9cbd43714FE2740f5E3616155c5b8419);
+    AggregatorV3Interface public ETH_USD_PRICE_FEED;
 
     /**
      * @notice Chainlink BTC/ETH price feed contracts.
      */
-    AggregatorV3Interface public constant BTC_ETH_PRICE_FEED =
-        AggregatorV3Interface(0xdeb288F737066589598e9214E782fa5A8eD689e8);
+    AggregatorV3Interface public BTC_ETH_PRICE_FEED;
 
     /**
      * @dev The administrator of this `MasterPriceOracle`.
@@ -68,6 +66,12 @@ contract ChainlinkPriceOracleV2 is PriceOracle, BasePriceOracle {
     constructor(address _admin, bool _canAdminOverwrite) public {
         admin = _admin;
         canAdminOverwrite = _canAdminOverwrite;
+        ETH_USD_PRICE_FEED = AggregatorV3Interface(
+            0x5f4eC3Df9cbd43714FE2740f5E3616155c5b8419
+        );
+        BTC_ETH_PRICE_FEED = AggregatorV3Interface(
+            0xdeb288F737066589598e9214E782fa5A8eD689e8
+        );
     }
 
     /**
@@ -129,7 +133,12 @@ contract ChainlinkPriceOracleV2 is PriceOracle, BasePriceOracle {
     /**
      * @dev Internal function returning the price in ETH of `underlying`.
      */
-    function _price(address underlying) internal view returns (uint256) {
+    function _price(address underlying)
+        internal
+        view
+        virtual
+        returns (uint256)
+    {
         // Return 1e18 for WETH
         if (underlying == 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2)
             return 1e18;
