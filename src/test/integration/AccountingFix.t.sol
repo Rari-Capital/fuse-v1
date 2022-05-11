@@ -28,6 +28,12 @@ contract AccountingFix is Test {
     uint256 internal account2UnderlyingSupplyBalanceFinal;
     uint256 internal account2UnderlyingBorrowBalanceFinal;
 
+    address account1;
+    address account2;
+    address account3;
+    address fETH;
+
+
     function setUp() public {}
 
     function testShouldMergeAttackersSupplyAndBorrowBalances() public {
@@ -37,6 +43,12 @@ contract AccountingFix is Test {
                 "CEtherDelegateTempExploitAccounting.sol:CEtherDelegateTempExploitAccounting"
             )
         );
+
+        account1 = 0x32075bAd9050d4767018084F0Cb87b3182D36C45;
+        account2 = 0x6cB8A9c28fc3Eb696550e1f69aFE21fb60986f2d;
+        account3 = 0x3686657208883d016971c7395eDaeD73c107383E;
+
+        fETH = 0xbB025D470162CC5eA24daF7d4566064EE7f5F111;
 
         // Deploy new CEtherDelegate
         cEtherDelegate = ICEtherDelegate(
@@ -92,28 +104,28 @@ contract AccountingFix is Test {
 
         // Get attacker's initial balancess
         ICEtherDelegate cEther = ICEtherDelegate(
-            0xbB025D470162CC5eA24daF7d4566064EE7f5F111
+            fETH
         );
         cEther.accrueInterest();
 
         uint256 exchangeRateStored = cEther.exchangeRateStored();
         uint256 account1SupplySharesInitial = cEther.balanceOf(
-            0x32075bAd9050d4767018084F0Cb87b3182D36C45
+            account1
         );
         account1UnderlyingSupplyBalanceInitial = account1SupplySharesInitial
             .mulDivDown(exchangeRateStored, 10**18);
         account1UnderlyingBorrowBalanceInitial = cEther.borrowBalanceStored(
-            0x32075bAd9050d4767018084F0Cb87b3182D36C45
+            account1
         );
         account2UnderlyingSupplyBalanceInitial = cEther
-            .balanceOf(0x3686657208883d016971c7395eDaeD73c107383E)
+            .balanceOf(account2)
             .mulDivDown(exchangeRateStored, 10**18) + cEther
-            .balanceOf(0x6cB8A9c28fc3Eb696550e1f69aFE21fb60986f2d)
+            .balanceOf(account3)
             .mulDivDown(exchangeRateStored, 10**18);
         account2UnderlyingBorrowBalanceInitial = cEther.borrowBalanceStored(
-            0x3686657208883d016971c7395eDaeD73c107383E
+            account2
         ) + cEther.borrowBalanceStored(
-            0x6cB8A9c28fc3Eb696550e1f69aFE21fb60986f2d);
+            account3);
 
         assertGt(account1UnderlyingSupplyBalanceInitial, 0);
         assertEq(account1UnderlyingBorrowBalanceInitial, 0);
@@ -130,10 +142,10 @@ contract AccountingFix is Test {
         address[] memory secondaryExploiterAddress = new address[](2);
         secondaryExploiterAddress[
              0
-        ] = 0x3686657208883d016971c7395eDaeD73c107383E;
+        ] = account2;
         secondaryExploiterAddress[
              1
-        ] = 0x6cB8A9c28fc3Eb696550e1f69aFE21fb60986f2d;
+        ] = account3;
 
          cEther._setImplementationSafe(
              address(cEtherDelegateTempExploitAccounting),
@@ -150,20 +162,20 @@ contract AccountingFix is Test {
 
         // Double-check attacker's balances
         account1UnderlyingSupplyBalanceFinal = cEther
-             .balanceOf(0x32075bAd9050d4767018084F0Cb87b3182D36C45)
+             .balanceOf(account1)
              .mulDivDown(exchangeRateStored, 10**18);
         account1UnderlyingBorrowBalanceFinal = cEther.borrowBalanceStored(
-             0x32075bAd9050d4767018084F0Cb87b3182D36C45
+             account1
             );
         account2UnderlyingSupplyBalanceFinal = cEther
-             .balanceOf(0x3686657208883d016971c7395eDaeD73c107383E)
+             .balanceOf(account2)
              .mulDivDown(exchangeRateStored, 10**18) + cEther
-             .balanceOf(0x6cB8A9c28fc3Eb696550e1f69aFE21fb60986f2d)
+             .balanceOf(account3)
              .mulDivDown(exchangeRateStored, 10**18);
          account2UnderlyingBorrowBalanceFinal = cEther.borrowBalanceStored(
-             0x3686657208883d016971c7395eDaeD73c107383E
+             account2
             ) + cEther.borrowBalanceStored(
-            0x6cB8A9c28fc3Eb696550e1f69aFE21fb60986f2d);
+            account3);
 
         assertEq(account1UnderlyingSupplyBalanceFinal, 0);
         assertEq(
