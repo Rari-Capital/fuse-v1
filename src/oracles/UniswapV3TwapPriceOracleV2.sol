@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity 0.6.12;
 
+import "@openzeppelin/contracts-upgradeable/proxy/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/math/SafeMathUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/token/ERC20/ERC20Upgradeable.sol";
 
@@ -18,7 +19,11 @@ import "./BasePriceOracle.sol";
  * @notice Stores cumulative prices and returns TWAPs for assets on Uniswap V3 pairs.
  * @author David Lucid <david@rari.capital> (https://github.com/davidlucid)
  */
-contract UniswapV3TwapPriceOracleV2 is BasePriceOracle {
+contract UniswapV3TwapPriceOracleV2 is
+    Initializable,
+    PriceOracle,
+    BasePriceOracle
+{
     using SafeMathUpgradeable for uint256;
 
     /**
@@ -34,17 +39,38 @@ contract UniswapV3TwapPriceOracleV2 is BasePriceOracle {
     /**
      * @dev IUniswapV3Factory contract address.
      */
-    address public immutable uniswapV3Factory;
+    address public uniswapV3Factory;
 
     /**
      * @dev Uniswap V3 fee tier.
      */
-    uint24 public immutable feeTier;
+    uint24 public feeTier;
 
     /**
      * @dev Base token (WETH by default).
      */
-    address public immutable baseToken;
+    address public baseToken;
+
+    /**
+     * @dev Constructor that sets the UniswapV3Factory and fee tier.
+     */
+    function initialize(
+        address _uniswapV3Factory,
+        uint24 _feeTier,
+        address _baseToken
+    ) external initializer {
+        require(
+            _uniswapV3Factory != address(0),
+            "UniswapV3Factory not defined."
+        );
+        require(
+            _feeTier == 500 || _feeTier == 3000 || _feeTier == 10000,
+            "Invalid fee tier."
+        );
+        uniswapV3Factory = _uniswapV3Factory;
+        feeTier = _feeTier;
+        baseToken = _baseToken == address(0) ? address(WETH) : _baseToken;
+    }
 
     /**
      * @dev Returns the price in ETH of `underlying` given `factory`.
@@ -73,19 +99,6 @@ contract UniswapV3TwapPriceOracleV2 is BasePriceOracle {
                 : quote.mul(BasePriceOracle(msg.sender).price(baseToken)).div(
                     10**uint256(ERC20Upgradeable(baseToken).decimals())
                 );
-    }
-
-    /**
-     * @dev Constructor that sets the UniswapV3Factory and fee tier.
-     */
-    constructor(
-        address _uniswapV3Factory,
-        uint24 _feeTier,
-        address _baseToken
-    ) public {
-        uniswapV3Factory = _uniswapV3Factory;
-        feeTier = _feeTier;
-        baseToken = _baseToken == address(0) ? address(WETH) : _baseToken;
     }
 
     /**

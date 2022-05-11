@@ -12,7 +12,7 @@ mkdir -p generated
 mkdir -p generated/abi
 mkdir -p generated/interfaces
 
-for f in src/liquidators/*.sol; do
+for f in src/*.sol; do
     name=${f//+(*\/|.*)}
 
     forge inspect ${name} abi > generated/abi/${name}.json
