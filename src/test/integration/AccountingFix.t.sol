@@ -15,7 +15,9 @@ pragma solidity 0.8.13;
 
 //     ICEtherDelegate internal cEtherDelegate;
 
-//     function setUp() public {
+//     function setUp() public {}
+
+//     function testShouldMergeAttackersSupplyAndBorrowBalances() public {
 //         // Deploy new CEtherDelegateTempExploitAccounting
 //         cEtherDelegateTempExploitAccounting = ICEtherDelegateTempExploitAccounting(
 //             deployCode(
@@ -52,10 +54,8 @@ pragma solidity 0.8.13;
 //         vm.startPrank(fuseFeeDistributorOwner);
 
 //         // Call FuseFeeDistributor._editCEtherDelegateWhitelist
-//         // fuseFeeDistributor.s
-//     }
+//         // fuseFeeDistributor._edit
 
-//     function testShouldMergeAttackersSupplyAndBorrowBalances() public {
 //         assertTrue(true);
 //     }
 // }

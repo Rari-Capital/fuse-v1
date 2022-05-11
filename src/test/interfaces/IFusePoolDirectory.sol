@@ -1,16 +1,22 @@
 pragma solidity ^0.8.10;
 
 interface IFusePoolDirectory {
+    event AdminWhitelistUpdated(address[] admins, bool status);
     event OwnershipTransferred(
         address indexed previousOwner,
         address indexed newOwner
     );
     event PoolRegistered(uint256 index, FusePoolDirectory.FusePool pool);
 
-    function _setDeployerWhitelistEnforcement(bool _enforceDeployerWhitelist)
+    function _editAdminWhitelist(address[] calldata admins, bool status)
         external;
 
-    function _whitelistDeployers(address[] calldata deployers) external;
+    function _editDeployerWhitelist(address[] calldata deployers, bool status)
+        external;
+
+    function _setDeployerWhitelistEnforcement(bool enforce) external;
+
+    function adminWhitelist(address) external view returns (bool);
 
     function bookmarkPool(address comptroller) external;
 
@@ -19,7 +25,6 @@ interface IFusePoolDirectory {
         address implementation,
         bool enforceWhitelist,
         uint256 closeFactor,
-        uint256 maxAssets,
         uint256 liquidationIncentive,
         address priceOracle
     ) external returns (uint256, address);
@@ -48,6 +53,11 @@ interface IFusePoolDirectory {
         view
         returns (uint256[] memory, FusePoolDirectory.FusePool[] memory);
 
+    function getPublicPoolsByVerification(bool whitelistedAdmin)
+        external
+        view
+        returns (uint256[] memory, FusePoolDirectory.FusePool[] memory);
+
     function initialize(
         bool _enforceDeployerWhitelist,
         address[] calldata _deployerWhitelist
@@ -68,11 +78,9 @@ interface IFusePoolDirectory {
             uint256 timestampPosted
         );
 
-    function registerPool(string calldata name, address comptroller)
-        external
-        returns (uint256);
-
     function renounceOwnership() external;
+
+    function setPoolName(uint256 index, string calldata name) external;
 
     function transferOwnership(address newOwner) external;
 }
