@@ -18,6 +18,16 @@ contract AccountingFix is Test {
 
     ICEtherDelegate internal cEtherDelegate;
 
+    uint256 internal account1UnderlyingSupplyBalanceInitial;
+    uint256 internal account1UnderlyingBorrowBalanceInitial;
+    uint256 internal account2UnderlyingSupplyBalanceInitial;
+    uint256 internal account2UnderlyingBorrowBalanceInitial;
+
+    uint256 internal account1UnderlyingSupplyBalanceFinal;
+    uint256 internal account1UnderlyingBorrowBalanceFinal;
+    uint256 internal account2UnderlyingSupplyBalanceFinal;
+    uint256 internal account2UnderlyingBorrowBalanceFinal;
+
     function setUp() public {}
 
     function testShouldMergeAttackersSupplyAndBorrowBalances() public {
@@ -89,15 +99,17 @@ contract AccountingFix is Test {
         uint256 account1SupplySharesInitial = cEther.balanceOf(
             0x32075bAd9050d4767018084F0Cb87b3182D36C45
         );
-        uint256 account1UnderlyingSupplyBalanceInitial = account1SupplySharesInitial
-                .mulDivDown(exchangeRateStored, 10**18);
-        uint256 account1UnderlyingBorrowBalanceInitial = cEther
-            .borrowBalanceStored(0x32075bAd9050d4767018084F0Cb87b3182D36C45);
-        uint256 account2UnderlyingSupplyBalanceInitial = cEther
+        account1UnderlyingSupplyBalanceInitial = account1SupplySharesInitial
+            .mulDivDown(exchangeRateStored, 10**18);
+        account1UnderlyingBorrowBalanceInitial = cEther.borrowBalanceStored(
+            0x32075bAd9050d4767018084F0Cb87b3182D36C45
+        );
+        account2UnderlyingSupplyBalanceInitial = cEther
             .balanceOf(0x3686657208883d016971c7395eDaeD73c107383E)
             .mulDivDown(exchangeRateStored, 10**18);
-        uint256 account2UnderlyingBorrowBalanceInitial = cEther
-            .borrowBalanceStored(0x3686657208883d016971c7395eDaeD73c107383E);
+        account2UnderlyingBorrowBalanceInitial = cEther.borrowBalanceStored(
+            0x3686657208883d016971c7395eDaeD73c107383E
+        );
 
         assertGt(account1UnderlyingSupplyBalanceInitial, 0);
         assertEq(account1UnderlyingBorrowBalanceInitial, 0);
@@ -107,50 +119,63 @@ contract AccountingFix is Test {
         uint256 totalSupplyInitial = cEther.totalSupply();
         uint256 totalBorrowsInitial = cEther.totalBorrows();
 
-        assertTrue(true);
+        // Impersonate ComptrollerAdmin (required for upgrading implementation)
+        vm.stopPrank();
+        vm.startPrank(comptrollerAdmin);
+
+        // Call CEther._setImplementationSafe for temp impl
+        address[] memory secondaryExploiterAddress = new address[](1);
+        secondaryExploiterAddress[
+            0
+        ] = 0x3686657208883d016971c7395eDaeD73c107383E;
+
+        cEther._setImplementationSafe(
+            address(cEtherDelegateTempExploitAccounting),
+            false,
+            bytes(abi.encode(secondaryExploiterAddress))
+        );
+
+        // Call CEther._setImplementationSafe for final impl
+        cEther._setImplementationSafe(
+            address(cEtherDelegate),
+            false,
+            bytes("0x")
+        );
+
+        // Double-check attacker's balances
+        // TODO: shouldn't this also mulDivDown using 10**18?
+        account1UnderlyingSupplyBalanceFinal = cEther
+            .balanceOf(0x32075bAd9050d4767018084F0Cb87b3182D36C45)
+            .mulDivDown(exchangeRateStored, 10**18);
+        account1UnderlyingBorrowBalanceFinal = cEther.borrowBalanceStored(
+            0x32075bAd9050d4767018084F0Cb87b3182D36C45
+        );
+        account2UnderlyingSupplyBalanceFinal = cEther
+            .balanceOf(0x3686657208883d016971c7395eDaeD73c107383E)
+            .mulDivDown(exchangeRateStored, 10**18);
+        account2UnderlyingBorrowBalanceFinal = cEther.borrowBalanceStored(
+            0x3686657208883d016971c7395eDaeD73c107383E
+        );
+
+        assertEq(account1UnderlyingSupplyBalanceFinal, 0);
+        assertEq(
+            account1UnderlyingBorrowBalanceFinal,
+            account2UnderlyingBorrowBalanceInitial -
+                account1UnderlyingSupplyBalanceInitial
+        );
+        assertEq(account2UnderlyingSupplyBalanceFinal, 0);
+        assertEq(account2UnderlyingBorrowBalanceFinal, 0);
+
+        uint256 totalSupplyFinal = cEther.totalSupply();
+        uint256 totalBorrowsFinal = cEther.totalBorrows();
+
+        assertEq(
+            totalSupplyFinal,
+            totalSupplyInitial - account1SupplySharesInitial
+        );
+        assertEq(
+            totalBorrowsFinal,
+            totalBorrowsInitial - account1UnderlyingSupplyBalanceInitial
+        );
     }
 }
-
-// // const { ethers } = require("hardhat");
-// // const { expect } = require("chai");
-
-// // describe("CEtherDelegateTempExploitAccounting", function () {
-
-// //     // Get attacker's initial balances
-// //     var cEther = CEtherDelegate.attach("0xbB025D470162CC5eA24daF7d4566064EE7f5F111");
-// //     var exchangeRateStored = await cEther.exchangeRateStored();
-// //     var account1SupplySharesInitial = await cEther.balanceOf("0x32075bAd9050d4767018084F0Cb87b3182D36C45");
-// //     var account1UnderlyingSupplyBalanceInitial = account1SupplySharesInitial.mul(exchangeRateStored).div(ethers.utils.parseEther("1"));
-// //     var account1UnderlyingBorrowBalanceInitial = await cEther.borrowBalanceStored("0x32075bAd9050d4767018084F0Cb87b3182D36C45");
-// //     var account2UnderlyingSupplyBalanceInitial = (await cEther.balanceOf("0x3686657208883d016971c7395edaed73c107383e")).mul(exchangeRateStored).div(ethers.utils.parseEther("1"));
-// //     var account2UnderlyingBorrowBalanceInitial = await cEther.borrowBalanceStored("0x3686657208883d016971c7395edaed73c107383e");
-// //     expect(account1UnderlyingSupplyBalanceInitial).to.be.above(0);
-// //     expect(account1UnderlyingBorrowBalanceInitial).to.equal(0);
-// //     expect(account2UnderlyingSupplyBalanceInitial).to.equal(0);
-// //     expect(account2UnderlyingBorrowBalanceInitial).to.be.above(0);
-// //     var totalSupplyInitial = await cEther.totalSupply();
-// //     var totalBorrowsInitial = await cEther.totalBorrows();
-
-// //     // Call CEther._setImplementationSafe for temp impl
-// //     var secondaryExploiterAddresses = ["0x3686657208883d016971c7395edaed73c107383e"];
-// //     var becomeImplData = ethers.utils.defaultAbiCoder.encode(["address[]"], [secondaryExploiterAddresses]);
-// //     await cEther.connect(await ethers.getSigner(comptrollerAdmin))._setImplementationSafe(cEtherDelegateTempExploitAccounting.address, false, becomeImplData, { gasPrice: "0" });
-
-// //     // Call CEther._setImplementationSafe for final impl
-// //     await cEther.connect(await ethers.getSigner(comptrollerAdmin))._setImplementationSafe(cEtherDelegate.address, false, "0x", { gasPrice: "0" });
-
-// //     // Double-check attacker's balances
-// //     var account1UnderlyingSupplyBalanceFinal = (await cEther.balanceOf("0x32075bAd9050d4767018084F0Cb87b3182D36C45")).mul(exchangeRateStored);
-// //     var account1UnderlyingBorrowBalanceFinal = await cEther.borrowBalanceStored("0x32075bAd9050d4767018084F0Cb87b3182D36C45");
-// //     var account2UnderlyingSupplyBalanceFinal = (await cEther.balanceOf("0x3686657208883d016971c7395edaed73c107383e")).mul(exchangeRateStored);
-// //     var account2UnderlyingBorrowBalanceFinal = await cEther.borrowBalanceStored("0x3686657208883d016971c7395edaed73c107383e");
-// //     expect(account1UnderlyingSupplyBalanceFinal).to.equal(0);
-// //     expect(account1UnderlyingBorrowBalanceFinal).to.equal(account2UnderlyingBorrowBalanceInitial.sub(account1UnderlyingSupplyBalanceInitial));
-// //     expect(account2UnderlyingSupplyBalanceFinal).to.equal(0);
-// //     expect(account2UnderlyingBorrowBalanceFinal).to.equal(0);
-// //     var totalSupplyFinal = await cEther.totalSupply();
-// //     var totalBorrowsFinal = await cEther.totalBorrows();
-// //     expect(totalSupplyFinal).to.equal(totalSupplyInitial.sub(account1SupplySharesInitial));
-// //     expect(totalBorrowsFinal).to.equal(totalBorrowsInitial.sub(account1UnderlyingSupplyBalanceInitial));
-// //   });
-// // });
