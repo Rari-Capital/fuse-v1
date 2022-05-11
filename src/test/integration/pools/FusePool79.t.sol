@@ -16,9 +16,6 @@ import {IIFuseFeeDistributor} from "../../interfaces/core/IIFuseFeeDistributor.s
 import {IComptroller} from "../../interfaces/core/IComptroller.sol";
 import {IOneFoxLiquidator} from "../../interfaces/liquidators/IOneFoxLiquidator.sol";
 
-// Contracts
-import {OneFoxLiquidator} from "../../../liquidators/OneFoxLiquidator.sol";
-
 // Pool 79: Fox and Frens
 // https://app.rari.capital/token/0x779f9bad1f4b1ef5198ad9361dbf3791f9e0d596 (token)
 
@@ -56,9 +53,15 @@ contract FusePool79 is Test {
     // Fox and Frens ICHI Vault (fICHI_Vault_LP-79): https://etherscan.io/address/0x3639c603e9A4698CADb813aceC4cEa2D1a83eC18
     ICErc20 cICHIVaultLP = ICErc20(0x3639c603e9A4698CADb813aceC4cEa2D1a83eC18);
 
-    IOneFoxLiquidator oneFoxLiquidator = new OneFoxLiquidator();
+    IOneFoxLiquidator public oneFoxLiquidator;
+
+    // IOneFoxLiquidator oneFoxLiquidator = new OneFoxLiquidator();
 
     function setUp() public {
+        oneFoxLiquidator = IOneFoxLiquidator(
+            deployCode("OneFoxLiquidator.sol:OneFoxLiquidator")
+        );
+
         vm.label(address(pool), "pool");
         vm.label(address(fuseAdmin), "fuseAdmin");
         vm.label(address(fuseSafeLiquidator), "fuseSafeLiquidator");
