@@ -132,14 +132,14 @@ contract AccountingFix is Test {
         cEther._setImplementationSafe(
             address(cEtherDelegateTempExploitAccounting),
             false,
-            bytes(abi.encode(secondaryExploiterAddress))
+            abi.encode(secondaryExploiterAddress)
         );
 
         // Call CEther._setImplementationSafe for final impl
         cEther._setImplementationSafe(
             address(cEtherDelegate),
             false,
-            bytes("0x")
+            new bytes(0)
         );
 
         // Double-check attacker's balances
