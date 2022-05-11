@@ -33,7 +33,6 @@ contract AccountingFix is Test {
     address account3;
     address fETH;
 
-
     function setUp() public {}
 
     function testShouldMergeAttackersSupplyAndBorrowBalances() public {
