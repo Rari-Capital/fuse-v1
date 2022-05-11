@@ -1,6 +1,25 @@
 # Fuse V1
 
-Attempt at porting Fuse V1 to a modern Foundry based stack
+```
+NOTE: WORK IN PROGRESS
+```
+
+Porting Fuse V1 to a modern Foundry based stack
+
+## Action plan
+
+- Get a good understanding of what the overall current test suite looks like
+- Import the current `Compound Protocol` test suite and make sure it still runs
+- Import the current `fuse-contracts` test suite and make sure it runs
+- Focus on `mainnet` integration tests first
+- Discuss a strategy of how we would go about deploying to testnets
+- Modify the current CI Foundry flow to include the `Compound Protocol` and `fuse-contracts` test suite
+- Parallelize the CI flow
+
+## Notices
+
+- Avoid rewriting unit tests in Foundry, focus on low hanging fruit first
+-
 
 ## Setup
 
@@ -20,4 +39,5 @@ Run `make build` to build and `make test` to test, `make trace` to verbose test.
 
 ## To do
 
-- Investigate `src/liquidators/BalancerPoolTokenLiquidator.sol` lint issue
+- Request admin for the default branch to branch off of to be `development`
+- Investigate `src/liquidators/BalancerPoolTokenLiquidator.sol` lint issue (removed the file for now)
