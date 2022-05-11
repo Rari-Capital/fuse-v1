@@ -7,23 +7,14 @@ interface IFusePoolLens {
         external
         returns (FusePoolLens.FusePoolAsset[] memory);
 
-    function getPoolOwnership(address comptroller)
-        external
-        view
-        returns (
-            address,
-            bool,
-            bool,
-            FusePoolLens.CTokenOwnership[] memory
-        );
-
     function getPoolSummary(address comptroller)
         external
         returns (
             uint256,
             uint256,
             address[] memory,
-            string[] memory
+            string[] memory,
+            bool
         );
 
     function getPoolUserSummary(address comptroller, address account)
@@ -38,7 +29,8 @@ interface IFusePoolLens {
         returns (
             FusePoolLens.FusePoolUser[][] memory,
             uint256[] memory,
-            uint256[] memory
+            uint256[] memory,
+            bool[] memory
         );
 
     function getPoolUsersWithData(address comptroller, uint256 maxHealth)
@@ -54,10 +46,7 @@ interface IFusePoolLens {
         returns (
             uint256[] memory,
             FusePoolDirectory.FusePool[] memory,
-            uint256[] memory,
-            uint256[] memory,
-            address[][] memory,
-            string[][] memory,
+            FusePoolLens.FusePoolData[] memory,
             bool[] memory
         );
 
@@ -71,10 +60,7 @@ interface IFusePoolLens {
         returns (
             uint256[] memory,
             FusePoolDirectory.FusePool[] memory,
-            uint256[] memory,
-            uint256[] memory,
-            address[][] memory,
-            string[][] memory,
+            FusePoolLens.FusePoolData[] memory,
             bool[] memory
         );
 
@@ -88,15 +74,21 @@ interface IFusePoolLens {
             bool[] memory
         );
 
+    function getPublicPoolsByVerificationWithData(bool whitelistedAdmin)
+        external
+        returns (
+            uint256[] memory,
+            FusePoolDirectory.FusePool[] memory,
+            FusePoolLens.FusePoolData[] memory,
+            bool[] memory
+        );
+
     function getPublicPoolsWithData()
         external
         returns (
             uint256[] memory,
             FusePoolDirectory.FusePool[] memory,
-            uint256[] memory,
-            uint256[] memory,
-            address[][] memory,
-            string[][] memory,
+            FusePoolLens.FusePoolData[] memory,
             bool[] memory
         );
 
@@ -118,10 +110,7 @@ interface IFusePoolLens {
         returns (
             uint256[] memory,
             FusePoolDirectory.FusePool[] memory,
-            uint256[] memory,
-            uint256[] memory,
-            address[][] memory,
-            string[][] memory,
+            FusePoolLens.FusePoolData[] memory,
             bool[] memory
         );
 
@@ -151,13 +140,7 @@ interface FusePoolLens {
         uint256 reserveFactor;
         uint256 adminFee;
         uint256 fuseFee;
-    }
-
-    struct CTokenOwnership {
-        address cToken;
-        address admin;
-        bool adminHasRights;
-        bool fuseAdminHasRights;
+        bool borrowGuardianPaused;
     }
 
     struct FusePoolUser {
@@ -166,6 +149,14 @@ interface FusePoolLens {
         uint256 totalCollateral;
         uint256 health;
         FusePoolAsset[] assets;
+    }
+
+    struct FusePoolData {
+        uint256 totalSupply;
+        uint256 totalBorrow;
+        address[] underlyingTokens;
+        string[] underlyingSymbols;
+        bool whitelistedAdmin;
     }
 }
 

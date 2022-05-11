@@ -6,6 +6,7 @@ import "@openzeppelin/contracts-upgradeable/token/ERC20/IERC20Upgradeable.sol";
 import "../external/badger/Sett.sol";
 
 import "./IRedemptionStrategy.sol";
+import "./BadgerSettLiquidatorEnclave.sol";
 
 /**
  * @title BadgerSettLiquidator
@@ -13,6 +14,20 @@ import "./IRedemptionStrategy.sol";
  * @author David Lucid <david@rari.capital> (https://github.com/davidlucid)
  */
 contract BadgerSettLiquidator is IRedemptionStrategy {
+    using SafeERC20Upgradeable for IERC20Upgradeable;
+
+    /**
+     * @notice Internal "enclave" which is whitelisted to redeem Badger Setts.
+     */
+    BadgerSettLiquidatorEnclave public immutable enclave;
+
+    /**
+     * @notice Constructor to deploy BadgerSettLiquidatorEnclave.
+     */
+    constructor() public {
+        enclave = new BadgerSettLiquidatorEnclave();
+    }
+
     /**
      * @notice Redeems custom collateral `token` for an underlying token.
      * @param inputToken The input wrapped token to be redeemed for an underlying token.
@@ -30,10 +45,8 @@ contract BadgerSettLiquidator is IRedemptionStrategy {
         override
         returns (IERC20Upgradeable outputToken, uint256 outputAmount)
     {
-        // Unwrap wstETH (and store output stETH as new collateral)
         Sett token = Sett(address(inputToken));
-        token.withdrawAll();
-        outputToken = IERC20Upgradeable(token.token());
-        outputAmount = outputToken.balanceOf(address(this));
+        inputToken.safeTransfer(address(enclave), inputAmount);
+        (outputToken, outputAmount) = enclave.withdrawAll(token);
     }
 }

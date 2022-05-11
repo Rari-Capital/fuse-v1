@@ -99,21 +99,42 @@ contract BadgerPriceOracle is PriceOracle, BasePriceOracle {
      */
     function _price(address token) internal view returns (uint256) {
         if (token == address(BBADGER)) {
-            (, int256 badgerEthPrice, , , ) = BADGER_ETH_FEED.latestRoundData();
+            (
+                uint80 roundId,
+                int256 badgerEthPrice,
+                ,
+                ,
+                uint80 answeredInRound
+            ) = BADGER_ETH_FEED.latestRoundData();
+            require(answeredInRound == roundId, "Chainlink round timed out.");
             return
-                badgerEthPrice >= 0
+                badgerEthPrice > 0
                     ? uint256(badgerEthPrice)
                         .mul(BBADGER.getPricePerFullShare())
                         .div(1e18)
                     : 0;
         } else if (token == address(BDIGG)) {
-            (, int256 diggBtcPrice, , , ) = DIGG_BTC_FEED.latestRoundData();
-            (, int256 btcEthPrice, , , ) = BTC_ETH_FEED.latestRoundData();
+            (
+                uint80 roundId,
+                int256 diggBtcPrice,
+                ,
+                ,
+                uint80 answeredInRound
+            ) = DIGG_BTC_FEED.latestRoundData();
+            require(answeredInRound == roundId, "Chainlink round timed out.");
+            if (diggBtcPrice < 0) return 0;
+            int256 btcEthPrice;
+            (roundId, btcEthPrice, , , answeredInRound) = BTC_ETH_FEED
+                .latestRoundData();
+            require(answeredInRound == roundId, "Chainlink round timed out.");
+            if (btcEthPrice < 0) return 0;
             uint256 bDiggDiggPrice = IDigg(BDIGG.token()).sharesToFragments(
                 BDIGG.shares().div(BDIGG.totalSupply()).mul(1e18)
             );
+            // bDIGG/ETH price = (bDIGG/DIGG price / 1e9) * (DIGG/BTC price / 1e8) * BTC/ETH price
+            // Divide by BTC base unit 1e8 (BTC has 8 decimals) and DIGG base unit 1e9 (DIGG has 9 decimals)
             return
-                diggBtcPrice >= 0 && btcEthPrice >= 0
+                bDiggDiggPrice > 0
                     ? uint256(diggBtcPrice)
                         .mul(uint256(btcEthPrice))
                         .div(1e8)
@@ -121,9 +142,16 @@ contract BadgerPriceOracle is PriceOracle, BasePriceOracle {
                         .div(1e9)
                     : 0;
         } else if (token == address(IBBTC)) {
-            (, int256 btcEthPrice, , , ) = BTC_ETH_FEED.latestRoundData();
+            (
+                uint80 roundId,
+                int256 btcEthPrice,
+                ,
+                ,
+                uint80 answeredInRound
+            ) = BTC_ETH_FEED.latestRoundData();
+            require(answeredInRound == roundId, "Chainlink round timed out.");
             return
-                btcEthPrice >= 0
+                btcEthPrice > 0
                     ? uint256(btcEthPrice).mul(IBBTC.pricePerShare()).div(1e18)
                     : 0;
         } else revert("Invalid token address passed to BadgerPriceOracle.");

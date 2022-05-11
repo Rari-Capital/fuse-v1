@@ -2,6 +2,7 @@
 pragma solidity 0.6.12;
 
 import "@openzeppelin/contracts-upgradeable/math/SafeMathUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/token/ERC20/ERC20Upgradeable.sol";
 
 import "../external/compound/PriceOracle.sol";
 import "../external/compound/CErc20.sol";
@@ -16,8 +17,22 @@ import "./BasePriceOracle.sol";
  * @dev Implements the `PriceOracle` interface.
  * @author David Lucid <david@rari.capital> (https://github.com/davidlucid)
  */
-contract YVaultV1PriceOracle is PriceOracle {
+contract YVaultV1PriceOracle is PriceOracle, BasePriceOracle {
     using SafeMathUpgradeable for uint256;
+
+    /**
+     * @notice Fetches the token/ETH price, with 18 decimals of precision.
+     * @param underlying The underlying token address for which to get the price.
+     * @return Price denominated in ETH (scaled by 1e18)
+     */
+    function price(address underlying)
+        external
+        view
+        override
+        returns (uint256)
+    {
+        return _price(underlying);
+    }
 
     /**
      * @notice Returns the price in ETH of the token underlying `cToken`.
@@ -30,8 +45,21 @@ contract YVaultV1PriceOracle is PriceOracle {
         override
         returns (uint256)
     {
+        address underlying = CErc20(address(cToken)).underlying();
+        // Comptroller needs prices to be scaled by 1e(36 - decimals)
+        // Since `_price` returns prices scaled by 18 decimals, we must scale them by 1e(36 - 18 - decimals)
+        return
+            _price(underlying).mul(1e18).div(
+                10**uint256(ERC20Upgradeable(underlying).decimals())
+            );
+    }
+
+    /**
+     * @notice Fetches the token/ETH price, with 18 decimals of precision.
+     */
+    function _price(address token) internal view returns (uint256) {
         // Get price of token underlying yVault
-        IVault yVault = IVault(CErc20(address(cToken)).underlying());
+        IVault yVault = IVault(token);
         address underlyingToken = yVault.token();
         uint256 underlyingPrice = underlyingToken ==
             0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2
@@ -39,11 +67,10 @@ contract YVaultV1PriceOracle is PriceOracle {
             : BasePriceOracle(msg.sender).price(underlyingToken);
 
         // yVault/ETH = yVault/token * token/ETH
-        // Return value = yVault/ETH scaled by 1e(36 - yVault decimals)
+        // Return value = yVault/ETH scaled by 1e18
         // `getPricePerFullShare` = yVault/token scaled by 1e18
         // `underlyingPrice` = token/ETH scaled by 1e18
-        // Return value = `pricePerShare` * `underlyingPrice` / 1e(yVault decimals)
-        uint256 baseUnit = 10**uint256(yVault.decimals());
-        return yVault.getPricePerFullShare().mul(underlyingPrice).div(baseUnit); // getPricePerFullShare is scaled by 1e18
+        // Return value = `pricePerShare` * `underlyingPrice` / 1e18
+        return yVault.getPricePerFullShare().mul(underlyingPrice).div(1e18);
     }
 }

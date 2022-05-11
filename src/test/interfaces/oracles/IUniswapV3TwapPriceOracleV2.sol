@@ -11,6 +11,12 @@ interface IUniswapV3TwapPriceOracleV2 {
 
     function getUnderlyingPrice(address cToken) external view returns (uint256);
 
+    function initialize(
+        address _uniswapV3Factory,
+        uint24 _feeTier,
+        address _baseToken
+    ) external;
+
     function price(address underlying) external view returns (uint256);
 
     function uniswapV3Factory() external view returns (address);
