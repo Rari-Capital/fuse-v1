@@ -81,24 +81,31 @@ contract AccountingFix is Test {
         );
 
         // Get attacker's initial balancess
-        uint256 exchangeRateStored = cEtherDelegate.exchangeRateStored();
-        uint256 account1SupplySharesInitial = cEtherDelegate.balanceOf(
+        ICEtherDelegate cEther = ICEtherDelegate(
+            0xbB025D470162CC5eA24daF7d4566064EE7f5F111
+        );
+
+        uint256 exchangeRateStored = cEther.exchangeRateStored();
+        uint256 account1SupplySharesInitial = cEther.balanceOf(
             0x32075bAd9050d4767018084F0Cb87b3182D36C45
         );
         uint256 account1UnderlyingSupplyBalanceInitial = account1SupplySharesInitial
                 .mulDivDown(exchangeRateStored, 10**18);
-        uint256 account1UnderlyingBorrowBalanceInitial = cEtherDelegate
+        uint256 account1UnderlyingBorrowBalanceInitial = cEther
             .borrowBalanceStored(0x32075bAd9050d4767018084F0Cb87b3182D36C45);
-        uint256 account2UnderlyingSupplyBalanceInitial = cEtherDelegate
+        uint256 account2UnderlyingSupplyBalanceInitial = cEther
             .balanceOf(0x3686657208883d016971c7395eDaeD73c107383E)
             .mulDivDown(exchangeRateStored, 10**18);
-        uint256 account2UnderlyingBorrowBalanceInitial = cEtherDelegate
+        uint256 account2UnderlyingBorrowBalanceInitial = cEther
             .borrowBalanceStored(0x3686657208883d016971c7395eDaeD73c107383E);
 
         assertGt(account1UnderlyingSupplyBalanceInitial, 0);
         assertEq(account1UnderlyingBorrowBalanceInitial, 0);
         assertEq(account2UnderlyingSupplyBalanceInitial, 0);
         assertGt(account2UnderlyingBorrowBalanceInitial, 0);
+
+        uint256 totalSupplyInitial = cEther.totalSupply();
+        uint256 totalBorrowsInitial = cEther.totalBorrows();
 
         assertTrue(true);
     }
