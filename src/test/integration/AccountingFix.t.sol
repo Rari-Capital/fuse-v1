@@ -29,7 +29,7 @@ contract AccountingFix is Test {
     uint256 internal account2UnderlyingBorrowBalanceFinal;
 
     function setUp() public {}
-    
+
     function testShouldMergeAttackersSupplyAndBorrowBalances() public {
         // Deploy new CEtherDelegateTempExploitAccounting
         cEtherDelegateTempExploitAccounting = ICEtherDelegateTempExploitAccounting(
