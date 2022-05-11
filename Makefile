@@ -13,8 +13,8 @@ npm:; npm install
 # Forge tasks
 clean:; forge clean
 build:; forge build
-test:; forge test --fork-url $(ETH_RPC_URL) --block-number $(BLOCK_NUMBER) --etherscan-api-key $(ETHERSCAN_API_KEY) --match-path src/test/integration/pools/*
-trace:; forge test -vvvvv --fork-url $(ETH_RPC_URL) --block-number $(BLOCK_NUMBER) --etherscan-api-key $(ETHERSCAN_API_KEY) --match-path src/test/integration/pools*
+test:; forge test -vvv --fork-url $(ETH_RPC_URL) --block-number $(BLOCK_NUMBER) --etherscan-api-key $(ETHERSCAN_API_KEY) --match-path src/test/integration/*.sol
+trace:; forge test -vvvvv --fork-url $(ETH_RPC_URL) --block-number $(BLOCK_NUMBER) --etherscan-api-key $(ETHERSCAN_API_KEY) --match-path src/test/integration/*.sol
 snapshot:; forge snapshot
 
 # Lint tasks
