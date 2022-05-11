@@ -116,66 +116,68 @@ contract AccountingFix is Test {
         assertEq(account2UnderlyingSupplyBalanceInitial, 0);
         assertGt(account2UnderlyingBorrowBalanceInitial, 0);
 
-        // uint256 totalSupplyInitial = cEther.totalSupply();
-        // uint256 totalBorrowsInitial = cEther.totalBorrows();
+        uint256 totalSupplyInitial = cEther.totalSupply();
+        uint256 totalBorrowsInitial = cEther.totalBorrows();
 
-        // // Impersonate ComptrollerAdmin (required for upgrading implementation)
-        // vm.stopPrank();
-        // vm.startPrank(comptrollerAdmin);
+        // Impersonate ComptrollerAdmin (required for upgrading implementation)
+        vm.stopPrank();
+        vm.startPrank(comptrollerAdmin);
 
-        // // Call CEther._setImplementationSafe for temp impl
-        // address[] memory secondaryExploiterAddress = new address[](1);
-        // secondaryExploiterAddress[
-        //     0
-        // ] = 0x3686657208883d016971c7395eDaeD73c107383E;
+        // TODO: test currently fails, likely has something to do with the encoding of the implementation
+        // NOTE: test does pass until here
+        // Call CEther._setImplementationSafe for temp impl
+        address[] memory secondaryExploiterAddress = new address[](1);
+        secondaryExploiterAddress[
+            0
+        ] = 0x3686657208883d016971c7395eDaeD73c107383E;
 
-        // cEther._setImplementationSafe(
-        //     address(cEtherDelegateTempExploitAccounting),
-        //     false,
-        //     abi.encode(secondaryExploiterAddress)
-        // );
+        cEther._setImplementationSafe(
+            address(cEtherDelegateTempExploitAccounting),
+            false,
+            abi.encode(secondaryExploiterAddress)
+        );
 
-        // // Call CEther._setImplementationSafe for final impl
-        // cEther._setImplementationSafe(
-        //     address(cEtherDelegate),
-        //     false,
-        //     new bytes(0)
-        // );
+        // Call CEther._setImplementationSafe for final impl
+        cEther._setImplementationSafe(
+            address(cEtherDelegate),
+            false,
+            new bytes(0)
+        );
 
-        // // Double-check attacker's balances
-        // // TODO: shouldn't this also mulDivDown using 10**18?
-        // account1UnderlyingSupplyBalanceFinal = cEther
-        //     .balanceOf(0x32075bAd9050d4767018084F0Cb87b3182D36C45)
-        //     .mulDivDown(exchangeRateStored, 10**18);
-        // account1UnderlyingBorrowBalanceFinal = cEther.borrowBalanceStored(
-        //     0x32075bAd9050d4767018084F0Cb87b3182D36C45
-        // );
-        // account2UnderlyingSupplyBalanceFinal = cEther
-        //     .balanceOf(0x3686657208883d016971c7395eDaeD73c107383E)
-        //     .mulDivDown(exchangeRateStored, 10**18);
-        // account2UnderlyingBorrowBalanceFinal = cEther.borrowBalanceStored(
-        //     0x3686657208883d016971c7395eDaeD73c107383E
-        // );
+        // Double-check attacker's balances
+        // TODO: shouldn't this also mulDivDown using 10**18?
+        account1UnderlyingSupplyBalanceFinal = cEther
+            .balanceOf(0x32075bAd9050d4767018084F0Cb87b3182D36C45)
+            .mulDivDown(exchangeRateStored, 10**18);
+        account1UnderlyingBorrowBalanceFinal = cEther.borrowBalanceStored(
+            0x32075bAd9050d4767018084F0Cb87b3182D36C45
+        );
+        account2UnderlyingSupplyBalanceFinal = cEther
+            .balanceOf(0x3686657208883d016971c7395eDaeD73c107383E)
+            .mulDivDown(exchangeRateStored, 10**18);
+        account2UnderlyingBorrowBalanceFinal = cEther.borrowBalanceStored(
+            0x3686657208883d016971c7395eDaeD73c107383E
+        );
 
-        // assertEq(account1UnderlyingSupplyBalanceFinal, 0);
-        // assertEq(
-        //     account1UnderlyingBorrowBalanceFinal,
-        //     account2UnderlyingBorrowBalanceInitial -
-        //         account1UnderlyingSupplyBalanceInitial
-        // );
-        // assertEq(account2UnderlyingSupplyBalanceFinal, 0);
-        // assertEq(account2UnderlyingBorrowBalanceFinal, 0);
+        assertEq(account1UnderlyingSupplyBalanceFinal, 0);
+        assertEq(
+            account1UnderlyingBorrowBalanceFinal,
+            account2UnderlyingBorrowBalanceInitial -
+                account1UnderlyingSupplyBalanceInitial
+        );
+        assertEq(account2UnderlyingSupplyBalanceFinal, 0);
+        assertEq(account2UnderlyingBorrowBalanceFinal, 0);
 
-        // uint256 totalSupplyFinal = cEther.totalSupply();
-        // uint256 totalBorrowsFinal = cEther.totalBorrows();
+        uint256 totalSupplyFinal = cEther.totalSupply();
+        uint256 totalBorrowsFinal = cEther.totalBorrows();
 
-        // assertEq(
-        //     totalSupplyFinal,
-        //     totalSupplyInitial - account1SupplySharesInitial
-        // );
-        // assertEq(
-        //     totalBorrowsFinal,
-        //     totalBorrowsInitial - account1UnderlyingSupplyBalanceInitial
-        // );
+        assertEq(
+            totalSupplyFinal,
+            totalSupplyInitial - account1SupplySharesInitial
+        );
+        assertEq(
+            totalBorrowsFinal,
+            totalBorrowsInitial - account1UnderlyingSupplyBalanceInitial
+        );
     }
 }
