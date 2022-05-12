@@ -28,10 +28,11 @@ contract AccountingFix is Test {
     uint256 internal account2UnderlyingSupplyBalanceFinal;
     uint256 internal account2UnderlyingBorrowBalanceFinal;
 
-    address account1;
-    address account2;
-    address account3;
-    address fETH;
+    address internal account1;
+    address internal account2;
+    address internal account3;
+
+    address internal fETH;
 
     function setUp() public {}
 
@@ -102,29 +103,22 @@ contract AccountingFix is Test {
         );
 
         // Get attacker's initial balancess
-        ICEtherDelegate cEther = ICEtherDelegate(
-            fETH
-        );
+        ICEtherDelegate cEther = ICEtherDelegate(fETH);
         cEther.accrueInterest();
 
         uint256 exchangeRateStored = cEther.exchangeRateStored();
-        uint256 account1SupplySharesInitial = cEther.balanceOf(
-            account1
-        );
+        uint256 account1SupplySharesInitial = cEther.balanceOf(account1);
         account1UnderlyingSupplyBalanceInitial = account1SupplySharesInitial
             .mulDivDown(exchangeRateStored, 10**18);
         account1UnderlyingBorrowBalanceInitial = cEther.borrowBalanceStored(
             account1
         );
-        account2UnderlyingSupplyBalanceInitial = cEther
-            .balanceOf(account2)
-            .mulDivDown(exchangeRateStored, 10**18) + cEther
-            .balanceOf(account3)
-            .mulDivDown(exchangeRateStored, 10**18);
-        account2UnderlyingBorrowBalanceInitial = cEther.borrowBalanceStored(
-            account2
-        ) + cEther.borrowBalanceStored(
-            account3);
+        account2UnderlyingSupplyBalanceInitial =
+            cEther.balanceOf(account2).mulDivDown(exchangeRateStored, 10**18) +
+            cEther.balanceOf(account3).mulDivDown(exchangeRateStored, 10**18);
+        account2UnderlyingBorrowBalanceInitial =
+            cEther.borrowBalanceStored(account2) +
+            cEther.borrowBalanceStored(account3);
 
         assertGt(account1UnderlyingSupplyBalanceInitial, 0);
         assertEq(account1UnderlyingBorrowBalanceInitial, 0);
@@ -139,58 +133,51 @@ contract AccountingFix is Test {
         vm.startPrank(address(fuseFeeDistributor));
 
         address[] memory secondaryExploiterAddress = new address[](2);
-        secondaryExploiterAddress[
-             0
-        ] = account2;
-        secondaryExploiterAddress[
-             1
-        ] = account3;
+        secondaryExploiterAddress[0] = account2;
+        secondaryExploiterAddress[1] = account3;
 
-         cEther._setImplementationSafe(
-             address(cEtherDelegateTempExploitAccounting),
-             false,
-             abi.encode(secondaryExploiterAddress)
+        cEther._setImplementationSafe(
+            address(cEtherDelegateTempExploitAccounting),
+            false,
+            abi.encode(secondaryExploiterAddress)
         );
 
         // Call CEther._setImplementationSafe for final impl
         cEther._setImplementationSafe(
-             address(0xbDADDC6a1321Ed458b53aB9e51DC0De8dba78D43),
-             false,
-             new bytes(0)
+            address(0xbDADDC6a1321Ed458b53aB9e51DC0De8dba78D43),
+            false,
+            new bytes(0)
         );
 
         // Double-check attacker's balances
         account1UnderlyingSupplyBalanceFinal = cEther
-             .balanceOf(account1)
-             .mulDivDown(exchangeRateStored, 10**18);
+            .balanceOf(account1)
+            .mulDivDown(exchangeRateStored, 10**18);
         account1UnderlyingBorrowBalanceFinal = cEther.borrowBalanceStored(
-             account1
-            );
-        account2UnderlyingSupplyBalanceFinal = cEther
-             .balanceOf(account2)
-             .mulDivDown(exchangeRateStored, 10**18) + cEther
-             .balanceOf(account3)
-             .mulDivDown(exchangeRateStored, 10**18);
-         account2UnderlyingBorrowBalanceFinal = cEther.borrowBalanceStored(
-             account2
-            ) + cEther.borrowBalanceStored(
-            account3);
+            account1
+        );
+        account2UnderlyingSupplyBalanceFinal =
+            cEther.balanceOf(account2).mulDivDown(exchangeRateStored, 10**18) +
+            cEther.balanceOf(account3).mulDivDown(exchangeRateStored, 10**18);
+        account2UnderlyingBorrowBalanceFinal =
+            cEther.borrowBalanceStored(account2) +
+            cEther.borrowBalanceStored(account3);
 
         assertEq(account1UnderlyingSupplyBalanceFinal, 0);
         assertEq(
             account1UnderlyingBorrowBalanceFinal,
-             account2UnderlyingBorrowBalanceInitial -
-                 account1UnderlyingSupplyBalanceInitial
+            account2UnderlyingBorrowBalanceInitial -
+                account1UnderlyingSupplyBalanceInitial
         );
         assertEq(account2UnderlyingSupplyBalanceFinal, 0);
         assertEq(account2UnderlyingBorrowBalanceFinal, 0);
-        
+
         uint256 totalSupplyFinal = cEther.totalSupply();
         uint256 totalBorrowsFinal = cEther.totalBorrows();
 
         assertEq(
             totalSupplyFinal,
-             totalSupplyInitial - account1SupplySharesInitial
+            totalSupplyInitial - account1SupplySharesInitial
         );
         assertEq(
             totalBorrowsFinal,
