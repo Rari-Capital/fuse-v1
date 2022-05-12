@@ -10,7 +10,7 @@ import {ICEtherDelegateTempExploitAccounting} from "../interfaces/core/ICEtherDe
 import {IComptroller} from "../interfaces/core/IComptroller.sol";
 import {IFuseFeeDistributor} from "../interfaces/IFuseFeeDistributor.sol";
 
-contract AccountingFix is Test {
+contract AccountingFixTest is Test {
     using FixedPointMathLib for uint256;
 
     ICEtherDelegateTempExploitAccounting
