@@ -19,6 +19,9 @@ import {IInterestRateModel} from "../interfaces/core/IInterestRateModel.sol";
 import {IFuseFeeDistributor} from "../interfaces/IFuseFeeDistributor.sol";
 import {IFusePoolDirectory} from "../interfaces/IFusePoolDirectory.sol";
 
+// Mocks
+import {IMockPriceOracle} from "../mocks/IMockPriceOracle.sol";
+
 // Reference https://github.com/Midas-Protocol/contracts/blob/development/contracts/test/DeployMarkets.t.sol
 
 contract DeployMarketsTest is Test {
@@ -88,6 +91,12 @@ contract DeployMarketsTest is Test {
 
     function setUpPool() public {
         underlyingToken.mint(address(this), 100e18);
+
+        IMockPriceOracle priceOracle = IMockPriceOracle(
+            deployCode("MockPriceOracle.sol:MockPriceOracle", abi.encode(10))
+        );
+
+        emptyAddresses.push(address(0));
     }
 
     function setUp() public {
