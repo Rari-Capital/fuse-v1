@@ -42,6 +42,7 @@ contract DeployMarketsTest is Test {
     uint256 depositAmount = 1 ether;
 
     address[] internal emptyAddresses;
+    address[] internal newUnitroller;
     address[] internal oldCErc20Implementations;
     address[] internal newCErc20Implementations;
 
@@ -97,6 +98,50 @@ contract DeployMarketsTest is Test {
         );
 
         emptyAddresses.push(address(0));
+
+        IComptroller tempComptroller = IComptroller(
+            deployCode(
+                "Comptroller.sol:Comptroller",
+                abi.encode(payable(address(fuseAdmin)))
+            )
+        );
+
+        newUnitroller.push(address(tempComptroller));
+
+        bool[] memory statuses = new bool[](1);
+        statuses[0] = true;
+
+        fuseAdmin._editComptrollerImplementationWhitelist(
+            emptyAddresses,
+            newUnitroller,
+            statuses
+        );
+
+        vm.startPrank(address(fuseAdmin));
+
+        (uint256 index, address comptrollerAddress) = fusePoolDirectory
+            .deployPool(
+                "TestPool",
+                address(tempComptroller),
+                false,
+                0.1e18,
+                1.1e18,
+                address(priceOracle)
+            );
+
+        IUnitroller(
+            deployCode(
+                "Unitroller.sol:Unitroller",
+                abi.encode(payable(comptrollerAddress))
+            )
+        )._acceptAdmin();
+
+        comptroller = IComptroller(
+            deployCode(
+                "Comptroller.sol:Comptroller",
+                abi.encode(comptrollerAddress)
+            )
+        );
     }
 
     function setUp() public {
@@ -104,5 +149,47 @@ contract DeployMarketsTest is Test {
         setUpPool();
         setUpWhiteList();
         vm.roll(1);
+    }
+
+    function testDeployCErc20Delegate() public {
+        vm.roll(1);
+
+        comptroller._deployMarket(
+            false,
+            abi.encode(
+                address(underlyingToken),
+                IComptrollerInterface(address(comptroller)),
+                payable(address(fuseAdmin)),
+                IInterestRateModel(address(interestModel)),
+                "cUnderlyingToken",
+                "CUT",
+                address(cErc20Delegate),
+                "",
+                uint256(1),
+                uint256(0)
+            ),
+            0.9e18
+        );
+
+        address[] memory allMarkets = comptroller.getAllMarkets();
+        ICErc20Delegate cToken = ICErc20Delegate(
+            address(allMarkets[allMarkets.length - 1])
+        );
+        assertEq(cToken.name(), "cUnderlyingToken");
+        underlyingToken.approve(address(cToken), 1e36);
+        address[] memory cTokens = new address[](1);
+        cTokens[0] = address(cToken);
+        comptroller.enterMarkets(cTokens);
+        vm.roll(1);
+        cToken.mint(10e18);
+        assertEq(cToken.totalSupply(), 10e18 * 5);
+        assertEq(underlyingToken.balanceOf(address(cToken)), 10e18);
+        vm.roll(1);
+        cToken.borrow(1000);
+        assertEq(cToken.totalBorrows(), 1000);
+        assertEq(
+            underlyingToken.balanceOf(address(this)),
+            100e18 - 10e18 + 1000
+        );
     }
 }

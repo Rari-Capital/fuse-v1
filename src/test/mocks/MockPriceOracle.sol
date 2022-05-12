@@ -26,7 +26,7 @@ contract MockPriceOracle is PriceOracle, BasePriceOracle {
     /**
      * @dev Constructor to set `maxSecondsBeforePriceIsStale` as well as all Chainlink price feeds.
      */
-    constructor(uint256 _maxSecondsBeforePriceIsStale) {
+    constructor(uint256 _maxSecondsBeforePriceIsStale) public {
         // Set maxSecondsBeforePriceIsStale
         maxSecondsBeforePriceIsStale = _maxSecondsBeforePriceIsStale;
     }
@@ -79,7 +79,7 @@ contract MockPriceOracle is PriceOracle, BasePriceOracle {
      * @dev Implements the `PriceOracle` interface for Fuse pools (and Compound v2).
      * @return Price in ETH of the token underlying `cToken`, scaled by `10 ** (36 - underlyingDecimals)`.
      */
-    function getUnderlyingPrice(ICToken cToken)
+    function getUnderlyingPrice(CToken cToken)
         external
         view
         override
@@ -89,7 +89,7 @@ contract MockPriceOracle is PriceOracle, BasePriceOracle {
         if (cToken.isCEther()) return 1e18;
 
         // Get underlying token address
-        address underlying = ICErc20(address(cToken)).underlying();
+        address underlying = CErc20(address(cToken)).underlying();
 
         // Get price
         return 1e18;
