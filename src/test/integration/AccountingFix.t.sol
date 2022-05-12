@@ -102,7 +102,7 @@ contract AccountingFix is Test {
             statuses
         );
 
-        // Get attacker's initial balancess
+        // Get attacker's initial balances
         ICEtherDelegate cEther = ICEtherDelegate(fETH);
         cEther.accrueInterest();
 
