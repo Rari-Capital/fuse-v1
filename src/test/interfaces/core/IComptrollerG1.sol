@@ -1,6 +1,6 @@
 pragma solidity ^0.8.10;
 
-interface IComptrollerG1 {
+interface ComptrollerG1 {
     event Failure(uint256 error, uint256 info, uint256 detail);
     event MarketEntered(address cToken, address account);
     event MarketExited(address cToken, address account);

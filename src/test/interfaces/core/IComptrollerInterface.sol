@@ -1,6 +1,6 @@
 pragma solidity ^0.8.10;
 
-interface IComptrollerInterface {
+interface ComptrollerInterface {
     function _afterNonReentrant() external;
 
     function _beforeNonReentrant() external;

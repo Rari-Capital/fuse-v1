@@ -1,6 +1,6 @@
 pragma solidity ^0.8.10;
 
-interface IJumpRateModel {
+interface JumpRateModel {
     event NewInterestParams(
         uint256 baseRatePerBlock,
         uint256 multiplierPerBlock,

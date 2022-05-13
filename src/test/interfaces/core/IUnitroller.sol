@@ -1,6 +1,6 @@
 pragma solidity ^0.8.10;
 
-interface IUnitroller {
+interface Unitroller {
     event AdminRightsToggled(bool hasRights);
     event Failure(uint256 error, uint256 info, uint256 detail);
     event FuseAdminRightsToggled(bool hasRights);

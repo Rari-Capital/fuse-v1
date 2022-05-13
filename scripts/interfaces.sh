@@ -6,9 +6,9 @@ shopt -s extglob
 
 rm -rf generated
 
-mkdir -p generated/abi/interfaces
+mkdir -p generated/abi generated/interfaces
 
-for f in src/core/*.sol; do
+for f in src/*.sol; do
     name=${f//+(*\/|.*)}
 
     forge inspect ${name} abi > generated/abi/${name}.json

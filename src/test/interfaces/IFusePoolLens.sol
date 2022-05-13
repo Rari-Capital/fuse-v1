@@ -1,122 +1,5 @@
 pragma solidity ^0.8.10;
 
-interface IFusePoolLens {
-    function directory() external view returns (address);
-
-    function getPoolAssetsWithData(address comptroller)
-        external
-        returns (FusePoolLens.FusePoolAsset[] memory);
-
-    function getPoolSummary(address comptroller)
-        external
-        returns (
-            uint256,
-            uint256,
-            address[] memory,
-            string[] memory,
-            bool
-        );
-
-    function getPoolUserSummary(address comptroller, address account)
-        external
-        returns (uint256, uint256);
-
-    function getPoolUsersWithData(
-        address[] calldata comptrollers,
-        uint256 maxHealth
-    )
-        external
-        returns (
-            FusePoolLens.FusePoolUser[][] memory,
-            uint256[] memory,
-            uint256[] memory,
-            bool[] memory
-        );
-
-    function getPoolUsersWithData(address comptroller, uint256 maxHealth)
-        external
-        returns (
-            FusePoolLens.FusePoolUser[] memory,
-            uint256,
-            uint256
-        );
-
-    function getPoolsByAccountWithData(address account)
-        external
-        returns (
-            uint256[] memory,
-            FusePoolDirectory.FusePool[] memory,
-            FusePoolLens.FusePoolData[] memory,
-            bool[] memory
-        );
-
-    function getPoolsBySupplier(address account)
-        external
-        view
-        returns (uint256[] memory, FusePoolDirectory.FusePool[] memory);
-
-    function getPoolsBySupplierWithData(address account)
-        external
-        returns (
-            uint256[] memory,
-            FusePoolDirectory.FusePool[] memory,
-            FusePoolLens.FusePoolData[] memory,
-            bool[] memory
-        );
-
-    function getPublicPoolUsersWithData(uint256 maxHealth)
-        external
-        returns (
-            address[] memory,
-            FusePoolLens.FusePoolUser[][] memory,
-            uint256[] memory,
-            uint256[] memory,
-            bool[] memory
-        );
-
-    function getPublicPoolsByVerificationWithData(bool whitelistedAdmin)
-        external
-        returns (
-            uint256[] memory,
-            FusePoolDirectory.FusePool[] memory,
-            FusePoolLens.FusePoolData[] memory,
-            bool[] memory
-        );
-
-    function getPublicPoolsWithData()
-        external
-        returns (
-            uint256[] memory,
-            FusePoolDirectory.FusePool[] memory,
-            FusePoolLens.FusePoolData[] memory,
-            bool[] memory
-        );
-
-    function getUserSummary(address account)
-        external
-        returns (
-            uint256,
-            uint256,
-            bool
-        );
-
-    function getWhitelistedPoolsByAccount(address account)
-        external
-        view
-        returns (uint256[] memory, FusePoolDirectory.FusePool[] memory);
-
-    function getWhitelistedPoolsByAccountWithData(address account)
-        external
-        returns (
-            uint256[] memory,
-            FusePoolDirectory.FusePool[] memory,
-            FusePoolLens.FusePoolData[] memory,
-            bool[] memory
-        );
-
-    function initialize(address _directory) external;
-}
-
 interface FusePoolLens {
     struct FusePoolAsset {
         address cToken;
@@ -158,6 +41,121 @@ interface FusePoolLens {
         string[] underlyingSymbols;
         bool whitelistedAdmin;
     }
+
+    function directory() external view returns (address);
+
+    function getPoolAssetsWithData(address comptroller)
+        external
+        returns (FusePoolLens.FusePoolAsset[] memory);
+
+    function getPoolSummary(address comptroller)
+        external
+        returns (
+            uint256,
+            uint256,
+            address[] memory,
+            string[] memory,
+            bool
+        );
+
+    function getPoolUserSummary(address comptroller, address account)
+        external
+        returns (uint256, uint256);
+
+    function getPoolUsersWithData(
+        address[] calldata comptrollers,
+        uint256 maxHealth
+    )
+        external
+        returns (
+            FusePoolUser[][] memory,
+            uint256[] memory,
+            uint256[] memory,
+            bool[] memory
+        );
+
+    function getPoolUsersWithData(address comptroller, uint256 maxHealth)
+        external
+        returns (
+            FusePoolUser[] memory,
+            uint256,
+            uint256
+        );
+
+    function getPoolsByAccountWithData(address account)
+        external
+        returns (
+            uint256[] memory,
+            FusePoolDirectory.FusePool[] memory,
+            FusePoolData[] memory,
+            bool[] memory
+        );
+
+    function getPoolsBySupplier(address account)
+        external
+        view
+        returns (uint256[] memory, FusePoolDirectory.FusePool[] memory);
+
+    function getPoolsBySupplierWithData(address account)
+        external
+        returns (
+            uint256[] memory,
+            FusePoolDirectory.FusePool[] memory,
+            FusePoolData[] memory,
+            bool[] memory
+        );
+
+    function getPublicPoolUsersWithData(uint256 maxHealth)
+        external
+        returns (
+            address[] memory,
+            FusePoolUser[][] memory,
+            uint256[] memory,
+            uint256[] memory,
+            bool[] memory
+        );
+
+    function getPublicPoolsByVerificationWithData(bool whitelistedAdmin)
+        external
+        returns (
+            uint256[] memory,
+            FusePoolDirectory.FusePool[] memory,
+            FusePoolData[] memory,
+            bool[] memory
+        );
+
+    function getPublicPoolsWithData()
+        external
+        returns (
+            uint256[] memory,
+            FusePoolDirectory.FusePool[] memory,
+            FusePoolData[] memory,
+            bool[] memory
+        );
+
+    function getUserSummary(address account)
+        external
+        returns (
+            uint256,
+            uint256,
+            bool
+        );
+
+    function getWhitelistedPoolsByAccount(address account)
+        external
+        view
+        returns (uint256[] memory, FusePoolDirectory.FusePool[] memory);
+
+    function getWhitelistedPoolsByAccountWithData(address account)
+        external
+        returns (
+            uint256[] memory,
+            FusePoolDirectory.FusePool[] memory,
+            FusePoolData[] memory,
+            bool[] memory
+        );
+
+    function initialize(address _directory) external;
 }
 
 interface FusePoolDirectory {
