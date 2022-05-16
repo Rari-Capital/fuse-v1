@@ -1,6 +1,6 @@
 pragma solidity ^0.8.10;
 
-interface IPreferredPriceOracle {
+interface PreferredPriceOracle {
     function chainlinkOracleV2() external view returns (address);
 
     function getUnderlyingPrice(address cToken) external view returns (uint256);

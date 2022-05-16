@@ -1,6 +1,6 @@
 pragma solidity ^0.8.10;
 
-interface IComptroller {
+interface Comptroller {
     event ActionPaused(string action, bool pauseState);
     event ActionPaused(address cToken, string action, bool pauseState);
     event AddedRewardsDistributor(address rewardsDistributor);

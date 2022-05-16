@@ -1,0 +1,48 @@
+name: ci
+
+on:
+  push:
+    branches:
+      - master
+      - development
+  pull_request:
+    branches:
+      - master
+      - development
+
+env:
+  FOUNDRY_PROFILE: ci
+
+jobs:
+  ci:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os:
+          - ubuntu-latest
+        node_version:
+          - 18
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          submodules: recursive
+
+      - name: Install Node.js ${{ matrix.node_version }}
+        uses: actions/setup-node@v2
+
+      - name: Install Foundry
+        uses: onbjerg/foundry-toolchain@v1
+        with:
+          version: nightly
+
+      - name: Install dependencies
+        run: make
+
+      - name: Run lint check
+        run: make lint
+
+      # TODO: implement repo secrets to we can do mainnet forks for integration tests and other parameter configuration
+      - name: Run tests
+        run: forge test

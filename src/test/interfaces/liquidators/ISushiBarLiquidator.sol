@@ -1,6 +1,6 @@
 pragma solidity ^0.8.10;
 
-interface ISushiBarLiquidator {
+interface SushiBarLiquidator {
     function redeem(
         address inputToken,
         uint256 inputAmount,

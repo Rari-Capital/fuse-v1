@@ -1,6 +1,13 @@
 pragma solidity ^0.8.10;
 
-interface IFusePoolLensSecondary {
+interface FusePoolLensSecondary {
+    struct CTokenOwnership {
+        address cToken;
+        address admin;
+        bool adminHasRights;
+        bool fuseAdminHasRights;
+    }
+
     function directory() external view returns (address);
 
     function getMaxBorrow(address account, address cTokenModify)
@@ -66,13 +73,4 @@ interface IFusePoolLensSecondary {
         );
 
     function initialize(address _directory) external;
-}
-
-interface FusePoolLensSecondary {
-    struct CTokenOwnership {
-        address cToken;
-        address admin;
-        bool adminHasRights;
-        bool fuseAdminHasRights;
-    }
 }

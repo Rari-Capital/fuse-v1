@@ -1,6 +1,6 @@
 pragma solidity ^0.8.10;
 
-interface IXVaultLiquidator {
+interface XVaultLiquidator {
     function redeem(
         address inputToken,
         uint256 inputAmount,

@@ -1,6 +1,6 @@
 pragma solidity ^0.8.10;
 
-interface ICurveFactoryLpTokenPriceOracle {
+interface CurveFactoryLpTokenPriceOracle {
     function getUnderlyingPrice(address cToken) external view returns (uint256);
 
     function poolOf(address) external view returns (address);

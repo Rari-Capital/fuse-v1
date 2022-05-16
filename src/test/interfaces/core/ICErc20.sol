@@ -1,6 +1,6 @@
 pragma solidity ^0.8.10;
 
-interface ICErc20 {
+interface CErc20 {
     event AccrueInterest(
         uint256 cashPrior,
         uint256 interestAccumulated,

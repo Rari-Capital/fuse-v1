@@ -1,6 +1,6 @@
 pragma solidity ^0.8.10;
 
-interface IWSSquidPriceOracle {
+interface WSSquidPriceOracle {
     function SQUID() external view returns (address);
 
     function SSQUID() external view returns (address);

@@ -1,6 +1,6 @@
 pragma solidity ^0.8.10;
 
-interface IETHMAXYPriceOracle {
+interface ETHMAXYPriceOracle {
     function ETHMAXY() external view returns (address);
 
     function getUnderlyingPrice(address cToken) external view returns (uint256);

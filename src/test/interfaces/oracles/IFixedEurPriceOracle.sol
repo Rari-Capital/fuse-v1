@@ -1,6 +1,6 @@
 pragma solidity ^0.8.10;
 
-interface IFixedEurPriceOracle {
+interface FixedEurPriceOracle {
     function ETH_USD_PRICE_FEED() external view returns (address);
 
     function EUR_USD_PRICE_FEED() external view returns (address);

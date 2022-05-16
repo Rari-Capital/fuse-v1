@@ -1,6 +1,6 @@
 pragma solidity ^0.8.10;
 
-interface IInterestRateModel {
+interface InterestRateModel {
     function getBorrowRate(
         uint256 cash,
         uint256 borrows,

@@ -1,6 +1,6 @@
 pragma solidity ^0.8.10;
 
-interface IRecursivePriceOracle {
+interface RecursivePriceOracle {
     function COMPOUND_COMPTROLLER() external view returns (address);
 
     function CREAM_COMPTROLLER() external view returns (address);

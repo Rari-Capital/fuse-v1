@@ -1,6 +1,6 @@
 pragma solidity ^0.8.10;
 
-interface IIFuseFeeDistributor {
+interface IFuseFeeDistributor {
     function cErc20DelegateWhitelist(
         address oldImplementation,
         address newImplementation,

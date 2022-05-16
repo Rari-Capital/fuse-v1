@@ -1,6 +1,6 @@
 pragma solidity ^0.8.10;
 
-interface IFuseSafeLiquidator {
+interface FuseSafeLiquidator {
     function redeemCustomCollateral(
         address underlyingCollateral,
         uint256 underlyingCollateralSeized,

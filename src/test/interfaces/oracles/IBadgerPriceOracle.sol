@@ -1,6 +1,6 @@
 pragma solidity ^0.8.10;
 
-interface IBadgerPriceOracle {
+interface BadgerPriceOracle {
     function BADGER_ETH_FEED() external view returns (address);
 
     function BBADGER() external view returns (address);

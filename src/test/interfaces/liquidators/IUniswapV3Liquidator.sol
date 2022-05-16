@@ -1,6 +1,6 @@
 pragma solidity ^0.8.10;
 
-interface IUniswapV3Liquidator {
+interface UniswapV3Liquidator {
     function redeem(
         address inputToken,
         uint256 inputAmount,

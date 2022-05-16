@@ -1,6 +1,6 @@
 pragma solidity ^0.8.10;
 
-interface IMStableLiquidator {
+interface MStableLiquidator {
     function IMBTC() external view returns (address);
 
     function IMUSD() external view returns (address);

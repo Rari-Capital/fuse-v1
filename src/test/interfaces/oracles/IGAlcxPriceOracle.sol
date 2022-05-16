@@ -1,6 +1,6 @@
 pragma solidity ^0.8.10;
 
-interface IGAlcxPriceOracle {
+interface GAlcxPriceOracle {
     function ALCX() external view returns (address);
 
     function gALCX() external view returns (address);

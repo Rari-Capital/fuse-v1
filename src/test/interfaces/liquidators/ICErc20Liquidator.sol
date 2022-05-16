@@ -1,6 +1,6 @@
 pragma solidity ^0.8.10;
 
-interface ICErc20Liquidator {
+interface CErc20Liquidator {
     function redeem(
         address inputToken,
         uint256 inputAmount,

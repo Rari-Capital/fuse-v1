@@ -1,6 +1,6 @@
 pragma solidity ^0.8.10;
 
-interface ITemplePriceOracle {
+interface TemplePriceOracle {
     function TEMPLE() external view returns (address);
 
     function TREASURY() external view returns (address);

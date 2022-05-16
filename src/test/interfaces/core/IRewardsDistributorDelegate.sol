@@ -1,6 +1,6 @@
 pragma solidity ^0.8.10;
 
-interface IRewardsDistributorDelegate {
+interface RewardsDistributorDelegate {
     event CompBorrowSpeedUpdated(address indexed cToken, uint256 newSpeed);
     event CompGranted(address recipient, uint256 amount);
     event CompSupplySpeedUpdated(address indexed cToken, uint256 newSpeed);

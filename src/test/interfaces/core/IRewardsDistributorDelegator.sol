@@ -1,6 +1,6 @@
 pragma solidity ^0.8.10;
 
-interface IRewardsDistributorDelegator {
+interface RewardsDistributorDelegator {
     event NewImplementation(
         address oldImplementation,
         address newImplementation
