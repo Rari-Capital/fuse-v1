@@ -32,6 +32,7 @@ Run `make build` to build and `make test` to test, `make trace` to verbose test.
 - Compound master branch is safe and audited
 - Our changes to the fork are relatively minimal, we mostly selectively include files or apply minimal modifications to the files
 - We should attempt to keep the diff as minimal as possible and don't change files we don't have to
+- Quantstamp recommendation: Provide coverage scripts for all diffs. Improve tests for new code. Ensure that testing and coverage instructions are in the documentation.
 
 ## Scripts
 
@@ -40,4 +41,6 @@ Run `make build` to build and `make test` to test, `make trace` to verbose test.
 ## To do
 
 - Request admin for the default branch to branch off of to be `development`
+- Request admin access to add security credentials to the repo so that we can do mainnet forking in our CI
 - Investigate `src/liquidators/BalancerPoolTokenLiquidator.sol` lint issue (removed the file for now)
+- Run automated analyses tools like Slither on our codebase
