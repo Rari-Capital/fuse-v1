@@ -1,6 +1,6 @@
 pragma solidity ^0.8.10;
 
-interface IChainlinkPriceOracle {
+interface ChainlinkPriceOracle {
     function BTC_ETH_PRICE_FEED() external view returns (address);
 
     function ETH_USD_PRICE_FEED() external view returns (address);

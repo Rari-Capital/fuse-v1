@@ -1,6 +1,6 @@
 pragma solidity ^0.8.10;
 
-interface ISOhmLiquidator {
+interface SOhmLiquidator {
     function redeem(
         address inputToken,
         uint256 inputAmount,

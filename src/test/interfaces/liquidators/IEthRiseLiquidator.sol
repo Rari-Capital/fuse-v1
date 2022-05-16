@@ -1,6 +1,6 @@
 pragma solidity ^0.8.10;
 
-interface IEthRiseLiquidator {
+interface EthRiseLiquidator {
     function rVault() external view returns (address);
 
     function redeem(

@@ -1,6 +1,6 @@
 pragma solidity ^0.8.10;
 
-interface IAlphaHomoraV1BankLiquidator {
+interface AlphaHomoraV1BankLiquidator {
     function redeem(
         address inputToken,
         uint256 inputAmount,

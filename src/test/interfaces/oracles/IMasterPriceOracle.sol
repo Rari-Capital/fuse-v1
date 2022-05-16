@@ -1,6 +1,6 @@
 pragma solidity ^0.8.10;
 
-interface IMasterPriceOracle {
+interface MasterPriceOracle {
     event NewAdmin(address oldAdmin, address newAdmin);
     event NewDefaultOracle(address oldOracle, address newOracle);
     event NewOracle(address underlying, address oldOracle, address newOracle);

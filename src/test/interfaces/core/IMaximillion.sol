@@ -1,6 +1,6 @@
 pragma solidity ^0.8.10;
 
-interface IMaximillion {
+interface Maximillion {
     function cEther() external view returns (address);
 
     function repayBehalf(address borrower) external payable;

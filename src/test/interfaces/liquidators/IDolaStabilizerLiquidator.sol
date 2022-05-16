@@ -1,6 +1,6 @@
 pragma solidity ^0.8.10;
 
-interface IDolaStabilizerLiquidator {
+interface DolaStabilizerLiquidator {
     function FEE_DENOMINATOR() external view returns (uint256);
 
     function STABILIZER() external view returns (address);

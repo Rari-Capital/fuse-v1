@@ -1,6 +1,6 @@
 pragma solidity ^0.8.10;
 
-interface IGOhmPriceOracle {
+interface GOhmPriceOracle {
     function GOHM() external view returns (address);
 
     function OHM() external view returns (address);

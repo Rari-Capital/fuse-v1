@@ -1,6 +1,6 @@
 pragma solidity ^0.8.10;
 
-interface ICurveTriCryptoLpTokenPriceOracle {
+interface CurveTriCryptoLpTokenPriceOracle {
     function ETH_USD_PRICE_FEED() external view returns (address);
 
     function SOURCE_ORACLE() external view returns (address);

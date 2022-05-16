@@ -1,6 +1,6 @@
 pragma solidity ^0.8.10;
 
-interface ICToken {
+interface CToken {
     event AccrueInterest(
         uint256 cashPrior,
         uint256 interestAccumulated,

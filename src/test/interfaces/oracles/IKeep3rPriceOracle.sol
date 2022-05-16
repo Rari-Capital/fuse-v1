@@ -1,6 +1,6 @@
 pragma solidity ^0.8.10;
 
-interface IKeep3rPriceOracle {
+interface Keep3rPriceOracle {
     function MAX_TWAP_TIME() external view returns (uint256);
 
     function MIN_TWAP_TIME() external view returns (uint256);

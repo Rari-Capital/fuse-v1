@@ -1,6 +1,6 @@
 pragma solidity ^0.8.10;
 
-interface IGOhmLiquidator {
+interface GOhmLiquidator {
     function OLYMPUS_STAKING() external view returns (address);
 
     function redeem(

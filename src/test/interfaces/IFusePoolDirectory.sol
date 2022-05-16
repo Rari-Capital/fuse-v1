@@ -1,12 +1,20 @@
 pragma solidity ^0.8.10;
 
-interface IFusePoolDirectory {
+interface FusePoolDirectory {
+    struct FusePool {
+        string name;
+        address creator;
+        address comptroller;
+        uint256 blockPosted;
+        uint256 timestampPosted;
+    }
+
     event AdminWhitelistUpdated(address[] admins, bool status);
     event OwnershipTransferred(
         address indexed previousOwner,
         address indexed newOwner
     );
-    event PoolRegistered(uint256 index, FusePoolDirectory.FusePool pool);
+    event PoolRegistered(uint256 index, FusePool pool);
 
     function _editAdminWhitelist(address[] calldata admins, bool status)
         external;
@@ -33,10 +41,7 @@ interface IFusePoolDirectory {
 
     function enforceDeployerWhitelist() external view returns (bool);
 
-    function getAllPools()
-        external
-        view
-        returns (FusePoolDirectory.FusePool[] memory);
+    function getAllPools() external view returns (FusePool[] memory);
 
     function getBookmarks(address account)
         external
@@ -46,12 +51,12 @@ interface IFusePoolDirectory {
     function getPoolsByAccount(address account)
         external
         view
-        returns (uint256[] memory, FusePoolDirectory.FusePool[] memory);
+        returns (uint256[] memory, FusePool[] memory);
 
     function getPublicPools()
         external
         view
-        returns (uint256[] memory, FusePoolDirectory.FusePool[] memory);
+        returns (uint256[] memory, FusePool[] memory);
 
     function getPublicPoolsByVerification(bool whitelistedAdmin)
         external
@@ -83,14 +88,4 @@ interface IFusePoolDirectory {
     function setPoolName(uint256 index, string calldata name) external;
 
     function transferOwnership(address newOwner) external;
-}
-
-interface FusePoolDirectory {
-    struct FusePool {
-        string name;
-        address creator;
-        address comptroller;
-        uint256 blockPosted;
-        uint256 timestampPosted;
-    }
 }

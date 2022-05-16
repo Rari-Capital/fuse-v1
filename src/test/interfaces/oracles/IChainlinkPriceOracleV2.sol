@@ -1,6 +1,6 @@
 pragma solidity ^0.8.10;
 
-interface IChainlinkPriceOracleV2 {
+interface ChainlinkPriceOracleV2 {
     event NewAdmin(address oldAdmin, address newAdmin);
 
     function BTC_ETH_PRICE_FEED() external view returns (address);

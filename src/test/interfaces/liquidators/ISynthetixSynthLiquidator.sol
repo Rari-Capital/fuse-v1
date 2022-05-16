@@ -1,6 +1,6 @@
 pragma solidity ^0.8.10;
 
-interface ISynthetixSynthLiquidator {
+interface SynthetixSynthLiquidator {
     function SYNTHETIX() external view returns (address);
 
     function redeem(

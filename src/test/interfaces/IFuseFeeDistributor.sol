@@ -1,6 +1,6 @@
 pragma solidity ^0.8.10;
 
-interface IFuseFeeDistributor {
+interface FuseFeeDistributor {
     event OwnershipTransferred(
         address indexed previousOwner,
         address indexed newOwner

@@ -1,6 +1,6 @@
 pragma solidity ^0.8.10;
 
-interface IBalancerLpTokenPriceOracle {
+interface BalancerLpTokenPriceOracle {
     function BONE() external view returns (uint256);
 
     function BPOW_PRECISION() external view returns (uint256);

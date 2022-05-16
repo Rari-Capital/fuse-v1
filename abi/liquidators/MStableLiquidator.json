@@ -1,0 +1,88 @@
+[
+  {
+    "inputs": [],
+    "name": "IMBTC",
+    "outputs": [
+      {
+        "internalType": "contract ISavingsContractV2",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "IMUSD",
+    "outputs": [
+      {
+        "internalType": "contract ISavingsContractV2",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "MBTC",
+    "outputs": [
+      {
+        "internalType": "contract IMasset",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "MUSD",
+    "outputs": [
+      {
+        "internalType": "contract IMasset",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "contract IERC20Upgradeable",
+        "name": "inputToken",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "inputAmount",
+        "type": "uint256"
+      },
+      {
+        "internalType": "bytes",
+        "name": "strategyData",
+        "type": "bytes"
+      }
+    ],
+    "name": "redeem",
+    "outputs": [
+      {
+        "internalType": "contract IERC20Upgradeable",
+        "name": "outputToken",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "outputAmount",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  }
+]

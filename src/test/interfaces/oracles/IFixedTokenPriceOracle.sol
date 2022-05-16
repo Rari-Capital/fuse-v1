@@ -1,6 +1,6 @@
 pragma solidity ^0.8.10;
 
-interface IFixedTokenPriceOracle {
+interface FixedTokenPriceOracle {
     function baseToken() external view returns (address);
 
     function getUnderlyingPrice(address cToken) external view returns (uint256);

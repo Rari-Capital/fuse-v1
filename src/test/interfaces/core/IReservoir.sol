@@ -1,6 +1,6 @@
 pragma solidity ^0.8.10;
 
-interface IReservoir {
+interface Reservoir {
     function drip() external returns (uint256);
 
     function dripRate() external view returns (uint256);

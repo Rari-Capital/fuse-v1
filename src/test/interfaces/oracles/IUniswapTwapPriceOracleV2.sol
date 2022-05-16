@@ -1,6 +1,6 @@
 pragma solidity ^0.8.10;
 
-interface IUniswapTwapPriceOracleV2 {
+interface UniswapTwapPriceOracleV2 {
     function WETH() external view returns (address);
 
     function baseToken() external view returns (address);

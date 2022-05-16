@@ -1,6 +1,6 @@
 pragma solidity ^0.8.10;
 
-interface IUniswapTwapPriceOracleV2Root {
+interface UniswapTwapPriceOracleV2Root {
     function MIN_TWAP_TIME() external view returns (uint256);
 
     function OBSERVATION_BUFFER() external view returns (uint8);

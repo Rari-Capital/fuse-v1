@@ -1,6 +1,6 @@
 pragma solidity ^0.8.10;
 
-interface IGFloorLiquidator {
+interface GFloorLiquidator {
     function FLOOR_STAKING() external view returns (address);
 
     function redeem(

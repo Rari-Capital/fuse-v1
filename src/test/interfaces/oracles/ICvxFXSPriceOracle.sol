@@ -1,6 +1,6 @@
 pragma solidity ^0.8.10;
 
-interface ICvxFXSPriceOracle {
+interface CvxFXSPriceOracle {
     function FXS() external view returns (address);
 
     function cvxFXS() external view returns (address);

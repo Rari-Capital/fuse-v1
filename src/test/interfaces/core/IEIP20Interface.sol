@@ -1,6 +1,6 @@
 pragma solidity ^0.8.10;
 
-interface IEIP20Interface {
+interface EIP20Interface {
     event Approval(
         address indexed owner,
         address indexed spender,

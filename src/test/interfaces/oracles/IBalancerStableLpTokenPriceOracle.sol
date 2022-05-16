@@ -1,6 +1,6 @@
 pragma solidity ^0.8.10;
 
-interface IBalancerStableLpTokenPriceOracle {
+interface BalancerStableLpTokenPriceOracle {
     function DAI() external view returns (address);
 
     function WBTC() external view returns (address);

@@ -1,6 +1,6 @@
 pragma solidity ^0.8.10;
 
-interface ISimplePriceOracle {
+interface SimplePriceOracle {
     event PricePosted(
         address asset,
         uint256 previousPriceMantissa,

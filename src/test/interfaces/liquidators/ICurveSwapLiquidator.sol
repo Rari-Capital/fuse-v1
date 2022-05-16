@@ -1,6 +1,6 @@
 pragma solidity ^0.8.10;
 
-interface ICurveSwapLiquidator {
+interface CurveSwapLiquidator {
     function redeem(
         address inputToken,
         uint256 inputAmount,
