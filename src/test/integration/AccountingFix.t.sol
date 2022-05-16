@@ -40,7 +40,7 @@ contract AccountingFix is Test {
 
         // Deploy new CEtherDelegate
         cEtherDelegate = ICEtherDelegate(
-            0xbDADDC6a1321Ed458b53aB9e51DC0De8dba78D43
+            deployCode("CEtherDelegate.sol:CEtherDelegate")
         );
 
         // Get pool 8 admin
