@@ -43,5 +43,6 @@ jobs:
       - name: Run lint check
         run: make lint
 
+      # TODO: implement repo secrets to we can do mainnet forks for integration tests and other parameter configuration
       - name: Run tests
         run: forge test
