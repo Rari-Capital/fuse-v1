@@ -8,7 +8,7 @@ rm -rf generated
 
 mkdir -p generated/abi generated/interfaces
 
-for f in src/*.sol; do
+for f in src/oracles/*.sol; do
     name=${f//+(*\/|.*)}
 
     forge inspect ${name} abi > generated/abi/${name}.json

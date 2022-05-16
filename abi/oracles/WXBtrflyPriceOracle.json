@@ -1,25 +1,7 @@
 [
   {
     "inputs": [],
-    "stateMutability": "nonpayable",
-    "type": "constructor"
-  },
-  {
-    "inputs": [],
-    "name": "last_completed_migration",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "owner",
+    "name": "BTRFLY",
     "outputs": [
       {
         "internalType": "address",
@@ -31,29 +13,54 @@
     "type": "function"
   },
   {
+    "inputs": [],
+    "name": "WXBTRFLY",
+    "outputs": [
+      {
+        "internalType": "contract wxBTRFLY",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [
       {
+        "internalType": "contract CToken",
+        "name": "cToken",
+        "type": "address"
+      }
+    ],
+    "name": "getUnderlyingPrice",
+    "outputs": [
+      {
         "internalType": "uint256",
-        "name": "completed",
+        "name": "",
         "type": "uint256"
       }
     ],
-    "name": "setCompleted",
-    "outputs": [],
-    "stateMutability": "nonpayable",
+    "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [
       {
         "internalType": "address",
-        "name": "new_address",
+        "name": "underlying",
         "type": "address"
       }
     ],
-    "name": "upgrade",
-    "outputs": [],
-    "stateMutability": "nonpayable",
+    "name": "price",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
     "type": "function"
   }
 ]

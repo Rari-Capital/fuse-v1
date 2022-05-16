@@ -1,0 +1,26 @@
+[
+  {
+    "inputs": [
+      {
+        "internalType": "contract Sett",
+        "name": "inputToken",
+        "type": "address"
+      }
+    ],
+    "name": "withdrawAll",
+    "outputs": [
+      {
+        "internalType": "contract IERC20Upgradeable",
+        "name": "outputToken",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "outputAmount",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  }
+]
