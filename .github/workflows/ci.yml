@@ -1,23 +1,27 @@
-name: test
+name: ci
 
 on:
   push:
-    branches: [master]
+    branches:
+      - master
+      - development
   pull_request:
-    branches: [master]
+    branches:
+      - master
+      - development
 
 env:
   FOUNDRY_PROFILE: ci
 
 jobs:
-  test:
+  ci:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
         os:
           - ubuntu-latest
         node_version:
-          - 16
+          - 18
 
     steps:
       - name: Checkout
