@@ -6,15 +6,15 @@ import {console2} from "forge-std/console2.sol";
 import {ERC20} from "solmate/tokens/ERC20.sol";
 
 // External interfaces
-import {IICHIVault} from "../../interfaces/external/ichi/IICHIVault.sol";
+import {ICHIVault} from "../../interfaces/external/ichi/IICHIVault.sol";
 
 // Interfaces
-import {IFuseFeeDistributor} from "../../interfaces/IFuseFeeDistributor.sol";
-import {IFuseSafeLiquidator} from "../../interfaces/IFuseSafeLiquidator.sol";
-import {ICErc20} from "../../interfaces/core/ICErc20.sol";
-import {IUnitroller} from "../../interfaces/core/IUnitroller.sol";
-import {IComptroller} from "../../interfaces/core/IComptroller.sol";
-import {IOneFoxLiquidator} from "../../interfaces/liquidators/IOneFoxLiquidator.sol";
+import {FuseFeeDistributor} from "../../interfaces/IFuseFeeDistributor.sol";
+import {FuseSafeLiquidator} from "../../interfaces/IFuseSafeLiquidator.sol";
+import {CErc20} from "../../interfaces/core/ICErc20.sol";
+import {Unitroller} from "../../interfaces/core/IUnitroller.sol";
+import {Comptroller} from "../../interfaces/core/IComptroller.sol";
+import {OneFoxLiquidator} from "../../interfaces/liquidators/IOneFoxLiquidator.sol";
 
 // Pool 79: Fox and Frens
 // https://app.rari.capital/token/0x779f9bad1f4b1ef5198ad9361dbf3791f9e0d596 (token)
@@ -22,20 +22,20 @@ import {IOneFoxLiquidator} from "../../interfaces/liquidators/IOneFoxLiquidator.
 contract FusePool79 is Test {
     address user = address(1);
 
-    IUnitroller internal constant pool =
-        IUnitroller(0x613Ea1dC49E83eAd05db49DcFcF57b22Fb5510bD);
+    Unitroller internal constant pool =
+        Unitroller(0x613Ea1dC49E83eAd05db49DcFcF57b22Fb5510bD);
 
-    IFuseFeeDistributor internal constant globalFuseAdmin =
-        IFuseFeeDistributor(0xa731585ab05fC9f83555cf9Bff8F58ee94e18F85);
+    FuseFeeDistributor internal constant globalFuseAdmin =
+        FuseFeeDistributor(0xa731585ab05fC9f83555cf9Bff8F58ee94e18F85);
 
-    IFuseFeeDistributor internal constant fuseAdmin =
-        IFuseFeeDistributor(0x90A48D5CF7343B08dA12E067680B4C6dbfE551Be);
+    FuseFeeDistributor internal constant fuseAdmin =
+        FuseFeeDistributor(0x90A48D5CF7343B08dA12E067680B4C6dbfE551Be);
 
-    IFuseSafeLiquidator internal constant fuseSafeLiquidator =
-        IFuseSafeLiquidator(0xF0f3a1494aE00B5350535b7777abB2f499fC13d4);
+    FuseSafeLiquidator internal constant fuseSafeLiquidator =
+        FuseSafeLiquidator(0xF0f3a1494aE00B5350535b7777abB2f499fC13d4);
 
-    IComptroller internal constant comptroller =
-        IComptroller(0x613Ea1dC49E83eAd05db49DcFcF57b22Fb5510bD);
+    Comptroller internal constant comptroller =
+        Comptroller(0x613Ea1dC49E83eAd05db49DcFcF57b22Fb5510bD);
 
     ERC20 internal constant USDCToken =
         ERC20(0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48);
@@ -49,20 +49,19 @@ contract FusePool79 is Test {
 
     // ICHIVaultLP oneFOX-FOX: https://etherscan.io/address/0x779F9BAd1f4B1Ef5198AD9361DBf3791F9e0D596
     // https://angel.ichi.org/
-    IICHIVault internal constant ICHIVaultLP =
-        IICHIVault(0x779F9BAd1f4B1Ef5198AD9361DBf3791F9e0D596);
+    ICHIVault internal constant ICHIVaultLP =
+        ICHIVault(0x779F9BAd1f4B1Ef5198AD9361DBf3791F9e0D596);
 
     // Fox and Frens Fei Protocol (fFEI-79): https://etherscan.io/address/0x41c7B863FdDa5eb7CF8D8f748B136d10d7AEC631
-    ICErc20 cFEIToken = ICErc20(0x41c7B863FdDa5eb7CF8D8f748B136d10d7AEC631);
+    CErc20 cFEIToken = CErc20(0x41c7B863FdDa5eb7CF8D8f748B136d10d7AEC631);
 
     // Fox and Frens ICHI Vault (fICHI_Vault_LP-79): https://etherscan.io/address/0x3639c603e9A4698CADb813aceC4cEa2D1a83eC18
-    ICErc20 cICHIVaultToken =
-        ICErc20(0x3639c603e9A4698CADb813aceC4cEa2D1a83eC18);
+    CErc20 cICHIVaultToken = CErc20(0x3639c603e9A4698CADb813aceC4cEa2D1a83eC18);
 
-    IOneFoxLiquidator public oneFoxLiquidator;
+    OneFoxLiquidator public oneFoxLiquidator;
 
     function setUp() public {
-        oneFoxLiquidator = IOneFoxLiquidator(
+        oneFoxLiquidator = OneFoxLiquidator(
             deployCode("OneFoxLiquidator.sol:OneFoxLiquidator")
         );
 

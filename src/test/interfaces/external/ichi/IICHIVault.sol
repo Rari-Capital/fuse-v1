@@ -1,6 +1,6 @@
 pragma solidity ^0.8.10;
 
-interface IICHIVault {
+interface ICHIVault {
     event Affiliate(address indexed sender, address affiliate);
     event Approval(
         address indexed owner,
