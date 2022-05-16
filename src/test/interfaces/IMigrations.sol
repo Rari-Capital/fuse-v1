@@ -1,6 +1,6 @@
 pragma solidity ^0.8.10;
 
-interface IMigrations {
+interface Migrations {
     function last_completed_migration() external view returns (uint256);
 
     function owner() external view returns (address);
