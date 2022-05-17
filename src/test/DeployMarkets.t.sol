@@ -32,25 +32,25 @@ import {MockERC4626} from "./mocks/MockERC4626.sol";
 import {MockERC4626Dynamic} from "./mocks/MockERC4626Dynamic.sol";
 
 contract DeployMarketsTest is Test {
-    MockERC20 underlyingToken;
-    MockERC20 rewardToken;
+    MockERC20 internal underlyingToken;
+    MockERC20 internal rewardToken;
 
-    WhitePaperInterestRateModel interestModel;
-    Comptroller comptroller;
+    WhitePaperInterestRateModel internal interestModel;
+    Comptroller internal comptroller;
 
-    CErc20Delegate cErc20Delegate;
-    CErc20PluginDelegate cErc20PluginDelegate;
-    CErc20PluginRewardsDelegate cErc20PluginRewardsDelegate;
+    CErc20Delegate internal cErc20Delegate;
+    CErc20PluginDelegate internal cErc20PluginDelegate;
+    CErc20PluginRewardsDelegate internal cErc20PluginRewardsDelegate;
 
-    MockERC4626 mockERC4626;
-    MockERC4626Dynamic mockERC4626Dynamic;
+    MockERC4626 internal mockERC4626;
+    MockERC4626Dynamic internal mockERC4626Dynamic;
 
-    CErc20 cErc20;
-    FuseFeeDistributor fuseAdmin;
-    FusePoolDirectory fusePoolDirectory;
+    CErc20 internal cErc20;
+    FuseFeeDistributor internal fuseAdmin;
+    FusePoolDirectory internal fusePoolDirectory;
 
-    FuseFlywheelCore flywheel;
-    FuseFlywheelDynamicRewards rewards;
+    FuseFlywheelCore internal flywheel;
+    FuseFlywheelDynamicRewards internal rewards;
 
     ERC20 marketKey;
 
@@ -73,17 +73,34 @@ contract DeployMarketsTest is Test {
     function setUpBaseContracts() public {
         underlyingToken = new MockERC20("UnderlyingToken", "UT", 18);
         rewardToken = new MockERC20("RewardToken", "RT", 18);
-        interestModel = new WhitePaperInterestRateModel(2343665, 1e18, 1e18);
-        fuseAdmin = new FuseFeeDistributor();
+        interestModel = WhitePaperInterestRateModel(
+            deployCode(
+                "WhitePaperInterestRateModel.sol:WhitePaperInterestRateModel",
+                abi.encode(2343665, 1e18, 1e18)
+            )
+        );
+        fuseAdmin = FuseFeeDistributor(
+            deployCode("FuseFeeDistributor.sol:FuseFeeDistributor")
+        );
         fuseAdmin.initialize(1e16);
-        fusePoolDirectory = new FusePoolDirectory();
+        fusePoolDirectory = FusePoolDirectory(
+            deployCode("FusePoolDirectory.sol:FusePoolDirectory")
+        );
         fusePoolDirectory.initialize(false, emptyAddresses);
     }
 
     function setUpWhiteList() public {
-        cErc20PluginDelegate = new CErc20PluginDelegate();
-        cErc20PluginRewardsDelegate = new CErc20PluginRewardsDelegate();
-        cErc20Delegate = new CErc20Delegate();
+        cErc20PluginDelegate = CErc20PluginDelegate(
+            deployCode("CErc20PluginDelegate.sol:CErc20PluginDelegate")
+        );
+        cErc20PluginRewardsDelegate = CErc20PluginRewardsDelegate(
+            deployCode(
+                "CErc20PluginRewardsDelegate.sol:CErc20PluginRewardsDelegate"
+            )
+        );
+        cErc20Delegate = CErc20Delegate(
+            deployCode("CErc20Delegate.sol:CErc20Delegate")
+        );
 
         for (uint256 i = 0; i < 7; i++) {
             t.push(true);
@@ -117,9 +134,17 @@ contract DeployMarketsTest is Test {
     function setUpPool() public {
         underlyingToken.mint(address(this), 100e18);
 
-        MockPriceOracle priceOracle = new MockPriceOracle(10);
+        MockPriceOracle priceOracle = MockPriceOracle(
+            deployCode("MockPriceOracle.sol:MockPriceOracle", abi.encode(10))
+        );
         emptyAddresses.push(address(0));
-        Comptroller tempComptroller = new Comptroller(payable(fuseAdmin));
+
+        Comptroller tempComptroller = Comptroller(
+            deployCode(
+                "Comptroller.sol:Comptroller",
+                abi.encode(payable(address(fuseAdmin)))
+            )
+        );
         newUnitroller.push(address(tempComptroller));
         trueBoolArray.push(true);
         falseBoolArray.push(false);
@@ -132,7 +157,6 @@ contract DeployMarketsTest is Test {
             .deployPool(
                 "TestPool",
                 address(tempComptroller),
-                abi.encode(payable(address(fuseAdmin))),
                 false,
                 0.1e18,
                 1.1e18,
@@ -169,7 +193,7 @@ contract DeployMarketsTest is Test {
             0.9e18
         );
 
-        CToken[] memory allMarkets = comptroller.getAllMarkets();
+        address[] memory allMarkets = comptroller.getAllMarkets();
         CErc20Delegate cToken = CErc20Delegate(
             address(allMarkets[allMarkets.length - 1])
         );
@@ -213,7 +237,7 @@ contract DeployMarketsTest is Test {
             0.9e18
         );
 
-        CToken[] memory allMarkets = comptroller.getAllMarkets();
+        address[] memory allMarkets = comptroller.getAllMarkets();
         CErc20PluginDelegate cToken = CErc20PluginDelegate(
             address(allMarkets[allMarkets.length - 1])
         );
@@ -288,7 +312,7 @@ contract DeployMarketsTest is Test {
             0.9e18
         );
 
-        CToken[] memory allMarkets = comptroller.getAllMarkets();
+        address[] memory allMarkets = comptroller.getAllMarkets();
         CErc20PluginRewardsDelegate cToken = CErc20PluginRewardsDelegate(
             address(allMarkets[allMarkets.length - 1])
         );
