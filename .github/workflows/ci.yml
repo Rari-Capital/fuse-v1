@@ -1,23 +1,27 @@
-name: test
+name: ci
 
 on:
   push:
-    branches: [master]
+    branches:
+      - master
+      - development
   pull_request:
-    branches: [master]
+    branches:
+      - master
+      - development
 
 env:
   FOUNDRY_PROFILE: ci
 
 jobs:
-  test:
+  ci:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
         os:
           - ubuntu-latest
         node_version:
-          - 16
+          - 18
 
     steps:
       - name: Checkout
@@ -39,5 +43,6 @@ jobs:
       - name: Run lint check
         run: make lint
 
+      # TODO: implement repo secrets to we can do mainnet forks for integration tests and other parameter configuration
       - name: Run tests
         run: forge test
