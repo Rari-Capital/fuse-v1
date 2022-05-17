@@ -1,6 +1,8 @@
 forge-std/=lib/forge-std/src/
 solmate/=lib/solmate/src/
-fuse-flyhweel/=lib/fuse-flywheel/src/
+flywheel-v2/=lib/flywheel-v2/src/
+flywheel/=lib/flywheel-v2/src/
+fuse-flywheel/=lib/fuse-flywheel/src/
 @openzeppelin/contracts-upgradeable/=node_modules/@openzeppelin/contracts-upgradeable/
 @uniswap/v3-core/=node_modules/@uniswap/v3-core/
 @uniswap/v3-periphery=node_modules/@uniswap/v3-periphery/
