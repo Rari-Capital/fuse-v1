@@ -2,6 +2,7 @@ pragma solidity ^0.5.16;
 pragma experimental ABIEncoderV2;
 
 import "../core/CErc20Delegate.sol";
+import "./IERC4626.sol";
 import "./EIP20Interface.sol";
 
 /**
