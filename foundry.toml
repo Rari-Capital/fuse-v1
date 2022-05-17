@@ -1,4 +1,5 @@
 [default]
+out = "artifacts"
 optimizer = true
 optimizer_runs = 10000
 cache = false

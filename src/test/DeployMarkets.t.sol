@@ -31,6 +31,22 @@ import {MockPriceOracle} from "./interfaces/oracles/IMockPriceOracle.sol";
 import {MockERC4626} from "./mocks/MockERC4626.sol";
 import {MockERC4626Dynamic} from "./mocks/MockERC4626Dynamic.sol";
 
+// Artifacts
+string constant WhitePaperInterestRateModelArtifact = "./artifacts/WhitePaperInterestRateModel.sol/WhitePaperInterestRateModel.json";
+string constant UnitrollerArtifact = "./artifacts/Unitroller.sol/Unitroller.json";
+string constant ComptrollerArtifact = "./artifacts/Comptroller.sol/Comptroller.json";
+string constant CErc20DelegateArtifact = "./artifacts/CErc20Delegate.sol/CErc20Delegate.json";
+string constant CErc20PluginDelegateArtifact = "./artifacts/CErc20PluginDelegate.sol/CErc20PluginDelegate.json";
+string constant CErc20PluginRewardsDelegateArtifact = "./artifacts/CErc20PluginRewardsDelegate.sol/CErc20PluginRewardsDelegate.json";
+string constant CErc20DelegatorArtifact = "./artifacts/CErc20Delegator.sol/CErc20Delegator.json";
+string constant RewardsDistributorDelegateArtifact = "./artifacts/RewardsDistributorDelegate.sol/RewardsDistributorDelegate.json";
+string constant RewardsDistributorDelegatorArtifact = "./artifacts/RewardsDistributorDelegator.sol/RewardsDistributorDelegator.json";
+string constant ComptrollerInterfaceArtifact = "./artifacts/ComptrollerInterface.sol/ComptrollerInterface.json";
+string constant InterestRateModelArtifact = "./artifacts/InterestRateModel.sol/InterestRateModel.json";
+string constant FuseFeeDistributorArtifact = "./artifacts/FuseFeeDistributor.sol/FuseFeeDistributor.json";
+string constant FusePoolDirectoryArtifact = "./artifacts/FusePoolDirectory.sol/FusePoolDirectory.json";
+string constant MockPriceOracleArtifact = "./artifacts/MockPriceOracle.sol/MockPriceOracle.json";
+
 contract DeployMarketsTest is Test {
     MockERC20 internal underlyingToken;
     MockERC20 internal rewardToken;
@@ -75,32 +91,26 @@ contract DeployMarketsTest is Test {
         rewardToken = new MockERC20("RewardToken", "RT", 18);
         interestModel = WhitePaperInterestRateModel(
             deployCode(
-                "WhitePaperInterestRateModel.sol:WhitePaperInterestRateModel",
+                WhitePaperInterestRateModelArtifact,
                 abi.encode(2343665, 1e18, 1e18)
             )
         );
-        fuseAdmin = FuseFeeDistributor(
-            deployCode("FuseFeeDistributor.sol:FuseFeeDistributor")
-        );
+        fuseAdmin = FuseFeeDistributor(deployCode(FuseFeeDistributorArtifact));
         fuseAdmin.initialize(1e16);
         fusePoolDirectory = FusePoolDirectory(
-            deployCode("FusePoolDirectory.sol:FusePoolDirectory")
+            deployCode(FusePoolDirectoryArtifact)
         );
         fusePoolDirectory.initialize(false, emptyAddresses);
     }
 
     function setUpWhiteList() public {
         cErc20PluginDelegate = CErc20PluginDelegate(
-            deployCode("CErc20PluginDelegate.sol:CErc20PluginDelegate")
+            deployCode(CErc20PluginDelegateArtifact)
         );
         cErc20PluginRewardsDelegate = CErc20PluginRewardsDelegate(
-            deployCode(
-                "CErc20PluginRewardsDelegate.sol:CErc20PluginRewardsDelegate"
-            )
+            deployCode(CErc20PluginRewardsDelegateArtifact)
         );
-        cErc20Delegate = CErc20Delegate(
-            deployCode("CErc20Delegate.sol:CErc20Delegate")
-        );
+        cErc20Delegate = CErc20Delegate(deployCode(CErc20DelegateArtifact));
 
         for (uint256 i = 0; i < 7; i++) {
             t.push(true);
@@ -135,13 +145,13 @@ contract DeployMarketsTest is Test {
         underlyingToken.mint(address(this), 100e18);
 
         MockPriceOracle priceOracle = MockPriceOracle(
-            deployCode("MockPriceOracle.sol:MockPriceOracle", abi.encode(10))
+            deployCode(MockPriceOracleArtifact, abi.encode(10))
         );
         emptyAddresses.push(address(0));
 
         Comptroller tempComptroller = Comptroller(
             deployCode(
-                "Comptroller.sol:Comptroller",
+                ComptrollerArtifact,
                 abi.encode(payable(address(fuseAdmin)))
             )
         );
