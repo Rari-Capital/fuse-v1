@@ -86,6 +86,16 @@ contract DeployMarketsTest is Test {
     address[] newCErc20Implementations;
     FuseFlywheelCore[] flywheelsToClaim;
 
+    function setUp() public {
+        vm.label(address(fuseAdmin), "fuseAdmin");
+        vm.label(address(fusePoolDirectory), "fusePoolDirectory");
+
+        setUpBaseContracts();
+        setUpPool();
+        setUpWhiteList();
+        vm.roll(1);
+    }
+
     function setUpBaseContracts() public {
         underlyingToken = new MockERC20("UnderlyingToken", "UT", 18);
         rewardToken = new MockERC20("RewardToken", "RT", 18);
@@ -101,6 +111,44 @@ contract DeployMarketsTest is Test {
             deployCode(FusePoolDirectoryArtifact)
         );
         fusePoolDirectory.initialize(false, emptyAddresses);
+    }
+
+    function setUpPool() public {
+        underlyingToken.mint(address(this), 100e18);
+
+        MockPriceOracle priceOracle = MockPriceOracle(
+            deployCode(MockPriceOracleArtifact, abi.encode(10))
+        );
+        emptyAddresses.push(address(0));
+
+        Comptroller tempComptroller = Comptroller(
+            deployCode(
+                ComptrollerArtifact,
+                abi.encode(payable(address(fuseAdmin)))
+            )
+        );
+        newUnitroller.push(address(tempComptroller));
+        trueBoolArray.push(true);
+        falseBoolArray.push(false);
+        fuseAdmin._editComptrollerImplementationWhitelist(
+            emptyAddresses,
+            newUnitroller,
+            trueBoolArray
+        );
+        vm.startPrank(0xa731585ab05fC9f83555cf9Bff8F58ee94e18F85);
+        (uint256 index, address comptrollerAddress) = fusePoolDirectory
+            .deployPool(
+                "TestPool",
+                address(tempComptroller),
+                false,
+                0.1e18,
+                1.1e18,
+                address(priceOracle)
+            );
+
+        Unitroller(payable(comptrollerAddress))._acceptAdmin();
+        comptroller = Comptroller(comptrollerAddress);
+        vm.stopPrank();
     }
 
     function setUpWhiteList() public {
@@ -139,49 +187,6 @@ contract DeployMarketsTest is Test {
             f,
             t
         );
-    }
-
-    function setUpPool() public {
-        underlyingToken.mint(address(this), 100e18);
-
-        MockPriceOracle priceOracle = MockPriceOracle(
-            deployCode(MockPriceOracleArtifact, abi.encode(10))
-        );
-        emptyAddresses.push(address(0));
-
-        Comptroller tempComptroller = Comptroller(
-            deployCode(
-                ComptrollerArtifact,
-                abi.encode(payable(address(fuseAdmin)))
-            )
-        );
-        newUnitroller.push(address(tempComptroller));
-        trueBoolArray.push(true);
-        falseBoolArray.push(false);
-        fuseAdmin._editComptrollerImplementationWhitelist(
-            emptyAddresses,
-            newUnitroller,
-            trueBoolArray
-        );
-        (uint256 index, address comptrollerAddress) = fusePoolDirectory
-            .deployPool(
-                "TestPool",
-                address(tempComptroller),
-                false,
-                0.1e18,
-                1.1e18,
-                address(priceOracle)
-            );
-
-        Unitroller(payable(comptrollerAddress))._acceptAdmin();
-        comptroller = Comptroller(comptrollerAddress);
-    }
-
-    function setUp() public {
-        setUpBaseContracts();
-        setUpPool();
-        setUpWhiteList();
-        vm.roll(1);
     }
 
     function testDeployCErc20Delegate() public {
