@@ -40,7 +40,7 @@ The `development` branch should preferably have passing tests.
 - `bug/..` prefixed indicates that it is a bug fix (low priority)
 - `hotfix/..` prefixed indicates that it is a hot fix (high priority); hotfixes are branches off of `master` and then merged back into `development` after deployment
 
-All prefixed branches are merged through PRs (target: `development`), preferably code reviewed and include tests. The CI flow runs on every change in the PR targetting `development`. If you make any changes to the `ABI` make sure you run the `interfaces` script.
+All prefixed branches are merged through PRs (target: `development`), preferably code reviewed and include tests. The CI flow runs on every change in the PR targetting `development`. If you make any changes to the `ABI` make sure you run the `interfaces.sh` script.
 
 Work in progress PR titles are prefixed by `WIP: `.
 
@@ -75,3 +75,5 @@ Run `make build` to build and `make test` to test, `make trace` to verbose test.
 ## Scripting
 
 - `interfaces.sh`, generates `abi` and `interface` of all files in `src/core`
+
+In the future I would like to upgrade the script to TypeScript and automatically skip any files that do not have to be updated.
