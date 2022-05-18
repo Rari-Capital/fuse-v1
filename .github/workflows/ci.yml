@@ -45,3 +45,6 @@ jobs:
 
       - name: Run tests
         run: make test
+        env:
+          ETH_RPC_URL: ${{ secrets.ETH_RPC_URL }}
+          ETHERSCAN_API_KEY: ${{ secrets.ETHERSCAN_API_KEY }}
