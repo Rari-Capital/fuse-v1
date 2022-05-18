@@ -57,11 +57,3 @@ Run `make build` to build and `make test` to test, `make trace` to verbose test.
 ## Scripting
 
 - `interfaces.sh`, generates `abi` and `interface` of all files in `src/core`
-
-## To do list
-
-- Request admin for the default branch to branch off of to be `development`
-- Request admin access to add security credentials to the repo so that we can do mainnet forking in our CI
-- Investigate `src/liquidators/BalancerPoolTokenLiquidator.sol` lint issue (removed the file for now)
-- Run automated analyses tools like Slither on our codebase
-- Configure Slither as automated step in our CI
