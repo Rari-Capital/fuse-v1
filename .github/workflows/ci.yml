@@ -49,7 +49,14 @@ jobs:
 
       - name: Run Slither
         uses: crytic/slither-action@v0.1.1
-        continue-on-error: true # Avoid failing run if findings are found.
-        with:
+        id: slither # is the name ised in for `steps.slither.outputs.sarif`
+        continue-on-error: true # Is required to let the SARIF upload step runs if slither finds issues
+        with: 
           target: 'src/'
+          sarif: results.sarif
           ignore-compile: true
+
+      - name: Upload SARIF file # Github Code Scanning integration
+        uses: github/codeql-action/upload-sarif@v2
+        with:
+          sarif_file: ${{ steps.slither.outputs.sarif }}
