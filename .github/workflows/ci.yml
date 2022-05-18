@@ -16,6 +16,9 @@ env:
 jobs:
   ci:
     runs-on: ${{ matrix.os }}
+    permissions:
+      contents: read
+      security-events: write
     strategy:
       matrix:
         os:
