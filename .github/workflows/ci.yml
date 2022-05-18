@@ -46,3 +46,10 @@ jobs:
       # TODO: implement repo secrets to we can do mainnet forks for integration tests and other parameter configuration
       - name: Run tests
         run: forge test
+
+      - name: Run Slither
+        uses: crytic/slither-action@v0.1.1
+        continue-on-error: true # Avoid failing run if findings are found.
+        with:
+          target: 'src/'
+          ignore-compile: true
