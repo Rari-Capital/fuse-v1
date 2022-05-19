@@ -4,6 +4,8 @@
 WORK IN PROGRESS
 ```
 
+![Github Actions](https://github.com/Rari-Capital/fuse-v1/workflows/CI/badge.svg)
+
 ## Goal
 
 - Port Fuse V1 to a modern Foundry-based development stack
