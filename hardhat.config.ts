@@ -46,9 +46,23 @@ export default {
     sources: './src',
     tests: './integration',
   },
+  contractSizer: {
+    alphaSort: false,
+    disambiguatePaths: false,
+    runOnCompile: true,
+  },
   defaultNetwork: 'hardhat',
   networks: {
-    hardhat: { chainId: 1337 },
+    localhost: {},
+    hardhat: {
+      allowUnlimitedContractSize: false,
+      chainId: 1337,
+      forking: {
+        blockNumber: Number(process.env.FORK_BLOCK),
+        enabled: process.env.FORKING === 'true',
+        url: ETH_RPC_URL,
+      },
+    },
     rinkeby: {
       url: RINKEBY_RPC,
       accounts: [ETH_PRIVATE_KEY],
