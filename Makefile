@@ -17,6 +17,7 @@ test:; forge test --fork-url $(ETH_RPC_URL) --etherscan-api-key $(ETHERSCAN_API_
 trace:; forge test -vvvvv --fork-url $(ETH_RPC_URL) --etherscan-api-key $(ETHERSCAN_API_KEY)
 snapshot:; forge snapshot
 
-# Lint tasks
+# Node tasks
 lint:; npm run lint
 lint-fix:; npm run lint:fix
+scripts-interfaces:; npm run scripts:interfaces

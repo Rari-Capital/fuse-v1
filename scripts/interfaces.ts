@@ -1,5 +1,4 @@
 // Native
-import { exec } from "child_process";
 import { writeFile } from "fs/promises";
 import { mkdirSync } from "fs";
 import { basename, parse, dirname } from "path";
@@ -7,17 +6,10 @@ import { basename, parse, dirname } from "path";
 // Vendor
 import glob from "glob";
 
-const spawnProcess = (command: string) => {
-  return new Promise((resolve, reject) => {
-    exec(command, (error: any, stdout: string, stderr: string) => {
-      if (error) {
-        reject(error);
-      }
+// Utilities
+import { spawnProcess } from "./utilities/spawnProcess";
 
-      resolve(stdout ? stdout : stderr);
-    });
-  });
-};
+const IGNORE_LIST = ["test", "external", "interfaces", "chains"];
 
 const main = async () => {
   const ABI = "abi";
@@ -32,12 +24,8 @@ const main = async () => {
   });
 
   for (const filePath of FILEPATHS) {
-    if (
-      filePath.includes("test") ||
-      filePath.includes("external") ||
-      filePath.includes("interfaces")
-    ) {
-      return;
+    if (IGNORE_LIST.map((item) => filePath.includes(item)).includes(true)) {
+      continue;
     }
 
     const fileName = parse(basename(filePath)).name;
@@ -57,7 +45,7 @@ const main = async () => {
     mkdirSync(`${INTERFACES_DIR}/${dirPath}`, { recursive: true });
 
     if (!abiOutputPath || !interfaceOutputPath) {
-      return;
+      continue;
     }
 
     try {
@@ -81,6 +69,7 @@ const main = async () => {
       await writeFile(interfaceOutputPath, interfaceOutput);
     } catch (error) {
       console.error(error);
+      continue;
     }
   }
 };
