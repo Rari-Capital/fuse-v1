@@ -12,7 +12,7 @@ npm:; npm install
 
 # Forge tasks
 clean:; forge clean
-build:; forge build
+build:; forge build --extra-output abi
 test:; forge test --fork-url $(ETH_RPC_URL) --etherscan-api-key $(ETHERSCAN_API_KEY)
 trace:; forge test -vvvvv --fork-url $(ETH_RPC_URL) --etherscan-api-key $(ETHERSCAN_API_KEY)
 snapshot:; forge snapshot
