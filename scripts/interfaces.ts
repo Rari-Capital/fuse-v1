@@ -1,7 +1,7 @@
 // Native
 import { exec } from "child_process";
 import { writeFile } from "fs/promises";
-import { mkdirSync, write } from "fs";
+import { mkdirSync } from "fs";
 import { basename, parse, dirname } from "path";
 
 // Vendor
