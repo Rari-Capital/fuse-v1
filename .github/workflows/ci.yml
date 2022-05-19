@@ -42,6 +42,12 @@ jobs:
 
       - name: Run lint check
         run: make lint
+
+      - name: Run tests
+        run: make test
+        env:
+          ETH_RPC_URL: ${{ secrets.ETH_RPC_URL }}
+          ETHERSCAN_API_KEY: ${{ secrets.ETHERSCAN_API_KEY }}
       
       # TODO: implement repo secrets to we can do mainnet forks for integration tests and other parameter configuration
       - name: Run tests

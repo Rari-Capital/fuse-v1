@@ -34,9 +34,9 @@ The `master` branch should always have passing tests.
 The `development` branch should preferably have passing tests.
 
 - `audit/..` prefixed indicates that it is a prepared branch for auditors
-- `feature/..` prefixed indicates that it is a feature we are developing
+- `feat/..` or `feature/..` prefixed indicates that it is a feature we are developing
 - `core/..` prefixed indicates that it is a feature related to any core protocol updates we port over from Compound
-- `archive/..` prefixed indicates that the branch is archived but would like to be kept around until further notice
+- `archive/..` prefixed indicates that the branch is archived but would like to be kept around until further notice. You would update the branch name the moment you decide to archive the branch.
 - `bug/..` prefixed indicates that it is a bug fix (low priority)
 - `hotfix/..` prefixed indicates that it is a hot fix (high priority); hotfixes are branches off of `master` and then merged back into `development` after deployment
 
@@ -64,6 +64,8 @@ ETHERSCAN_API_KEY=
 Run `make` to install all the dependencies.
 
 Run `make build` to build and `make test` to test, `make trace` to verbose test.
+
+It is recommended you install the following [VSCode extensions](.vscode/extensions.json) if you use VSCode.
 
 ## Assumptions and recommendations
 
