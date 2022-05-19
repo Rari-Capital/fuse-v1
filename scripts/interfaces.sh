@@ -15,6 +15,7 @@ for FILE in $(find ./src -type f ! -path '*/test*' | egrep '\.(sol)$'); do
 
     # name=${f//+(*\/|.*)}
 
+   forge inspect ${name} abi > generated/abi/${name}.json
     # cast interface out/${name}.sol/${name}.json > generated/interfaces/I${name}.sol
     # sed -i "s/interface Interface/interface ${name}/g" generated/interfaces/I${name}.sol
 done;
