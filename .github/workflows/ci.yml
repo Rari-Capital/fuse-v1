@@ -1,4 +1,4 @@
-name: ci
+name: CI 
 
 on:
   push:
@@ -25,7 +25,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           submodules: recursive
 
@@ -48,3 +48,19 @@ jobs:
         env:
           ETH_RPC_URL: ${{ secrets.ETH_RPC_URL }}
           ETHERSCAN_API_KEY: ${{ secrets.ETHERSCAN_API_KEY }}
+      
+      # TODO: implement repo secrets to we can do mainnet forks for integration tests and other parameter configuration
+      - name: Run tests
+        run: forge test
+
+      - name: Run Slither
+        uses: crytic/slither-action@main
+        id: slither
+        continue-on-error: true
+        with:
+          sarif: results.sarif
+
+      - name: Upload SARIF file
+        uses: github/codeql-action/upload-sarif@v2
+        with:
+          sarif_file: ${{ steps.slither.outputs.sarif }}
