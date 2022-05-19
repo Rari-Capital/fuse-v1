@@ -48,3 +48,9 @@ jobs:
         env:
           ETH_RPC_URL: ${{ secrets.ETH_RPC_URL }}
           ETHERSCAN_API_KEY: ${{ secrets.ETHERSCAN_API_KEY }}
+
+      - name: Run Slither
+        run: forge
+
+      - name: Upload SARIF file
+        run: forge
