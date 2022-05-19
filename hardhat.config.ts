@@ -58,7 +58,8 @@ export default {
       accounts: [ETH_PRIVATE_KEY]
     },
     arbitrum : {
-      url: ARBITRUM_RPC_URL
+      url: ARBITRUM_RPC_URL,
+      accounts: [ETH_PRIVATE_KEY]
     },
   },
   solidity: {
