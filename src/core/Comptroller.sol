@@ -1248,6 +1248,7 @@ contract Comptroller is
      * @notice Sets the global pause borrows override
      */
     function _setGlobalPauseBorrowsOverride(bool status) external {
+        require(hasAdminRights(), "!admin");
         _globalPauseBorrowsOverride = status;
     }
 
