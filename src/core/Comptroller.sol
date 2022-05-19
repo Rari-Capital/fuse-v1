@@ -16,7 +16,7 @@ import "./RewardsDistributorDelegate.sol";
  * @dev This contract should not to be deployed alone; instead, deploy `Unitroller` (proxy contract) on top of this `Comptroller` (logic/implementation contract).
  */
 contract Comptroller is
-    ComptrollerV3Storage,
+    ComptrollerV4Storage,
     ComptrollerInterface,
     ComptrollerErrorReporter,
     Exponential
@@ -555,7 +555,7 @@ contract Comptroller is
         returns (uint256)
     {
         // Check if min borrow exists
-        uint256 minBorrowEth = fuseAdmin.minBorrowEth();
+        uint256 minBorrowEth = !_globalPauseBorrowsOverride ? fuseAdmin.minBorrowEth() : 1e18;
 
         if (minBorrowEth > 0) {
             // Get new underlying borrow balance of account for this cToken
@@ -1242,6 +1242,13 @@ contract Comptroller is
         emit AddedRewardsDistributor(distributor);
 
         return uint256(Error.NO_ERROR);
+    }
+
+    /**
+     * @notice Sets the global pause borrows override
+     */
+    function _setGlobalPauseBorrowsOverride(bool status) external {
+        _globalPauseBorrowsOverride = status;
     }
 
     /**

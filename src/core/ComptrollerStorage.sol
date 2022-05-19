@@ -174,3 +174,7 @@ contract ComptrollerV3Storage is ComptrollerV2Storage {
     /// @dev Whether or not _notEntered has been initialized
     bool internal _notEnteredInitialized;
 }
+
+contract ComptrollerV4Storage is ComptrollerV3Storage {
+    bool public _globalPauseBorrowsOverride;
+}
