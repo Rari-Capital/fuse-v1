@@ -11,11 +11,18 @@
     "prettier": "^2.6.2",
     "prettier-plugin-solidity": "^1.0.0-beta.19",
     "solhint": "^3.3.7",
-    "solhint-plugin-prettier": "^0.0.5"
+    "solhint-plugin-prettier": "^0.0.5",
+    "ts-node": "^10.7.0",
+    "typescript": "^4.6.4"
   },
   "dependencies": {
     "@openzeppelin/contracts-upgradeable": "^3.4.0",
+    "@typechain/hardhat": "^6.0.0",
     "@uniswap/v3-core": "^1.0.1",
-    "@uniswap/v3-periphery": "^1.4.1"
+    "@uniswap/v3-periphery": "^1.4.1",
+    "hardhat": "^2.9.5",
+    "hardhat-gas-reporter": "^1.0.8",
+    "solidity-coverage": "^0.7.21",
+    "toml": "^3.0.0"
   }
 }
