@@ -12,7 +12,7 @@ import { HardhatUserConfig, subtask } from 'hardhat/config';
 import { TASK_COMPILE_SOLIDITY_GET_SOURCE_PATHS } from 'hardhat/builtin-tasks/task-names';
 
 // default values here to avoid failures when running hardhat
-const RINKEBY_RPC = process.env.RINKEBY_RPC || '1'.repeat(32);
+const RINKEBY_RPC_URL = process.env.RINKEBY_RPC || '1'.repeat(32);
 const ETH_RPC_URL = process.env.ETH_RPC_URL;
 const ARBITRUM_RPC_URL = process.env.ARBITRUM_RPC_URL;
 const ETH_PRIVATE_KEY = process.env.ETH_PRIVATE_KEY || '1'.repeat(64);
@@ -64,7 +64,7 @@ export default {
       },
     },
     rinkeby: {
-      url: RINKEBY_RPC,
+      url: RINKEBY_RPC_URL,
       accounts: [ETH_PRIVATE_KEY],
     },
     mainnet: {
