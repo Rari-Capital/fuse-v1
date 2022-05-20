@@ -80,6 +80,8 @@ const main = async () => {
   if (DIFF_HASHES_PATHS.length === 0) {
     logger.info("No changes found, exiting...");
     return;
+  } else {
+    logger.info(`Re-creating ABI and Interfaces for [${DIFF_HASHES_PATHS}]`);
   }
 
   for (const filePath of DIFF_HASHES_PATHS) {
@@ -96,7 +98,8 @@ const main = async () => {
 
     const interfaceOutputPath = `${INTERFACES_DIR}/${filePath
       .split("/src/")
-      .pop()}`;
+      .pop()
+      ?.replace(fileName, `I${fileName}`)}`;
 
     const dirPath = dirname(filePath.split("/src/")[1]);
 
