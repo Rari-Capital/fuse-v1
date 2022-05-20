@@ -27,6 +27,7 @@ const main = async () => {
     "core/CTokenInterfaces.sol",
     "core/ErrorReporter.sol",
     "core/RewardsDistributorStorage.sol",
+    "src/FusePoolDirectory",
     "src/FusePoolLens.sol",
     "src/FusePoolLensSecondary.sol",
     "src/FuseSafeLiquidator.sol",

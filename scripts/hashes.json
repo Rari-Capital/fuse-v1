@@ -43,7 +43,6 @@
   "core/Unitroller.sol": "5de0d300f41079525d6611aa3e90e12b36b05b117bcae66a699dc9d7458c9657",
   "core/WhitePaperInterestRateModel.sol": "87e95fb02eb561faf2a44017c90191ea4f787bfad8fb09f7f8cadb4f7f44287e",
   "FuseFeeDistributor.sol": "ced0a9cd1b4ae00e03578b9a46d70063b6eb64e837eb04b66e69561f99de271a",
-  "FusePoolDirectory.sol": "fcf663db058b2035333a6d791b4b82f89fbd2e33f84ef5277b63408500a51824",
   "liquidators/AlphaHomoraV1BankLiquidator.sol": "4453e5dcaa6f0b42cada0d1d8920142834ac2b01f53847b9c6408a6ab735799f",
   "liquidators/AlphaHomoraV2SafeBoxETHLiquidator.sol": "505868756cbff50b0bb90aaa3252126b0990a4c28ca3e56ad51f7394f802645a",
   "liquidators/AlphaHomoraV2SafeBoxLiquidator.sol": "ca71f1a00b300c15abb3228c564ef55b4f0f4508630a102945a47917a7dc79b0",
