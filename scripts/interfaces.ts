@@ -1,13 +1,13 @@
 // Native
+import { createHash } from "crypto";
 import { readFile, writeFile } from "fs/promises";
-import { mkdirSync } from "fs";
+import { createReadStream, mkdirSync } from "fs";
 import { basename, parse, dirname } from "path";
 
 // Vendor
 import glob from "glob";
 
 // Utilities
-import { createHashFromFile } from "./utilities/createFileHash";
 import { logger } from "./utilities/logger";
 import { spawnProcess } from "./utilities/spawnProcess";
 
@@ -53,8 +53,20 @@ const main = async () => {
   const NEW_HASHES = Object.assign(
     {},
     ...(await Promise.all(
-      FILEPATHS.map((filePath) =>
-        createHashFromFile(filePath.split("/src/").pop() || "")
+      FILEPATHS.map(
+        (filePath) =>
+          new Promise((resolve) => {
+            const hash = createHash("sha256");
+
+            createReadStream(filePath)
+              .on("data", (data) => hash.update(data))
+              .on("end", () =>
+                resolve({
+                  [`${filePath.split("/src/").pop() || ""}`]:
+                    hash.digest("hex"),
+                })
+              );
+          })
       )
     ))
   );
@@ -162,6 +174,8 @@ const main = async () => {
     `${SCRIPTS_DIR}/hashes.json`,
     JSON.stringify(NEW_HASHES, null, 2)
   );
+
+  logger.info(`Succesfully updated hashes with ${DIFF_HASHES}`);
 };
 
 main().catch((error) => {
