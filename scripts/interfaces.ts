@@ -1,12 +1,10 @@
 // Native
-import { createHash } from "crypto";
 import { readFile, writeFile } from "fs/promises";
-import { mkdirSync, createReadStream } from "fs";
+import { mkdirSync } from "fs";
 import { basename, parse, dirname } from "path";
 
 // Vendor
 import glob from "glob";
-import { differenceWith, isEqual } from "lodash";
 
 // Utilities
 import { spawnProcess } from "./utilities/spawnProcess";
