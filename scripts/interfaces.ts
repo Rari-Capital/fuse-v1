@@ -38,6 +38,25 @@ const main = async () => {
   const INTERFACES_DIR = `${PROJECT_ROOT_DIR}/src/test/interfaces`;
   const SCRIPTS_DIR = `${PROJECT_ROOT_DIR}/scripts`;
 
+  // Get path inside of src
+  const trimPath = (filePath: string) => {
+    return filePath.split("/src/").pop();
+  };
+
+  // Create hash of file
+  const createFileHash = (filePath: string) =>
+    new Promise((resolve) => {
+      const hash = createHash("sha256");
+
+      createReadStream(filePath)
+        .on("data", (data) => hash.update(data))
+        .on("end", () =>
+          resolve({
+            [`${trimPath(filePath)}`]: hash.digest("hex"),
+          })
+        );
+    });
+
   const FILEPATHS = glob
     .sync(`${PROJECT_ROOT_DIR}/src/**/*.sol`, {
       nodir: true,
@@ -54,20 +73,7 @@ const main = async () => {
   const NEW_HASHES = Object.assign(
     {},
     ...(await Promise.all(
-      FILEPATHS.map(
-        (filePath) =>
-          new Promise((resolve) => {
-            const hash = createHash("sha256");
-
-            createReadStream(filePath)
-              .on("data", (data) => hash.update(data))
-              .on("end", () =>
-                resolve({
-                  [`${filePath.split("/src/").pop()}`]: hash.digest("hex"),
-                })
-              );
-          })
-      )
+      FILEPATHS.map((filePath) => createFileHash(filePath))
     ))
   );
 
@@ -105,15 +111,14 @@ const main = async () => {
 
     const fileName = parse(basename(filePath)).name;
 
-    const abiOutputPath = `${ABI_DIR}/${filePath
-      .split("/src/")
-      .pop()
-      ?.replace(".sol", ".json")}`;
+    const abiOutputPath = `${ABI_DIR}/${trimPath(filePath)?.replace(
+      ".sol",
+      ".json"
+    )}`;
 
-    const interfaceOutputPath = `${INTERFACES_DIR}/${filePath
-      .split("/src/")
-      .pop()
-      ?.replace(fileName, `I${fileName}`)}`;
+    const interfaceOutputPath = `${INTERFACES_DIR}/${trimPath(
+      filePath
+    )?.replace(fileName, `I${fileName}`)}`;
 
     const dirPath = dirname(filePath.split("/src/")[1]);
 
@@ -130,7 +135,9 @@ const main = async () => {
       })) as string;
 
       if (!abiOutput) {
-        logger.warn(`Failed to generate ABI for ${filePath}, skipping...`);
+        logger.warn(
+          `Failed to generate ABI for [${trimPath(filePath)}], skipping...`
+        );
         continue;
       }
 
@@ -148,7 +155,9 @@ const main = async () => {
 
       if (!rawInterfaceOutput) {
         logger.warn(
-          `Failed to generate interface for ${filePath}, skipping...`
+          `Failed to generate interface for [${trimPath(
+            filePath
+          )}], skipping...`
         );
         continue;
       }
@@ -163,7 +172,9 @@ const main = async () => {
 
       await writeFile(interfaceOutputPath, interfaceOutput);
 
-      logger.info(`Succesfully generated ABI and interface for ${filePath}`);
+      logger.info(
+        `Succesfully generated ABI and interface for [${trimPath(filePath)}]`
+      );
     } catch (error) {
       logger.error(error);
       continue;
@@ -175,7 +186,7 @@ const main = async () => {
     JSON.stringify(NEW_HASHES, null, 2)
   );
 
-  logger.info(`Succesfully updated hashes with ${JSON.stringify(DIFF_HASHES)}`);
+  logger.info(`Succesfully updated hashes with [${DIFF_HASHES_PATHS}]`);
 };
 
 main().catch((error) => {
