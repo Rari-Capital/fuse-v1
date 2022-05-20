@@ -63,8 +63,7 @@ const main = async () => {
               .on("data", (data) => hash.update(data))
               .on("end", () =>
                 resolve({
-                  [`${filePath.split("/src/").pop() || ""}`]:
-                    hash.digest("hex"),
+                  [`${filePath.split("/src/").pop()}`]: hash.digest("hex"),
                 })
               );
           })
