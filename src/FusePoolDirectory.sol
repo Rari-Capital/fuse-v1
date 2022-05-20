@@ -322,13 +322,9 @@ contract FusePoolDirectory is OwnableUpgradeable {
     function setPoolName(uint256 index, string calldata name) external {
         Comptroller _comptroller = Comptroller(pools[index].comptroller);
 
+        // Note: Compiler throws stack to deep if autoformatted with Prettier
         // prettier-ignore
         require(msg.sender == _comptroller.admin() && _comptroller.adminHasRights() || msg.sender == owner());
-
-        // require(
-        //     (msg.sender == _comptroller.admin() &&
-        //         _comptroller.adminHasRights()) || msg.sender == owner()
-        // );
 
         pools[index].name = name;
     }
