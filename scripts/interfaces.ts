@@ -7,8 +7,9 @@ import { basename, parse, dirname } from "path";
 import glob from "glob";
 
 // Utilities
-import { spawnProcess } from "./utilities/spawnProcess";
 import { createHashFromFile } from "./utilities/createFileHash";
+import { logger } from "./utilities/logger";
+import { spawnProcess } from "./utilities/spawnProcess";
 
 // TODO: investigate if there are ways we could generate these from compiled artifacts far more quickly
 // TODO: currently the generator stumbles on subsequent calls whenever an invalid ABI is generated (i.e. FusePoolDirectoryArbitrum.sol:18:51)
@@ -77,7 +78,7 @@ const main = async () => {
     .flat();
 
   if (DIFF_HASHES_PATHS.length === 0) {
-    console.log("No changes found, exiting...");
+    logger.info("No changes found, exiting...");
     return;
   }
 
@@ -107,12 +108,12 @@ const main = async () => {
       const abiOutput = (await spawnProcess(
         `forge inspect ${fileName} abi`
       ).catch((error) => {
-        console.warn(error);
+        logger.warn(error);
         return "";
       })) as string;
 
       if (!abiOutput) {
-        console.warn(`Failed to generate ABI for ${filePath}, skipping...`);
+        logger.warn(`Failed to generate ABI for ${filePath}, skipping...`);
         continue;
       }
 
@@ -124,12 +125,12 @@ const main = async () => {
       const rawInterfaceOutput = (await spawnProcess(
         `cast interface ${abiOutputPath}`
       ).catch((error) => {
-        console.warn(error);
+        logger.warn(error);
         return "";
       })) as string;
 
       if (!rawInterfaceOutput) {
-        console.warn(
+        logger.warn(
           `Failed to generate interface for ${filePath}, skipping...`
         );
         continue;
@@ -145,9 +146,9 @@ const main = async () => {
 
       await writeFile(interfaceOutputPath, interfaceOutput);
 
-      console.log(`Succesfully generated ABI and interface for ${filePath}`);
+      logger.info(`Succesfully generated ABI and interface for ${filePath}`);
     } catch (error) {
-      console.error(error);
+      logger.error(error);
       continue;
     }
   }
