@@ -555,7 +555,7 @@ contract Comptroller is
         returns (uint256)
     {
         // Check if global pause borrow override exists
-        uint256 minBorrowEth = _globalPauseBorrowsOverride ? 1e18: fuseAdmin.minBorrowEth();
+        uint256 minBorrowEth = _globalPauseBorrowOverride ? 1e18: fuseAdmin.minBorrowEth();
 
         if (minBorrowEth > 0) {
             // Get new underlying borrow balance of account for this cToken
@@ -1247,9 +1247,9 @@ contract Comptroller is
     /**
      * @notice Sets the global pause borrows override
      */
-    function _setGlobalPauseBorrowsOverride(bool status) external {
+    function _setGlobalPauseBorrowOverride(bool status) external {
         require(hasAdminRights(), "!admin");
-        _globalPauseBorrowsOverride = status;
+        _globalPauseBorrowOverride = status;
     }
 
     /**

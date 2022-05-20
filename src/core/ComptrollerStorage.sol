@@ -176,5 +176,5 @@ contract ComptrollerV3Storage is ComptrollerV2Storage {
 }
 
 contract ComptrollerV4Storage is ComptrollerV3Storage {
-    bool public _globalPauseBorrowsOverride;
+    bool public _globalPauseBorrowOverride;
 }
