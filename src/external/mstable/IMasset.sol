@@ -31,10 +31,10 @@ interface IMasset is MassetStructs {
         view
         returns (uint256 mintOutput);
 
-    function getMintMultiOutput(address[] calldata _inputs, uint256[] calldata _inputQuantities)
-        external
-        view
-        returns (uint256 mintOutput);
+    function getMintMultiOutput(
+        address[] calldata _inputs,
+        uint256[] calldata _inputQuantities
+    ) external view returns (uint256 mintOutput);
 
     // Swaps
     function swap(
@@ -98,7 +98,9 @@ interface IMasset is MassetStructs {
     function bAssetIndexes(address) external view returns (uint8);
 
     // SavingsManager
-    function collectInterest() external returns (uint256 swapFeesGained, uint256 newSupply);
+    function collectInterest()
+        external
+        returns (uint256 swapFeesGained, uint256 newSupply);
 
     function collectPlatformInterest()
         external
@@ -113,5 +115,8 @@ interface IMasset is MassetStructs {
 
     function setTransferFeesFlag(address _bAsset, bool _flag) external;
 
-    function migrateBassets(address[] calldata _bAssets, address _newIntegration) external;
+    function migrateBassets(
+        address[] calldata _bAssets,
+        address _newIntegration
+    ) external;
 }

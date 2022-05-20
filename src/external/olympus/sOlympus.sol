@@ -3,5 +3,6 @@ pragma solidity 0.6.12;
 
 abstract contract sOlympus {
     address public stakingContract;
-    function index() public view virtual returns (uint);
+
+    function index() public view virtual returns (uint256);
 }
