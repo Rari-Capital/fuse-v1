@@ -13,8 +13,8 @@ import { spawnProcess } from "./utilities/spawnProcess";
 import { createHashFromFile } from "./utilities/createFileHash";
 
 const main = async () => {
-  const ABI = "tabi";
-  const INTERFACES = "tinterfaces";
+  const ABI = "abi";
+  const INTERFACES = "interfaces";
 
   const IGNORE_LIST = [
     // Directories
@@ -22,14 +22,14 @@ const main = async () => {
     "external",
     "interfaces",
     // Files
-    // "chains/arbitrum/FusePoolDirectoryArbitrum.sol",
-    // "core/ComptrollerStorage.sol",
-    // "core/CTokenInterfaces.sol",
-    // "core/ErrorReporter.sol",
-    // "core/RewardsDistributorStorage.sol",
-    // "src/FusePoolLens.sol",
-    // "src/FusePoolLensSecondary.sol",
-    // "src/FuseSafeLiquidator.sol",
+    "chains/arbitrum/FusePoolDirectoryArbitrum.sol",
+    "core/ComptrollerStorage.sol",
+    "core/CTokenInterfaces.sol",
+    "core/ErrorReporter.sol",
+    "core/RewardsDistributorStorage.sol",
+    "src/FusePoolLens.sol",
+    "src/FusePoolLensSecondary.sol",
+    "src/FuseSafeLiquidator.sol",
   ];
 
   const PROJECT_ROOT_DIR = `${__dirname}/..`;
@@ -71,94 +71,97 @@ const main = async () => {
   }, {});
 
   // Filter filepaths down to diff hashes
-  const DIFF_HASHES_PATHS = Object.keys(DIFF_HASHES).map(
-    (item) => console.log(item)
-
-    // Find a match
-  );
-
-  console.log(DIFF_HASHES_PATHS);
+  const DIFF_HASHES_PATHS = Object.keys(DIFF_HASHES)
+    .map((item) =>
+      FILEPATHS.filter((filePath) => filePath.includes(`/${item}`))
+    )
+    .flat();
 
   // TODO: investigate if we can run the generator on just the files that were diffed
   // TODO: investigate if there are ways we could generate these from compiled artifacts far more quickly
   // TODO: currently the generator stumbles on subsequent calls whenever an invalid ABI is generated (i.e. FusePoolDirectoryArbitrum.sol:18:51)
   // TODO: replace so we can parallelize the execution with limitations
 
-  for (const filePath of FILEPATHS) {
+  if (DIFF_HASHES_PATHS.length === 0) {
+    console.log("No changes found, exiting...");
+    return;
+  }
+
+  for (const filePath of DIFF_HASHES_PATHS) {
     if (IGNORE_LIST.map((item) => filePath.includes(item)).includes(true)) {
       continue;
     }
 
-    //   const fileName = parse(basename(filePath)).name;
+    const fileName = parse(basename(filePath)).name;
 
-    //   const abiOutputPath = `${ABI_DIR}/${filePath
-    //     .split("/src/")
-    //     .pop()
-    //     ?.replace(".sol", ".json")}`;
+    const abiOutputPath = `${ABI_DIR}/${filePath
+      .split("/src/")
+      .pop()
+      ?.replace(".sol", ".json")}`;
 
-    //   const interfaceOutputPath = `${INTERFACES_DIR}/${filePath
-    //     .split("/src/")
-    //     .pop()}`;
+    const interfaceOutputPath = `${INTERFACES_DIR}/${filePath
+      .split("/src/")
+      .pop()}`;
 
-    //   const dirPath = dirname(filePath.split("/src/")[1]);
+    const dirPath = dirname(filePath.split("/src/")[1]);
 
-    //   if (!abiOutputPath || !interfaceOutputPath) {
-    //     continue;
-    //   }
+    if (!abiOutputPath || !interfaceOutputPath) {
+      continue;
+    }
 
-    //   try {
-    //     const abiOutput = (await spawnProcess(
-    //       `forge inspect ${fileName} abi`
-    //     ).catch((error) => {
-    //       console.warn(error);
-    //       return "";
-    //     })) as string;
+    try {
+      const abiOutput = (await spawnProcess(
+        `forge inspect ${fileName} abi`
+      ).catch((error) => {
+        console.warn(error);
+        return "";
+      })) as string;
 
-    //     if (!abiOutput) {
-    //       console.warn(`Failed to generate ABI for ${filePath}, skipping...`);
-    //       continue;
-    //     }
+      if (!abiOutput) {
+        console.warn(`Failed to generate ABI for ${filePath}, skipping...`);
+        continue;
+      }
 
-    //     // Write ABI
-    //     mkdirSync(`${ABI_DIR}/${dirPath}`, { recursive: true });
+      // Write ABI
+      mkdirSync(`${ABI_DIR}/${dirPath}`, { recursive: true });
 
-    //     await writeFile(abiOutputPath, abiOutput);
+      await writeFile(abiOutputPath, abiOutput);
 
-    //     const rawInterfaceOutput = (await spawnProcess(
-    //       `cast interface ${abiOutputPath}`
-    //     ).catch((error) => {
-    //       console.warn(error);
-    //       return "";
-    //     })) as string;
+      const rawInterfaceOutput = (await spawnProcess(
+        `cast interface ${abiOutputPath}`
+      ).catch((error) => {
+        console.warn(error);
+        return "";
+      })) as string;
 
-    //     if (!rawInterfaceOutput) {
-    //       console.warn(
-    //         `Failed to generate interface for ${filePath}, skipping...`
-    //       );
-    //       continue;
-    //     }
+      if (!rawInterfaceOutput) {
+        console.warn(
+          `Failed to generate interface for ${filePath}, skipping...`
+        );
+        continue;
+      }
 
-    //     // Write Interface
-    //     mkdirSync(`${INTERFACES_DIR}/${dirPath}`, { recursive: true });
+      // Write Interface
+      mkdirSync(`${INTERFACES_DIR}/${dirPath}`, { recursive: true });
 
-    //     const interfaceOutput = rawInterfaceOutput.replace(
-    //       "interface Interface",
-    //       `interface ${fileName}`
-    //     );
+      const interfaceOutput = rawInterfaceOutput.replace(
+        "interface Interface",
+        `interface ${fileName}`
+      );
 
-    //     await writeFile(interfaceOutputPath, interfaceOutput);
+      await writeFile(interfaceOutputPath, interfaceOutput);
 
-    //     console.log(`Succesfully generated ABI and interface for ${filePath}`);
-    //   } catch (error) {
-    //     console.error(error);
-    //     continue;
-    //   }
+      console.log(`Succesfully generated ABI and interface for ${filePath}`);
+    } catch (error) {
+      console.error(error);
+      continue;
+    }
   }
 
-  // await writeFile(
-  //   `${SCRIPTS_DIR}/hashes.json`,
-  //   JSON.stringify(NEW_HASHES, null, 2)
-  // );
+  await writeFile(
+    `${SCRIPTS_DIR}/hashes.json`,
+    JSON.stringify(NEW_HASHES, null, 2)
+  );
 };
 
 main().catch((error) => {
