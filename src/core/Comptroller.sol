@@ -554,8 +554,8 @@ contract Comptroller is
         external
         returns (uint256)
     {
-        // Check if min borrow exists
-        uint256 minBorrowEth = !_globalPauseBorrowsOverride ? fuseAdmin.minBorrowEth() : 1e18;
+        // Check if global pause borrow override exists
+        uint256 minBorrowEth = _globalPauseBorrowsOverride ? 1e18: fuseAdmin.minBorrowEth();
 
         if (minBorrowEth > 0) {
             // Get new underlying borrow balance of account for this cToken
