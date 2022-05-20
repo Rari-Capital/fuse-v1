@@ -10,7 +10,7 @@ export const createHashFromFile = (filePath: string) =>
       .on("data", (data) => hash.update(data))
       .on("end", () =>
         resolve({
-          [`${filePath.split("/src/").pop()}`]: hash.digest("hex"),
+          [`${}`]: hash.digest("hex"),
         })
       );
   });

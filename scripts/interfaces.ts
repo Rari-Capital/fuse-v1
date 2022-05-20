@@ -53,7 +53,9 @@ const main = async () => {
   const NEW_HASHES = Object.assign(
     {},
     ...(await Promise.all(
-      FILEPATHS.map((filePath) => createHashFromFile(filePath))
+      FILEPATHS.map((filePath) =>
+        createHashFromFile(filePath.split("/src/").pop() || "")
+      )
     ))
   );
 
