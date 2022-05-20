@@ -12,10 +12,11 @@ import { differenceWith, isEqual } from "lodash";
 import { spawnProcess } from "./utilities/spawnProcess";
 import { createHashFromFile } from "./utilities/createFileHash";
 
-const main = async () => {
-  const ABI = "abi";
-  const INTERFACES = "interfaces";
+// TODO: investigate if there are ways we could generate these from compiled artifacts far more quickly
+// TODO: currently the generator stumbles on subsequent calls whenever an invalid ABI is generated (i.e. FusePoolDirectoryArbitrum.sol:18:51)
+// TODO: replace so we can parallelize the execution with limitations
 
+const main = async () => {
   const IGNORE_LIST = [
     // Directories
     "test",
@@ -33,8 +34,8 @@ const main = async () => {
   ];
 
   const PROJECT_ROOT_DIR = `${__dirname}/..`;
-  const ABI_DIR = `${PROJECT_ROOT_DIR}/${ABI}`;
-  const INTERFACES_DIR = `${PROJECT_ROOT_DIR}/src/test/${INTERFACES}`;
+  const ABI_DIR = `${PROJECT_ROOT_DIR}/abi`;
+  const INTERFACES_DIR = `${PROJECT_ROOT_DIR}/src/test/interfaces`;
   const SCRIPTS_DIR = `${PROJECT_ROOT_DIR}/scripts`;
 
   const FILEPATHS = glob
@@ -76,11 +77,6 @@ const main = async () => {
       FILEPATHS.filter((filePath) => filePath.includes(`/${item}`))
     )
     .flat();
-
-  // TODO: investigate if we can run the generator on just the files that were diffed
-  // TODO: investigate if there are ways we could generate these from compiled artifacts far more quickly
-  // TODO: currently the generator stumbles on subsequent calls whenever an invalid ABI is generated (i.e. FusePoolDirectoryArbitrum.sol:18:51)
-  // TODO: replace so we can parallelize the execution with limitations
 
   if (DIFF_HASHES_PATHS.length === 0) {
     console.log("No changes found, exiting...");
