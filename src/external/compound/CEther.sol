@@ -9,5 +9,7 @@ import "./CToken.sol";
  * @author Compound
  */
 interface CEther is CToken {
-    function liquidateBorrow(address borrower, CToken cTokenCollateral) external payable;
+    function liquidateBorrow(address borrower, CToken cTokenCollateral)
+        external
+        payable;
 }

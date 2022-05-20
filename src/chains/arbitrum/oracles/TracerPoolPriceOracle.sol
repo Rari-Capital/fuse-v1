@@ -11,7 +11,7 @@ import "@openzeppelin/contracts-upgradeable/math/SafeMathUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/token/ERC20/ERC20Upgradeable.sol";
 
 /**
- * Tracer Perpetual Pool oracle 
+ * Tracer Perpetual Pool oracle
  * @notice Returns prices for Tracer Pool short and long tokens
  * @dev Implements `PriceOracle` and `BasePriceOracle`.
  * @author Sri Yantra <sriyantra@rari.capital>, David Lucid <david@rari.capital> (https://github.com/davidlucid), raymogg
@@ -30,7 +30,7 @@ contract TracerPoolPriceOracle is PriceOracle, BasePriceOracle {
     /**
      * @dev Constructor to set admin
      */
-    constructor (address _admin) public {
+    constructor(address _admin) public {
         admin = _admin;
     }
 
@@ -51,7 +51,7 @@ contract TracerPoolPriceOracle is PriceOracle, BasePriceOracle {
     /**
      * @dev Modifier that checks if `msg.sender == admin`.
      */
-    modifier onlyAdmin {
+    modifier onlyAdmin() {
         require(msg.sender == admin, "Sender is not the admin.");
         _;
     }
@@ -61,29 +61,54 @@ contract TracerPoolPriceOracle is PriceOracle, BasePriceOracle {
      * @param underlying The underlying token address for which to get the price.
      * @return Price denominated in ETH (scaled by 1e18)
      */
-    function price(address underlying) external override view returns (uint) {
+    function price(address underlying)
+        external
+        view
+        override
+        returns (uint256)
+    {
         return _price(underlying);
     }
 
-    function _price(address underlying) internal view returns (uint) {
+    function _price(address underlying) internal view returns (uint256) {
         // lookup address of perpetual pool
         address pool = tokenToPool[underlying];
         require(pool != address(0), "Pool not found");
 
         ILeveragedPool _pool = ILeveragedPool(pool);
-        address[2] memory tokens =  _pool.poolTokens();
+        address[2] memory tokens = _pool.poolTokens();
         uint256 issuedPoolTokens = ERC20Upgradeable(underlying).totalSupply();
 
         // underlying MUST equal tokens[0] or [1] due to the pool == addr(0) check
         // pool token price = collateral in pool / issued pool tokens
         if (underlying == tokens[0]) {
             // long token
-            uint256 lPrice = _pool.longBalance().mul(10 ** uint256(ERC20Upgradeable(underlying).decimals())).div(issuedPoolTokens);
-            return lPrice.mul(BasePriceOracle(msg.sender).price(poolToSettlementToken[pool])).div(10 ** uint256(ERC20Upgradeable(underlying).decimals()));
+            uint256 lPrice = _pool
+                .longBalance()
+                .mul(10**uint256(ERC20Upgradeable(underlying).decimals()))
+                .div(issuedPoolTokens);
+            return
+                lPrice
+                    .mul(
+                        BasePriceOracle(msg.sender).price(
+                            poolToSettlementToken[pool]
+                        )
+                    )
+                    .div(10**uint256(ERC20Upgradeable(underlying).decimals()));
         } else {
             // short token
-            uint256 sPrice = _pool.shortBalance().mul(10 ** uint256(ERC20Upgradeable(underlying).decimals())).div(issuedPoolTokens);
-            return sPrice.mul(BasePriceOracle(msg.sender).price(poolToSettlementToken[pool])).div(10 ** uint256(ERC20Upgradeable(underlying).decimals()));
+            uint256 sPrice = _pool
+                .shortBalance()
+                .mul(10**uint256(ERC20Upgradeable(underlying).decimals()))
+                .div(issuedPoolTokens);
+            return
+                sPrice
+                    .mul(
+                        BasePriceOracle(msg.sender).price(
+                            poolToSettlementToken[pool]
+                        )
+                    )
+                    .div(10**uint256(ERC20Upgradeable(underlying).decimals()));
         }
     }
 
@@ -92,11 +117,19 @@ contract TracerPoolPriceOracle is PriceOracle, BasePriceOracle {
      * @dev Implements the `PriceOracle` interface for Fuse pools (and Compound v2).
      * @return Price in ETH of the token underlying `cToken`, scaled by `10 ** (36 - underlyingDecimals)`.
      */
-    function getUnderlyingPrice(CToken cToken) external override view returns (uint) {
+    function getUnderlyingPrice(CToken cToken)
+        external
+        view
+        override
+        returns (uint256)
+    {
         address underlying = CErc20(address(cToken)).underlying();
         // Comptroller needs prices to be scaled by 1e(36 - decimals)
         // Since `_price` returns prices scaled by 18 decimals, we must scale them by 1e(36 - 18 - decimals)
-        return _price(underlying).mul(1e18).div(10 ** uint256(ERC20Upgradeable(underlying).decimals()));
+        return
+            _price(underlying).mul(1e18).div(
+                10**uint256(ERC20Upgradeable(underlying).decimals())
+            );
     }
 
     /**
@@ -104,11 +137,11 @@ contract TracerPoolPriceOracle is PriceOracle, BasePriceOracle {
      * @param pool pool address, settlementToken address of settlement token in Bal pool
      */
     function addPool(address pool, address settlementToken) public onlyAdmin {
-        require (settlementToken != address(0), "settlement token needed");
-        
+        require(settlementToken != address(0), "settlement token needed");
+
         ILeveragedPool _pool = ILeveragedPool(pool);
         require(_pool.poolTokens()[0] != address(0), "Pool not valid");
-        address[2] memory tokens =  _pool.poolTokens();
+        address[2] memory tokens = _pool.poolTokens();
 
         // register the short and long token for this pool
         // long token
