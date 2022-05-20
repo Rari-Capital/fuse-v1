@@ -26,7 +26,6 @@ pragma experimental ABIEncoderV2;
  * is not older than the largest safe query window.
  */
 interface IBalancerPriceOracle {
-
     function getPoolId() external view returns (bytes32);
 
     // The three values that can be queried:
@@ -41,7 +40,11 @@ interface IBalancerPriceOracle {
     //   USDC in which BPT is worth $5 will be 5.0, despite the BPT having 18 decimals and USDC 6.
     //
     // - INVARIANT: the value of the Pool's invariant, which serves as a measure of its liquidity.
-    enum Variable { PAIR_PRICE, BPT_PRICE, INVARIANT }
+    enum Variable {
+        PAIR_PRICE,
+        BPT_PRICE,
+        INVARIANT
+    }
 
     /**
      * @dev Returns the time average weighted price corresponding to each of `queries`. Prices are represented as 18

@@ -3,5 +3,6 @@ pragma solidity 0.6.12;
 
 abstract contract OlympusStaking {
     address public OHM;
-    function unstake(uint _amount, bool _trigger) external virtual;
+
+    function unstake(uint256 _amount, bool _trigger) external virtual;
 }
