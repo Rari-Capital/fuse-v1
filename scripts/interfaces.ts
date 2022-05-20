@@ -175,7 +175,7 @@ const main = async () => {
     JSON.stringify(NEW_HASHES, null, 2)
   );
 
-  logger.info(`Succesfully updated hashes with ${DIFF_HASHES}`);
+  logger.info(`Succesfully updated hashes with ${JSON.stringify(DIFF_HASHES)}`);
 };
 
 main().catch((error) => {
