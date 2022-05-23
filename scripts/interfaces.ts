@@ -35,8 +35,8 @@ const main = async () => {
 
   const PROJECT_ROOT_DIR = `${__dirname}/..`;
   const ABI_DIR = `${PROJECT_ROOT_DIR}/abi`;
+  const DATA_DIR = `${PROJECT_ROOT_DIR}/data`;
   const INTERFACES_DIR = `${PROJECT_ROOT_DIR}/src/test/interfaces`;
-  const SCRIPTS_DIR = `${PROJECT_ROOT_DIR}/scripts`;
 
   // Get path inside of src
   const trimPath = (filePath: string) => {
@@ -67,7 +67,7 @@ const main = async () => {
     );
 
   const PREVIOUS_HASHES = JSON.parse(
-    await readFile(`${SCRIPTS_DIR}/hashes.json`, "utf-8")
+    await readFile(`${DATA_DIR}/hashes.json`, "utf-8")
   );
 
   const NEW_HASHES = Object.assign(
@@ -183,7 +183,7 @@ const main = async () => {
   }
 
   await writeFile(
-    `${SCRIPTS_DIR}/hashes.json`,
+    `${DATA_DIR}/hashes.json`,
     JSON.stringify(NEW_HASHES, null, 2)
   );
 
