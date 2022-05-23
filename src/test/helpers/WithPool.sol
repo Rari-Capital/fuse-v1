@@ -1,12 +1,13 @@
-// SPDX-License-Identifier: UNLICENSED
-pragma solidity >=0.4.23;
-
-import "forge-std/Test.sol";
+pragma solidity ^0.8.10;
 
 // Vendor
+import "forge-std/Test.sol";
 import {ERC20} from "solmate/tokens/ERC20.sol";
 import {Auth, Authority} from "solmate/auth/Auth.sol";
 import {MockERC20} from "solmate/test/utils/mocks/MockERC20.sol";
+
+// Helpers
+import {Constants} from "./Constants.sol";
 
 // Interfaces
 import {CErc20} from "../interfaces/core/ICErc20.sol";
@@ -64,8 +65,7 @@ contract WithPool is Test {
                 abi.encode(2343665, 1e18, 1e18)
             )
         );
-        fuseAdmin = FuseFeeDistributor(deployCode(FuseFeeDistributorArtifact));
-        fuseAdmin.initialize(1e16);
+        fuseAdmin = FuseFeeDistributor(Constants.fuseAdminAddress);
         fusePoolDirectory = FusePoolDirectory(
             deployCode(FusePoolDirectoryArtifact)
         );
@@ -87,6 +87,7 @@ contract WithPool is Test {
         newUnitroller.push(address(tempComptroller));
         trueBoolArray.push(true);
         falseBoolArray.push(false);
+        hoax(Constants.multisigAddress);
         fuseAdmin._editComptrollerImplementationWhitelist(
             emptyAddresses,
             newUnitroller,

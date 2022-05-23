@@ -9,6 +9,9 @@ import {FuseFlywheelDynamicRewards} from "fuse-flywheel/rewards/FuseFlywheelDyna
 import {FuseFlywheelLensRouter, CToken as ICToken} from "fuse-flywheel/FuseFlywheelLensRouter.sol";
 import "fuse-flywheel/FuseFlywheelCore.sol";
 
+// Helpers
+import {Constants} from "./helpers/Constants.sol";
+
 // Interfaces
 import {CErc20} from "./interfaces/core/ICErc20.sol";
 import {CToken} from "./interfaces/core/ICToken.sol";
@@ -105,8 +108,7 @@ contract DeployMarketsTest is Test {
                 abi.encode(2343665, 1e18, 1e18)
             )
         );
-        fuseAdmin = FuseFeeDistributor(deployCode(FuseFeeDistributorArtifact));
-        fuseAdmin.initialize(1e16);
+        fuseAdmin = FuseFeeDistributor(Constants.fuseAdminAddress);
         fusePoolDirectory = FusePoolDirectory(
             deployCode(FusePoolDirectoryArtifact)
         );
@@ -130,6 +132,7 @@ contract DeployMarketsTest is Test {
         newUnitroller.push(address(tempComptroller));
         trueBoolArray.push(true);
         falseBoolArray.push(false);
+        hoax(Constants.multisigAddress);
         fuseAdmin._editComptrollerImplementationWhitelist(
             emptyAddresses,
             newUnitroller,
