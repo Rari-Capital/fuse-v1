@@ -7,9 +7,9 @@ import "forge-std/Test.sol";
 import {WithPool} from "./helpers/WithPool.sol";
 
 contract ComptrollerTest is Test, WithPool {
-    address alice = address(1337);
-    address bob = address(1338);
-    uint256 amount = 1 ether;
+    address internal alice = address(1337);
+    address internal bob = address(1338);
+    uint256 internal amount = 1 ether;
 
     function testEnterMarkets() public {
         underlyingToken.mint(alice, amount);

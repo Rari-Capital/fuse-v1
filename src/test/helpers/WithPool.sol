@@ -34,23 +34,23 @@ string constant FusePoolDirectoryArtifact = "./artifacts/FusePoolDirectory.sol/F
 string constant MockPriceOracleArtifact = "./artifacts/MockPriceOracle.sol/MockPriceOracle.json";
 
 contract WithPool is Test {
-    MockERC20 underlyingToken;
-    CErc20 cErc20;
-    CToken cToken;
-    CErc20Delegate cErc20Delegate;
+    MockERC20 internal underlyingToken;
+    CErc20 internal cErc20;
+    CToken internal cToken;
+    CErc20Delegate internal cErc20Delegate;
 
-    Comptroller comptroller;
-    WhitePaperInterestRateModel interestModel;
+    Comptroller internal comptroller;
+    WhitePaperInterestRateModel internal interestModel;
 
-    FuseFeeDistributor fuseAdmin;
-    FusePoolDirectory fusePoolDirectory;
+    FuseFeeDistributor internal fuseAdmin;
+    FusePoolDirectory internal fusePoolDirectory;
 
-    address[] markets;
-    address[] emptyAddresses;
-    address[] newUnitroller;
-    bool[] falseBoolArray;
-    bool[] trueBoolArray;
-    address[] newImplementation;
+    address[] internal markets;
+    address[] internal emptyAddresses;
+    address[] internal newUnitroller;
+    bool[] internal falseBoolArray;
+    bool[] internal trueBoolArray;
+    address[] internal newImplementation;
 
     constructor() {
         setUpBaseContracts();
@@ -93,15 +93,14 @@ contract WithPool is Test {
             newUnitroller,
             trueBoolArray
         );
-        (uint256 index, address comptrollerAddress) = fusePoolDirectory
-            .deployPool(
-                "TestPool",
-                address(tempComptroller),
-                false,
-                0.1e18,
-                1.1e18,
-                address(priceOracle)
-            );
+        (, address comptrollerAddress) = fusePoolDirectory.deployPool(
+            "TestPool",
+            address(tempComptroller),
+            false,
+            0.1e18,
+            1.1e18,
+            address(priceOracle)
+        );
 
         Unitroller(payable(comptrollerAddress))._acceptAdmin();
         comptroller = Comptroller(comptrollerAddress);

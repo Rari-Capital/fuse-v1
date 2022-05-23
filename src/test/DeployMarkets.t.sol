@@ -71,23 +71,23 @@ contract DeployMarketsTest is Test {
     FuseFlywheelCore internal flywheel;
     FuseFlywheelDynamicRewards internal rewards;
 
-    ERC20 marketKey;
+    ERC20 internal marketKey;
 
-    address user = address(this);
+    address internal user = address(this);
 
-    uint256 depositAmount = 1 ether;
+    uint256 internal depositAmount = 1 ether;
 
-    address[] markets;
-    address[] emptyAddresses;
-    address[] newUnitroller;
-    bool[] falseBoolArray;
-    bool[] trueBoolArray;
-    address[] newImplementation;
-    bool[] t;
-    bool[] f;
-    address[] oldCErC20Implementations;
-    address[] newCErc20Implementations;
-    FuseFlywheelCore[] flywheelsToClaim;
+    address[] internal markets;
+    address[] internal emptyAddresses;
+    address[] internal newUnitroller;
+    bool[] internal falseBoolArray;
+    bool[] internal trueBoolArray;
+    address[] internal newImplementation;
+    bool[] internal t;
+    bool[] internal f;
+    address[] internal oldCErC20Implementations;
+    address[] internal newCErc20Implementations;
+    FuseFlywheelCore[] internal flywheelsToClaim;
 
     function setUp() public {
         vm.label(address(fuseAdmin), "fuseAdmin");
@@ -139,15 +139,14 @@ contract DeployMarketsTest is Test {
             trueBoolArray
         );
         vm.startPrank(0xa731585ab05fC9f83555cf9Bff8F58ee94e18F85);
-        (uint256 index, address comptrollerAddress) = fusePoolDirectory
-            .deployPool(
-                "TestPool",
-                address(tempComptroller),
-                false,
-                0.1e18,
-                1.1e18,
-                address(priceOracle)
-            );
+        (, address comptrollerAddress) = fusePoolDirectory.deployPool(
+            "TestPool",
+            address(tempComptroller),
+            false,
+            0.1e18,
+            1.1e18,
+            address(priceOracle)
+        );
 
         Unitroller(payable(comptrollerAddress))._acceptAdmin();
         comptroller = Comptroller(comptrollerAddress);
