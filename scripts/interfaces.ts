@@ -77,6 +77,7 @@ const main = async () => {
     ))
   );
 
+  // Diff between old hash list from file and new hashes
   const DIFF_HASHES = Object.entries({
     ...PREVIOUS_HASHES,
     ...NEW_HASHES,
