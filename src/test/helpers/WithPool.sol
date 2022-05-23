@@ -6,7 +6,7 @@ import {ERC20} from "solmate/tokens/ERC20.sol";
 import {Auth, Authority} from "solmate/auth/Auth.sol";
 import {MockERC20} from "solmate/test/utils/mocks/MockERC20.sol";
 
-// Helpers
+// Test utilities
 import {Constants} from "./Constants.sol";
 
 // Interfaces

@@ -9,7 +9,7 @@ import {FuseFlywheelDynamicRewards} from "fuse-flywheel/rewards/FuseFlywheelDyna
 import {FuseFlywheelLensRouter, CToken as ICToken} from "fuse-flywheel/FuseFlywheelLensRouter.sol";
 import "fuse-flywheel/FuseFlywheelCore.sol";
 
-// Helpers
+// Test utilities
 import {Constants} from "./helpers/Constants.sol";
 
 // Interfaces
