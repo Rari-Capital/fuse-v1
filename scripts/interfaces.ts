@@ -35,7 +35,7 @@ const main = async () => {
 
   const PROJECT_ROOT_DIR = `${__dirname}/..`;
   const ABI_DIR = `${PROJECT_ROOT_DIR}/abi`;
-  const DATA_DIR = `${PROJECT_ROOT_DIR}/data`;
+  const DATA_DIR = `${PROJECT_ROOT_DIR}/scripts/data`;
   const INTERFACES_DIR = `${PROJECT_ROOT_DIR}/src/test/interfaces`;
 
   // Get path inside of src
