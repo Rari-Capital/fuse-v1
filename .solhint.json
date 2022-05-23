@@ -6,6 +6,9 @@
     "avoid-low-level-calls": "off",
     "no-inline-assembly": "off",
     "const-name-snakecase": "off",
-    "constructor-syntax": "error"
+    "reason-string": "off",
+    "constructor-syntax": "error",
+    "var-name-mixedcase": "off",
+    "func-name-mixedcase": "off"
   }
 }
