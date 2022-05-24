@@ -1,6 +1,11 @@
-import * as dotenv from "dotenv";
+// Environment
+import dotenv from "dotenv";
 dotenv.config();
+
+// Native
 import { readFileSync } from "fs";
+
+// Vendor
 import * as toml from "toml";
 import "@nomiclabs/hardhat-waffle";
 import "@nomiclabs/hardhat-ethers";
@@ -11,14 +16,14 @@ import "hardhat-contract-sizer";
 import { HardhatUserConfig, subtask } from "hardhat/config";
 import { TASK_COMPILE_SOLIDITY_GET_SOURCE_PATHS } from "hardhat/builtin-tasks/task-names";
 
-// default values here to avoid failures when running hardhat
+// Default values to avoid failures when running Hardhat
 const RINKEBY_RPC_URL = process.env.RINKEBY_RPC || "1".repeat(32);
 const ETH_RPC_URL = process.env.ETH_RPC_URL;
 const ARBITRUM_RPC_URL = process.env.ARBITRUM_RPC_URL;
 const ETH_PRIVATE_KEY = process.env.ETH_PRIVATE_KEY || "1".repeat(64);
 const SOLC_DEFAULT = "0.8.10";
 
-// try forge config
+// Inherit Foundry config
 let foundry: { default: { solc: string } };
 
 try {
@@ -34,15 +39,27 @@ try {
   };
 }
 
-// prune forge style tests from hardhat paths
+// Filter out .t.sol test files and regular Solidity files in the test directory
 subtask(TASK_COMPILE_SOLIDITY_GET_SOURCE_PATHS).setAction(
   async (_, __, runSuper) => {
     const paths = await runSuper();
-    return paths.filter((p: string) => !p.endsWith(".t.sol"));
+
+    return paths.filter(
+      (p: string) => !p.endsWith(".t.sol") && !p.includes("test")
+    );
   }
 );
 
-export default {
+const config: HardhatUserConfig & {
+  contractSizer: {
+    alphaSort: boolean;
+    disambiguatePaths: boolean;
+    runOnCompile: boolean;
+  };
+  etherscan: {
+    apiKey: string;
+  };
+} = {
   paths: {
     cache: "cache-hardhat",
     sources: "./src",
@@ -120,4 +137,6 @@ export default {
     // API key for Etherscan. https://etherscan.io/
     apiKey: process.env.ETHERSCAN_API_KEY,
   },
-} as HardhatUserConfig;
+};
+
+export default config;
