@@ -1,8 +1,6 @@
 pragma solidity ^0.8.10;
 
-// Vendor
-// Automatically get access to vm, console.log(), console2.log() and many other utilities
-import "forge-std/Test.sol";
+// NOTE: forge-std/Test.sol is automatically imported through FuseFixture
 
 // Interfaces
 import {Comptroller} from "./interfaces/core/IComptroller.sol";
