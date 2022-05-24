@@ -17,11 +17,20 @@ import { HardhatUserConfig, subtask } from "hardhat/config";
 import { TASK_COMPILE_SOLIDITY_GET_SOURCE_PATHS } from "hardhat/builtin-tasks/task-names";
 
 // Default values to avoid failures when running Hardhat
-const RINKEBY_RPC_URL = process.env.RINKEBY_RPC || "1".repeat(32);
+const SOLC_DEFAULT = "0.8.10";
+
 const ETH_RPC_URL = process.env.ETH_RPC_URL;
 const ARBITRUM_RPC_URL = process.env.ARBITRUM_RPC_URL;
-const ETH_PRIVATE_KEY = process.env.ETH_PRIVATE_KEY || "1".repeat(64);
-const SOLC_DEFAULT = "0.8.10";
+const RINKEBY_RPC_URL = process.env.RINKEBY_RPC_URL;
+
+// Configure accounts
+const accounts = process.env.PRIVATE_KEY
+  ? [process.env.PRIVATE_KEY]
+  : {
+      mnemonic:
+        process.env.MNEMONIC ||
+        "test test test test test test test test test test test junk",
+    };
 
 // Inherit Foundry config
 let foundry: { default: { solc: string } };
@@ -61,9 +70,9 @@ const config: HardhatUserConfig & {
   };
 } = {
   paths: {
-    cache: "cache-hardhat",
+    cache: "hh-cache",
     sources: "./src",
-    tests: "./integration",
+    tests: "./test",
   },
   contractSizer: {
     alphaSort: false,
@@ -84,15 +93,15 @@ const config: HardhatUserConfig & {
     },
     rinkeby: {
       url: RINKEBY_RPC_URL,
-      accounts: [ETH_PRIVATE_KEY],
+      accounts,
     },
     mainnet: {
       url: ETH_RPC_URL,
-      accounts: [ETH_PRIVATE_KEY],
+      accounts,
     },
     arbitrum: {
       url: ARBITRUM_RPC_URL,
-      accounts: [ETH_PRIVATE_KEY],
+      accounts,
     },
   },
   solidity: {
