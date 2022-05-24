@@ -65,6 +65,7 @@ xcuserdata/
 
 # Solidity
 /out/
+/artifacts/
 /cache/
 flattened.sol
 
