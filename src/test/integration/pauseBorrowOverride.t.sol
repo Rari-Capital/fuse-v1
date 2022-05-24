@@ -84,7 +84,6 @@ contract PauseBorrowOverride is Test {
         address[] memory ctokens = new address[](1);
         ctokens[0] = address(DAIf);
         pool8Comptroller.enterMarkets(ctokens);
-        vm.warp(block.timestamp + 10);
         require(FEIf.borrow(3000e18) == 0, "borrow failed");
     }
 }
