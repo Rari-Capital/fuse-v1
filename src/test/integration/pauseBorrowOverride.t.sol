@@ -32,7 +32,6 @@ contract PauseBorrowOverride is Test {
         // fuseAdmin
         FuseFeeDistributor fuseAdmin = FuseFeeDistributor(0xa731585ab05fC9f83555cf9Bff8F58ee94e18F85);
     
-        // Call FuseAdmin._editComptrollerImplementationWhitelist
         address[] memory oldImplementations = new address[](2);
         oldImplementations[0] = address(defaultImpl);
         oldImplementations[1] = address(comptrollerImpl);
@@ -45,6 +44,7 @@ contract PauseBorrowOverride is Test {
         statuses[0] = true;
         statuses[1] = true;
 
+        // Call FuseAdmin._editComptrollerImplementationWhitelist
         address fuseAdminOwner = fuseAdmin.owner();
         vm.prank(fuseAdminOwner);
         fuseAdmin._editComptrollerImplementationWhitelist(
@@ -63,6 +63,7 @@ contract PauseBorrowOverride is Test {
         bytes[] memory data = new bytes[](2);
         data[0] = abi.encodeWithSignature("_setPendingImplementation(address)", comptrollerImpl);
         data[1] = abi.encodeWithSignature("_become(address)", address(pool8Unitroller));
+        
         fuseAdmin._callPool(
             targets,
             data
