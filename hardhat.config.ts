@@ -1,7 +1,3 @@
-// Environment
-import dotenv from "dotenv";
-dotenv.config();
-
 // Native
 import { readFileSync } from "fs";
 
@@ -17,48 +13,10 @@ import "hardhat-contract-sizer";
 import { HardhatUserConfig, subtask } from "hardhat/config";
 import { TASK_COMPILE_SOLIDITY_GET_SOURCE_PATHS } from "hardhat/builtin-tasks/task-names";
 
+// Utilities
+import { validateEnvConfig } from "./scripts/utilities/validateConfig";
+
 // Validate values from .env file
-interface EnvConfigStore {
-  FORKING: boolean;
-  FORK_BLOCK: number;
-  SOLC_DEFAULT: string;
-  PRIVATE_KEY: string;
-  MNEMONIC: string;
-  ETH_RPC_URL: string;
-  ARBITRUM_RPC_URL: string;
-  CMC_API_KEY: string;
-  ETHERSCAN_API_KEY: string;
-}
-
-const validateEnvConfig = (): EnvConfigStore => {
-  const configSchema = Joi.object({
-    SOLC_DEFAULT: Joi.string().default("0.8.10"),
-    PRIVATE_KEY: Joi.string(),
-    MNEMONIC: Joi.string(),
-    FORK_BLOCK: Joi.number(),
-    FORKING: Joi.boolean().default(false),
-    ETH_RPC_URL: Joi.string().required(),
-    ARBITRUM_RPC_URL: Joi.string().default(""),
-    CMC_API_KEY: Joi.string().default(""),
-    ETHERSCAN_API_KEY: Joi.string(),
-  });
-
-  const { error, value: validateEnvConfig } = configSchema.validate(
-    dotenv.config().parsed,
-    {
-      allowUnknown: true,
-    }
-  );
-
-  if (error) {
-    throw new Error(`Config validation error: ${error.message}`);
-  }
-
-  return validateEnvConfig;
-};
-
-const envConfig = validateEnvConfig();
-
 const {
   FORKING,
   FORK_BLOCK,
@@ -69,7 +27,19 @@ const {
   ARBITRUM_RPC_URL,
   CMC_API_KEY,
   ETHERSCAN_API_KEY,
-} = envConfig;
+} = validateEnvConfig(
+  Joi.object({
+    SOLC_DEFAULT: Joi.string().default("0.8.10"),
+    PRIVATE_KEY: Joi.string(),
+    MNEMONIC: Joi.string(),
+    FORK_BLOCK: Joi.number(),
+    FORKING: Joi.boolean().default(false),
+    ETH_RPC_URL: Joi.string().required(),
+    ARBITRUM_RPC_URL: Joi.string().default(""),
+    CMC_API_KEY: Joi.string().default(""),
+    ETHERSCAN_API_KEY: Joi.string(),
+  })
+);
 
 // Configure accounts
 const accounts = PRIVATE_KEY
@@ -84,9 +54,7 @@ const accounts = PRIVATE_KEY
 let foundry: { default: { solc: string } };
 
 try {
-  const foundryFile = toml.parse(readFileSync("./foundry.toml").toString());
-
-  console.log(foundryFile);
+  const foundryFile = toml.parse(readFileSync("./foundry.toml", "utf-8"));
 
   foundry = {
     default: {
