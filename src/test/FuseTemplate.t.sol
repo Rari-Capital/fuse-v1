@@ -10,7 +10,7 @@ import {FusePoolDirectory} from "./interfaces/IFusePoolDirectory.sol";
 import {Unitroller} from "./interfaces/core/IUnitroller.sol";
 
 // Mocks
-import {MockPriceOracle} from "./interfaces/oracles/IMockPriceOracle.sol";
+import {MockPriceOracle} from "./interfaces/mocks/IMockPriceOracle.sol";
 
 // Artifacts
 string constant FusePoolDirectoryArtifact = "./artifacts/FusePoolDirectory.sol/FusePoolDirectory.json";
