@@ -5,6 +5,9 @@ pragma solidity 0.6.12;
  * @title ISavingsContractV2
  */
 interface ISavingsContractV2 {
-    function redeemCredits(uint256 _amount) external returns (uint256 underlyingReturned); // V2
+    function redeemCredits(uint256 _amount)
+        external
+        returns (uint256 underlyingReturned); // V2
+
     function exchangeRate() external view returns (uint256); // V1 & V2
 }

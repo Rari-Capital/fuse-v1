@@ -16,9 +16,12 @@ pragma solidity ^0.6.12;
 pragma experimental ABIEncoderV2;
 
 interface IBalancerV2Vault {
-    function getPoolTokens(bytes32 poolId) external view returns (
+    function getPoolTokens(bytes32 poolId)
+        external
+        view
+        returns (
             address[] memory tokens,
             uint256[] memory balances,
             uint256 lastChangeBlock
-    );
+        );
 }

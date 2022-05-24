@@ -2,6 +2,7 @@
 pragma solidity 0.6.12;
 
 interface IRiseTokenVault {
-  function getNAV(address token) external view returns (uint256);
-  function removeSupply(uint256 amount) external;
+    function getNAV(address token) external view returns (uint256);
+
+    function removeSupply(uint256 amount) external;
 }
