@@ -20,17 +20,20 @@ string constant FusePoolDirectoryArtifact = "./artifacts/FusePoolDirectory.sol/F
 string constant MockPriceOracleArtifact = "./artifacts/MockPriceOracle.sol/MockPriceOracle.json";
 
 abstract contract FuseFixture is Test {
+    FuseFeeDistributor internal fuseAdmin;
+
     function setUp() public virtual {
         vm.label(Constants.fuseAdminAddress, "fuseAdmin");
         vm.label(Constants.fusePoolDirectoryAddress, "fusePoolDirectory");
         vm.label(Constants.comptrollerAddress, "comptroller");
         vm.label(Constants.multisigAddress, "multisig");
+
+        fuseAdmin = FuseFeeDistributor(Constants.fuseAdminAddress);
     }
 }
 
 contract FuseTemplateTest is FuseFixture {
     Comptroller internal comptroller;
-    FuseFeeDistributor internal fuseAdmin;
     FusePoolDirectory internal fusePoolDirectory;
 
     address[] internal emptyAddresses;
@@ -43,8 +46,6 @@ contract FuseTemplateTest is FuseFixture {
         MockPriceOracle priceOracle = MockPriceOracle(
             deployCode(MockPriceOracleArtifact, abi.encode(10))
         );
-
-        fuseAdmin = FuseFeeDistributor(Constants.fuseAdminAddress);
 
         fusePoolDirectory = FusePoolDirectory(
             deployCode(FusePoolDirectoryArtifact)
