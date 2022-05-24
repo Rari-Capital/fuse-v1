@@ -1,6 +1,7 @@
 pragma solidity ^0.8.10;
 
 // Vendor
+// Automatically get access to vm, console.log(), console2.log() and many other utilities
 import "forge-std/Test.sol";
 
 // Interfaces
