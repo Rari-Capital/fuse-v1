@@ -90,14 +90,15 @@ contract MockPriceOracle is PriceOracle, BasePriceOracle {
         address underlying = CErc20(address(cToken)).underlying();
 
         // Get price
-        return 1e18;
-        // uint256 chainlinkPrice = _price(underlying);
+        uint256 chainlinkPrice = _price(underlying);
 
-        // // Format and return price
-        // uint256 underlyingDecimals = uint256(ERC20Upgradeable(underlying).decimals());
-        // return
-        //   underlyingDecimals <= 18
-        //     ? uint256(chainlinkPrice) * (10**(18 - underlyingDecimals))
-        //     : uint256(chainlinkPrice) / (10**(underlyingDecimals - 18));
+        // Format and return price
+        uint256 underlyingDecimals = uint256(
+            ERC20Upgradeable(underlying).decimals()
+        );
+        return
+            underlyingDecimals <= 18
+                ? uint256(chainlinkPrice) * (10**(18 - underlyingDecimals))
+                : uint256(chainlinkPrice) / (10**(underlyingDecimals - 18));
     }
 }
