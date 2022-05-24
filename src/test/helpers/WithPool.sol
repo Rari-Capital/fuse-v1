@@ -58,11 +58,13 @@ contract WithPool is Test {
     }
 
     function setUpBaseContracts() public {
+        vm.startPrank(Constants.multisigAddress);
+
         underlyingToken = new MockERC20("UnderlyingToken", "UT", 18);
         interestModel = WhitePaperInterestRateModel(
             deployCode(
                 WhitePaperInterestRateModelArtifact,
-                abi.encode(2343665, 1e18, 1e18)
+                abi.encode(1e18, 1e18)
             )
         );
         fuseAdmin = FuseFeeDistributor(Constants.fuseAdminAddress);
@@ -71,28 +73,32 @@ contract WithPool is Test {
         );
         fusePoolDirectory.initialize(false, emptyAddresses);
         cErc20Delegate = CErc20Delegate(deployCode(CErc20DelegateArtifact));
+
+        vm.stopPrank();
     }
 
     function setUpPoolAndMarket() public {
+        vm.startPrank(Constants.multisigAddress);
+
         MockPriceOracle priceOracle = MockPriceOracle(
             deployCode(MockPriceOracleArtifact, abi.encode(10))
         );
         emptyAddresses.push(address(0));
         Comptroller tempComptroller = Comptroller(
-            deployCode(
-                ComptrollerArtifact,
-                abi.encode(payable(address(fuseAdmin)))
-            )
+            deployCode(ComptrollerArtifact)
         );
         newUnitroller.push(address(tempComptroller));
         trueBoolArray.push(true);
         falseBoolArray.push(false);
-        hoax(Constants.multisigAddress);
         fuseAdmin._editComptrollerImplementationWhitelist(
             emptyAddresses,
             newUnitroller,
             trueBoolArray
         );
+
+        vm.stopPrank();
+        vm.startPrank(Constants.fuseAdminAddress);
+
         (, address comptrollerAddress) = fusePoolDirectory.deployPool(
             "TestPool",
             address(tempComptroller),
@@ -134,5 +140,7 @@ contract WithPool is Test {
         cErc20 = CErc20(address(allMarkets[allMarkets.length - 1]));
         cToken = CToken(address(cErc20));
         markets = [address(cErc20)];
+
+        vm.stopPrank();
     }
 }

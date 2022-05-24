@@ -90,22 +90,14 @@ contract DeployMarketsTest is Test {
     FuseFlywheelCore[] internal flywheelsToClaim;
 
     function setUp() public {
-        vm.label(address(fuseAdmin), "fuseAdmin");
-        vm.label(address(fusePoolDirectory), "fusePoolDirectory");
+        vm.startPrank(Constants.fuseAdminAddress);
 
-        setUpBaseContracts();
-        setUpPool();
-        setUpWhiteList();
-        vm.roll(1);
-    }
-
-    function setUpBaseContracts() public {
         underlyingToken = new MockERC20("UnderlyingToken", "UT", 18);
         rewardToken = new MockERC20("RewardToken", "RT", 18);
         interestModel = WhitePaperInterestRateModel(
             deployCode(
                 WhitePaperInterestRateModelArtifact,
-                abi.encode(2343665, 1e18, 1e18)
+                abi.encode(1e18, 1e18)
             )
         );
         fuseAdmin = FuseFeeDistributor(Constants.fuseAdminAddress);
@@ -113,9 +105,7 @@ contract DeployMarketsTest is Test {
             deployCode(FusePoolDirectoryArtifact)
         );
         fusePoolDirectory.initialize(false, emptyAddresses);
-    }
 
-    function setUpPool() public {
         underlyingToken.mint(address(this), 100e18);
 
         MockPriceOracle priceOracle = MockPriceOracle(
@@ -132,13 +122,19 @@ contract DeployMarketsTest is Test {
         newUnitroller.push(address(tempComptroller));
         trueBoolArray.push(true);
         falseBoolArray.push(false);
-        hoax(Constants.multisigAddress);
+
+        vm.stopPrank();
+        vm.startPrank(Constants.multisigAddress);
+
         fuseAdmin._editComptrollerImplementationWhitelist(
             emptyAddresses,
             newUnitroller,
             trueBoolArray
         );
-        vm.startPrank(0xa731585ab05fC9f83555cf9Bff8F58ee94e18F85);
+
+        vm.stopPrank();
+        vm.startPrank(Constants.fuseAdminAddress);
+
         (, address comptrollerAddress) = fusePoolDirectory.deployPool(
             "TestPool",
             address(tempComptroller),
@@ -150,10 +146,7 @@ contract DeployMarketsTest is Test {
 
         Unitroller(payable(comptrollerAddress))._acceptAdmin();
         comptroller = Comptroller(comptrollerAddress);
-        vm.stopPrank();
-    }
 
-    function setUpWhiteList() public {
         cErc20PluginDelegate = CErc20PluginDelegate(
             deployCode(CErc20PluginDelegateArtifact)
         );
@@ -189,6 +182,8 @@ contract DeployMarketsTest is Test {
             f,
             t
         );
+
+        vm.stopPrank();
     }
 
     function testDeployCErc20Delegate() public {
