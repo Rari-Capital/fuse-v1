@@ -6,7 +6,8 @@ dotenv.config();
 import { readFileSync } from "fs";
 
 // Vendor
-import * as toml from "toml";
+import Joi from "joi";
+import toml from "toml";
 import "@nomiclabs/hardhat-waffle";
 import "@nomiclabs/hardhat-ethers";
 import "@nomiclabs/hardhat-etherscan";
@@ -16,19 +17,66 @@ import "hardhat-contract-sizer";
 import { HardhatUserConfig, subtask } from "hardhat/config";
 import { TASK_COMPILE_SOLIDITY_GET_SOURCE_PATHS } from "hardhat/builtin-tasks/task-names";
 
-// Default values to avoid failures when running Hardhat
-const SOLC_DEFAULT = "0.8.10";
+// Validate values from .env file
+interface EnvConfigStore {
+  FORKING: boolean;
+  FORK_BLOCK: number;
+  SOLC_DEFAULT: string;
+  PRIVATE_KEY: string;
+  MNEMONIC: string;
+  ETH_RPC_URL: string;
+  ARBITRUM_RPC_URL: string;
+  CMC_API_KEY: string;
+  ETHERSCAN_API_KEY: string;
+}
 
-const ETH_RPC_URL = process.env.ETH_RPC_URL;
-const ARBITRUM_RPC_URL = process.env.ARBITRUM_RPC_URL;
-const RINKEBY_RPC_URL = process.env.RINKEBY_RPC_URL;
+const validateEnvConfig = (): EnvConfigStore => {
+  const configSchema = Joi.object({
+    SOLC_DEFAULT: Joi.string().default("0.8.10"),
+    PRIVATE_KEY: Joi.string(),
+    MNEMONIC: Joi.string(),
+    FORK_BLOCK: Joi.number(),
+    FORKING: Joi.boolean().default(false),
+    ETH_RPC_URL: Joi.string().required(),
+    ARBITRUM_RPC_URL: Joi.string().default(""),
+    CMC_API_KEY: Joi.string().default(""),
+    ETHERSCAN_API_KEY: Joi.string(),
+  });
+
+  const { error, value: validateEnvConfig } = configSchema.validate(
+    dotenv.config().parsed,
+    {
+      allowUnknown: true,
+    }
+  );
+
+  if (error) {
+    throw new Error(`Config validation error: ${error.message}`);
+  }
+
+  return validateEnvConfig;
+};
+
+const envConfig = validateEnvConfig();
+
+const {
+  FORKING,
+  FORK_BLOCK,
+  SOLC_DEFAULT,
+  PRIVATE_KEY,
+  MNEMONIC,
+  ETH_RPC_URL,
+  ARBITRUM_RPC_URL,
+  CMC_API_KEY,
+  ETHERSCAN_API_KEY,
+} = envConfig;
 
 // Configure accounts
-const accounts = process.env.PRIVATE_KEY
-  ? [process.env.PRIVATE_KEY]
+const accounts = PRIVATE_KEY
+  ? [PRIVATE_KEY]
   : {
       mnemonic:
-        process.env.MNEMONIC ||
+        MNEMONIC ||
         "test test test test test test test test test test test junk",
     };
 
@@ -36,10 +84,15 @@ const accounts = process.env.PRIVATE_KEY
 let foundry: { default: { solc: string } };
 
 try {
-  foundry = toml.parse(readFileSync("./foundry.toml").toString());
-  foundry.default.solc = foundry.default["solc-version"]
-    ? foundry.default["solc-version"]
-    : SOLC_DEFAULT;
+  const foundryFile = toml.parse(readFileSync("./foundry.toml").toString());
+
+  console.log(foundryFile);
+
+  foundry = {
+    default: {
+      solc: foundryFile.default["solc-version"] || SOLC_DEFAULT,
+    },
+  };
 } catch (error) {
   foundry = {
     default: {
@@ -86,14 +139,10 @@ const config: HardhatUserConfig & {
       allowUnlimitedContractSize: false,
       chainId: 1337,
       forking: {
-        blockNumber: Number(process.env.FORK_BLOCK),
-        enabled: process.env.FORKING === "true",
+        blockNumber: Number(FORK_BLOCK),
+        enabled: FORKING === true,
         url: ETH_RPC_URL,
       },
-    },
-    rinkeby: {
-      url: RINKEBY_RPC_URL,
-      accounts,
     },
     mainnet: {
       url: ETH_RPC_URL,
@@ -140,11 +189,11 @@ const config: HardhatUserConfig & {
     gasPrice: 77,
     excludeContracts: ["src/test"],
     // API key for CoinMarketCap. https://pro.coinmarketcap.com/signup
-    coinmarketcap: process.env.CMC_KEY ?? "",
+    coinmarketcap: CMC_API_KEY,
   },
   etherscan: {
     // API key for Etherscan. https://etherscan.io/
-    apiKey: process.env.ETHERSCAN_API_KEY,
+    apiKey: ETHERSCAN_API_KEY,
   },
 };
 
