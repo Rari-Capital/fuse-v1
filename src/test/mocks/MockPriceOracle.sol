@@ -3,11 +3,11 @@ pragma solidity 0.6.12;
 
 import "@openzeppelin/contracts-upgradeable/token/ERC20/ERC20Upgradeable.sol";
 
-import "../external/compound/PriceOracle.sol";
-import "../external/compound/CToken.sol";
-import "../external/compound/CErc20.sol";
+import "../../external/compound/PriceOracle.sol";
+import "../../external/compound/CToken.sol";
+import "../../external/compound/CErc20.sol";
 
-import "./BasePriceOracle.sol";
+import "../../oracles/BasePriceOracle.sol";
 
 /**
  * @title MockPriceOracle
