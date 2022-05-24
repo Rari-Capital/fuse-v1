@@ -3,9 +3,6 @@ pragma solidity ^0.8.10;
 // Vendor
 import "forge-std/Test.sol";
 
-// Test utilities
-import {Constants} from "./helpers/Constants.sol";
-
 // Interfaces
 import {Comptroller} from "./interfaces/core/IComptroller.sol";
 import {FuseFeeDistributor} from "./interfaces/IFuseFeeDistributor.sol";
@@ -20,18 +17,7 @@ string constant FusePoolDirectoryArtifact = "./artifacts/FusePoolDirectory.sol/F
 string constant MockPriceOracleArtifact = "./artifacts/MockPriceOracle.sol/MockPriceOracle.json";
 
 // Fixtures
-abstract contract FuseFixture is Test {
-    FuseFeeDistributor internal fuseAdmin;
-
-    function setUp() public virtual {
-        vm.label(Constants.fuseAdminAddress, "fuseAdmin");
-        vm.label(Constants.fusePoolDirectoryAddress, "fusePoolDirectory");
-        vm.label(Constants.comptrollerAddress, "comptroller");
-        vm.label(Constants.multisigAddress, "multisig");
-
-        fuseAdmin = FuseFeeDistributor(Constants.fuseAdminAddress);
-    }
-}
+import {FuseFixture} from "./fixtures/FuseFixture.sol";
 
 contract FuseTemplateTest is FuseFixture {
     Comptroller internal comptroller;
@@ -42,7 +28,7 @@ contract FuseTemplateTest is FuseFixture {
     function setUp() public virtual override {
         super.setUp();
 
-        vm.startPrank(Constants.fuseAdminAddress);
+        vm.startPrank(fuseAdminAddress);
 
         MockPriceOracle priceOracle = MockPriceOracle(
             deployCode(MockPriceOracleArtifact, abi.encode(10))
@@ -56,7 +42,7 @@ contract FuseTemplateTest is FuseFixture {
 
         (, address unitrollerAddress) = fusePoolDirectory.deployPool(
             "TestPool",
-            Constants.comptrollerAddress,
+            comptrollerAddress,
             false,
             0.1e18,
             1.1e18,
