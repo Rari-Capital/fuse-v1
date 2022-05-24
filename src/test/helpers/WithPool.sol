@@ -53,11 +53,6 @@ contract WithPool is Test {
     address[] internal newImplementation;
 
     constructor() {
-        setUpBaseContracts();
-        setUpPoolAndMarket();
-    }
-
-    function setUpBaseContracts() public {
         vm.startPrank(Constants.multisigAddress);
 
         underlyingToken = new MockERC20("UnderlyingToken", "UT", 18);
@@ -75,9 +70,7 @@ contract WithPool is Test {
         cErc20Delegate = CErc20Delegate(deployCode(CErc20DelegateArtifact));
 
         vm.stopPrank();
-    }
 
-    function setUpPoolAndMarket() public {
         vm.startPrank(Constants.multisigAddress);
 
         MockPriceOracle priceOracle = MockPriceOracle(
