@@ -8,7 +8,7 @@ import "forge-std/Test.sol";
 // Interfaces
 import {FuseFeeDistributor} from "../interfaces/IFuseFeeDistributor.sol";
 
-abstract contract FuseFixture is Test {
+abstract contract GeneralFixture is Test {
     address public constant fuseAdminAddress =
         address(0xa731585ab05fC9f83555cf9Bff8F58ee94e18F85);
 

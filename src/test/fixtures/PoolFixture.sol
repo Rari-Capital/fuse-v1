@@ -6,9 +6,6 @@ import {ERC20} from "solmate/tokens/ERC20.sol";
 import {Auth, Authority} from "solmate/auth/Auth.sol";
 import {MockERC20} from "solmate/test/utils/mocks/MockERC20.sol";
 
-// Test utilities
-import {Constants} from "./Constants.sol";
-
 // Interfaces
 import {CErc20} from "../interfaces/core/ICErc20.sol";
 import {CToken} from "../interfaces/core/ICToken.sol";
@@ -16,9 +13,6 @@ import {WhitePaperInterestRateModel} from "../interfaces/core/IWhitePaperInteres
 import {Unitroller} from "../interfaces/core/IUnitroller.sol";
 import {Comptroller} from "../interfaces/core/IComptroller.sol";
 import {CErc20Delegate} from "../interfaces/core/ICErc20Delegate.sol";
-import {CErc20Delegator} from "../interfaces/core/ICErc20Delegator.sol";
-import {RewardsDistributorDelegate} from "../interfaces/core/IRewardsDistributorDelegate.sol";
-import {RewardsDistributorDelegator} from "../interfaces/core/IRewardsDistributorDelegator.sol";
 import {ComptrollerInterface} from "../interfaces/core/IComptrollerInterface.sol";
 import {InterestRateModel} from "../interfaces/core/IInterestRateModel.sol";
 import {FuseFeeDistributor} from "../interfaces/IFuseFeeDistributor.sol";
@@ -33,7 +27,10 @@ string constant FuseFeeDistributorArtifact = "./artifacts/FuseFeeDistributor.sol
 string constant FusePoolDirectoryArtifact = "./artifacts/FusePoolDirectory.sol/FusePoolDirectory.json";
 string constant MockPriceOracleArtifact = "./artifacts/MockPriceOracle.sol/MockPriceOracle.json";
 
-contract WithPool is Test {
+// Fixtures
+import {GeneralFixture} from "./GeneralFixture.sol";
+
+contract PoolFixture is GeneralFixture {
     MockERC20 internal underlyingToken;
     CErc20 internal cErc20;
     CToken internal cToken;
@@ -42,7 +39,6 @@ contract WithPool is Test {
     Comptroller internal comptroller;
     WhitePaperInterestRateModel internal interestModel;
 
-    FuseFeeDistributor internal fuseAdmin;
     FusePoolDirectory internal fusePoolDirectory;
 
     address[] internal markets;
@@ -52,8 +48,8 @@ contract WithPool is Test {
     bool[] internal trueBoolArray;
     address[] internal newImplementation;
 
-    constructor() {
-        vm.startPrank(Constants.multisigAddress);
+    function setUp() public virtual override {
+        super.setUp();
 
         underlyingToken = new MockERC20("UnderlyingToken", "UT", 18);
         interestModel = WhitePaperInterestRateModel(
@@ -62,16 +58,13 @@ contract WithPool is Test {
                 abi.encode(1e18, 1e18)
             )
         );
-        fuseAdmin = FuseFeeDistributor(Constants.fuseAdminAddress);
-        fusePoolDirectory = FusePoolDirectory(
-            deployCode(FusePoolDirectoryArtifact)
-        );
-        fusePoolDirectory.initialize(false, emptyAddresses);
+        fusePoolDirectory = FusePoolDirectory(fusePoolDirectoryAddress);
+
         cErc20Delegate = CErc20Delegate(deployCode(CErc20DelegateArtifact));
 
         vm.stopPrank();
 
-        vm.startPrank(Constants.multisigAddress);
+        vm.startPrank(multisigAddress);
 
         MockPriceOracle priceOracle = MockPriceOracle(
             deployCode(MockPriceOracleArtifact, abi.encode(10))
@@ -90,9 +83,9 @@ contract WithPool is Test {
         );
 
         vm.stopPrank();
-        vm.startPrank(Constants.fuseAdminAddress);
+        vm.startPrank(fuseAdminAddress);
 
-        (, address comptrollerAddress) = fusePoolDirectory.deployPool(
+        (, address unitrollerAddress) = fusePoolDirectory.deployPool(
             "TestPool",
             address(tempComptroller),
             false,
@@ -101,8 +94,8 @@ contract WithPool is Test {
             address(priceOracle)
         );
 
-        Unitroller(payable(comptrollerAddress))._acceptAdmin();
-        comptroller = Comptroller(comptrollerAddress);
+        Unitroller(payable(unitrollerAddress))._acceptAdmin();
+        comptroller = Comptroller(unitrollerAddress);
 
         newImplementation.push(address(cErc20Delegate));
         fuseAdmin._editCErc20DelegateWhitelist(
@@ -117,7 +110,6 @@ contract WithPool is Test {
             abi.encode(
                 address(underlyingToken),
                 ComptrollerInterface(comptrollerAddress),
-                payable(address(fuseAdmin)),
                 InterestRateModel(address(interestModel)),
                 "CUnderlyingToken",
                 "CUT",
@@ -133,7 +125,5 @@ contract WithPool is Test {
         cErc20 = CErc20(address(allMarkets[allMarkets.length - 1]));
         cToken = CToken(address(cErc20));
         markets = [address(cErc20)];
-
-        vm.stopPrank();
     }
 }

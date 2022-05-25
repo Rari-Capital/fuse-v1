@@ -1,6 +1,6 @@
 pragma solidity ^0.8.10;
 
-// NOTE: forge-std/Test.sol is automatically imported through FuseFixture
+// NOTE: forge-std/Test.sol is automatically imported through GeneralFixture
 
 // Interfaces
 import {Comptroller} from "./interfaces/core/IComptroller.sol";
@@ -16,9 +16,9 @@ string constant FusePoolDirectoryArtifact = "./artifacts/FusePoolDirectory.sol/F
 string constant MockPriceOracleArtifact = "./artifacts/MockPriceOracle.sol/MockPriceOracle.json";
 
 // Fixtures
-import {FuseFixture} from "./fixtures/FuseFixture.sol";
+import {GeneralFixture} from "./fixtures/GeneralFixture.sol";
 
-contract FuseTemplateTest is FuseFixture {
+contract FuseTemplateTest is GeneralFixture {
     Comptroller internal comptroller;
     FusePoolDirectory internal fusePoolDirectory;
 
@@ -33,11 +33,7 @@ contract FuseTemplateTest is FuseFixture {
             deployCode(MockPriceOracleArtifact, abi.encode(10))
         );
 
-        fusePoolDirectory = FusePoolDirectory(
-            deployCode(FusePoolDirectoryArtifact)
-        );
-
-        fusePoolDirectory.initialize(false, emptyAddresses);
+        fusePoolDirectory = FusePoolDirectory(fusePoolDirectoryAddress);
 
         (, address unitrollerAddress) = fusePoolDirectory.deployPool(
             "TestPool",
