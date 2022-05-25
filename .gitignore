@@ -79,6 +79,3 @@ flattened.sol
 
 # Environment
 .env
-
-# Directories
-/generated/
