@@ -44,6 +44,17 @@ subtask(TASK_COMPILE_SOLIDITY_GET_SOURCE_PATHS).setAction(
   }
 );
 
+// Accounts
+const accounts = [PRIVATE_KEY];
+
+// Network settings
+const settings = {
+  optimizer: {
+    enabled: true,
+    runs: 200,
+  },
+};
+
 const config: HardhatUserConfig & {
   contractSizer: {
     alphaSort: boolean;
@@ -66,7 +77,6 @@ const config: HardhatUserConfig & {
   },
   defaultNetwork: "hardhat",
   networks: {
-    localhost: {},
     hardhat: {
       allowUnlimitedContractSize: false,
       chainId: 1337,
@@ -78,41 +88,26 @@ const config: HardhatUserConfig & {
     },
     mainnet: {
       url: ETH_RPC_URL,
-      accounts: [PRIVATE_KEY],
+      accounts,
     },
     arbitrum: {
       url: ARBITRUM_RPC_URL,
-      accounts: [PRIVATE_KEY],
+      accounts,
     },
   },
   solidity: {
     compilers: [
       {
         version: "0.5.17",
-        settings: {
-          optimizer: {
-            enabled: true,
-            runs: 200,
-          },
-        },
+        settings,
       },
       {
         version: "0.6.12",
-        settings: {
-          optimizer: {
-            enabled: true,
-            runs: 200,
-          },
-        },
+        settings,
       },
       {
         version: "0.8.10",
-        settings: {
-          optimizer: {
-            enabled: true,
-            runs: 200,
-          },
-        },
+        settings,
       },
     ],
   },
