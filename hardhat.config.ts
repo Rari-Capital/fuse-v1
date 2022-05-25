@@ -25,10 +25,10 @@ const {
   Joi.object({
     PRIVATE_KEY: Joi.string().default("1".repeat(64)),
     FORK_BLOCK: Joi.number(),
-    FORKING: Joi.boolean().default(false),
-    ETH_RPC_URL: Joi.string().required(),
+    FORKING: Joi.boolean(),
+    ETH_RPC_URL: Joi.string().default(""),
     ARBITRUM_RPC_URL: Joi.string().default(""),
-    CMC_API_KEY: Joi.string().default(""),
+    CMC_API_KEY: Joi.string(),
     ETHERSCAN_API_KEY: Joi.string(),
   })
 );
