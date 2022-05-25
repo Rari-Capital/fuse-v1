@@ -7,5 +7,6 @@ import "@openzeppelin/contracts-upgradeable/token/ERC20/IERC20Upgradeable.sol";
 // modified by BoringCrypto for DictatorDAO
 interface sSpellV1 is IERC20Upgradeable {
     function token() external view returns (IERC20Upgradeable);
+
     function burn(address to, uint256 shares) external returns (bool);
 }

@@ -10,5 +10,10 @@ import "./CToken.sol";
  */
 interface CErc20 is CToken {
     function underlying() external view returns (address);
-    function liquidateBorrow(address borrower, uint repayAmount, CToken cTokenCollateral) external returns (uint);
+
+    function liquidateBorrow(
+        address borrower,
+        uint256 repayAmount,
+        CToken cTokenCollateral
+    ) external returns (uint256);
 }
