@@ -1,11 +1,7 @@
 pragma solidity ^0.8.10;
 
 // Vendor
-import "forge-std/Test.sol";
 import {MockERC20} from "solmate/test/utils/mocks/MockERC20.sol";
-
-// Test utilities
-import {Constants} from "./helpers/Constants.sol";
 
 // Interfaces
 import {CErc20} from "./interfaces/core/ICErc20.sol";
@@ -17,46 +13,60 @@ import {FusePoolDirectory} from "./interfaces/IFusePoolDirectory.sol";
 import {Unitroller} from "./interfaces/core/IUnitroller.sol";
 import {InterestRateModel} from "./interfaces/core/IInterestRateModel.sol";
 import {WhitePaperInterestRateModel} from "./interfaces/core/IWhitePaperInterestRateModel.sol";
-import {MockPriceOracle} from "./interfaces/oracles/IMockPriceOracle.sol";
+
+// Mocks
+import {MockPriceOracle} from "./interfaces/mocks/IMockPriceOracle.sol";
 
 // Artifacts
+string constant FusePoolDirectoryArtifact = "./artifacts/FusePoolDirectory.sol/FusePoolDirectory.json";
+string constant MockPriceOracleArtifact = "./artifacts/MockPriceOracle.sol/MockPriceOracle.json";
 string constant ComptrollerArtifact = "./artifacts/Comptroller.sol/Comptroller.json";
 string constant CErc20DelegateArtifact = "./artifacts/CErc20Delegate.sol/CErc20Delegate.json";
-string constant MockPriceOracleArtifact = "./artifacts/MockPriceOracle.sol/MockPriceOracle.json";
 string constant WhitePaperInterestRateModelArtifact = "./artifacts/WhitePaperInterestRateModel.sol/WhitePaperInterestRateModel.json";
 
-contract PoolTest is Test {
+// Fixtures
+import {FuseFixture} from "./fixtures/FuseFixture.sol";
+
+contract FuseTemplateTest is FuseFixture {
     MockERC20 internal underlyingToken;
     CErc20 internal cErc20;
     CToken internal cToken;
     CErc20Delegate internal cErc20Delegate;
+    WhitePaperInterestRateModel internal interestModel;
 
     Comptroller internal comptroller;
-    WhitePaperInterestRateModel internal interestModel;
     FusePoolDirectory internal fusePoolDirectory;
 
+    address[] internal emptyAddresses;
     address[] internal markets;
+    address[] internal oldCErc20Implementations;
+    address[] internal newCErc20Implementations;
+    bool[] internal trueArray;
+    bool[] internal falseArray;
 
-    function setUp() public {
-        vm.startPrank(Constants.fuseAdminAddress);
+    function setUp() public virtual override {
+        super.setUp();
 
-        fusePoolDirectory = FusePoolDirectory(
-            Constants.fusePoolDirectoryAddress
-        );
+        vm.startPrank(fuseAdminAddress);
 
         MockPriceOracle priceOracle = MockPriceOracle(
             deployCode(MockPriceOracleArtifact, abi.encode(10))
         );
 
-        (uint256 index, address unitrollerAddress) = fusePoolDirectory
-            .deployPool(
-                "TestPool",
-                Constants.comptrollerAddress,
-                false,
-                0.1e18,
-                1.1e18,
-                address(priceOracle)
-            );
+        fusePoolDirectory = FusePoolDirectory(
+            deployCode(FusePoolDirectoryArtifact)
+        );
+
+        fusePoolDirectory.initialize(false, emptyAddresses);
+
+        (, address unitrollerAddress) = fusePoolDirectory.deployPool(
+            "TestPool",
+            comptrollerAddress,
+            false,
+            0.1e18,
+            1.1e18,
+            address(priceOracle)
+        );
 
         Unitroller(payable(unitrollerAddress))._acceptAdmin();
         comptroller = Comptroller(unitrollerAddress);
@@ -72,12 +82,29 @@ contract PoolTest is Test {
 
         cErc20Delegate = CErc20Delegate(deployCode(CErc20DelegateArtifact));
 
+        trueArray.push(true);
+        falseArray.push(false);
+        oldCErc20Implementations.push(address(0));
+        newCErc20Implementations.push(address(cErc20Delegate));
+
+        vm.stopPrank();
+        vm.startPrank(multisigAddress);
+
+        fuseAdmin._editCErc20DelegateWhitelist(
+            oldCErc20Implementations,
+            newCErc20Implementations,
+            trueArray,
+            falseArray
+        );
+
+        vm.stopPrank();
+        vm.startPrank(fuseAdminAddress);
+
         comptroller._deployMarket(
             false,
             abi.encode(
                 address(underlyingToken),
                 Comptroller(comptroller),
-                payable(Constants.fuseAdminAddress),
                 InterestRateModel(address(interestModel)),
                 "CUnderlyingToken",
                 "CUT",
@@ -98,6 +125,4 @@ contract PoolTest is Test {
 
         cErc20.mint(amount);
     }
-
-    // function testExitMarket() public {}
 }
