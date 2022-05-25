@@ -1,9 +1,5 @@
-// Native
-import { readFileSync } from "fs";
-
 // Vendor
 import Joi from "joi";
-import toml from "toml";
 import "@nomiclabs/hardhat-waffle";
 import "@nomiclabs/hardhat-ethers";
 import "@nomiclabs/hardhat-etherscan";
@@ -20,18 +16,14 @@ import { validateEnvConfig } from "./scripts/utilities/validateConfig";
 const {
   FORKING,
   FORK_BLOCK,
-  SOLC_DEFAULT,
   PRIVATE_KEY,
-  MNEMONIC,
   ETH_RPC_URL,
   ARBITRUM_RPC_URL,
   CMC_API_KEY,
   ETHERSCAN_API_KEY,
 } = validateEnvConfig(
   Joi.object({
-    SOLC_DEFAULT: Joi.string().default("0.8.10"),
-    PRIVATE_KEY: Joi.string(),
-    MNEMONIC: Joi.string(),
+    PRIVATE_KEY: Joi.string().default("1".repeat(64)),
     FORK_BLOCK: Joi.number(),
     FORKING: Joi.boolean().default(false),
     ETH_RPC_URL: Joi.string().required(),
@@ -40,34 +32,6 @@ const {
     ETHERSCAN_API_KEY: Joi.string(),
   })
 );
-
-// Configure accounts
-const accounts = PRIVATE_KEY
-  ? [PRIVATE_KEY]
-  : {
-      mnemonic:
-        MNEMONIC ||
-        "test test test test test test test test test test test junk",
-    };
-
-// Inherit Foundry config
-let foundry: { default: { solc: string } };
-
-try {
-  const foundryFile = toml.parse(readFileSync("./foundry.toml", "utf-8"));
-
-  foundry = {
-    default: {
-      solc: foundryFile.default["solc-version"] || SOLC_DEFAULT,
-    },
-  };
-} catch (error) {
-  foundry = {
-    default: {
-      solc: SOLC_DEFAULT,
-    },
-  };
-}
 
 // Filter out .t.sol test files and regular Solidity files in the test directory
 subtask(TASK_COMPILE_SOLIDITY_GET_SOURCE_PATHS).setAction(
@@ -114,11 +78,11 @@ const config: HardhatUserConfig & {
     },
     mainnet: {
       url: ETH_RPC_URL,
-      accounts,
+      accounts: [PRIVATE_KEY],
     },
     arbitrum: {
       url: ARBITRUM_RPC_URL,
-      accounts,
+      accounts: [PRIVATE_KEY],
     },
   },
   solidity: {
@@ -156,11 +120,11 @@ const config: HardhatUserConfig & {
     currency: "USD",
     gasPrice: 77,
     excludeContracts: ["src/test"],
-    // API key for CoinMarketCap. https://pro.coinmarketcap.com/signup
+    // API key for CoinMarketCap: https://pro.coinmarketcap.com/signup
     coinmarketcap: CMC_API_KEY,
   },
   etherscan: {
-    // API key for Etherscan. https://etherscan.io/
+    // API key for Etherscan: https://etherscan.io/
     apiKey: ETHERSCAN_API_KEY,
   },
 };
