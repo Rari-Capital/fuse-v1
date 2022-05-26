@@ -67,6 +67,7 @@ xcuserdata/
 # Solidity
 /out/
 /artifacts/
+/hh-cache/
 /cache/
 
 # Python
