@@ -67,8 +67,8 @@ xcuserdata/
 # Solidity
 /out/
 /artifacts/
+/hh-cache/
 /cache/
-flattened.sol
 
 # Python
 /env/
