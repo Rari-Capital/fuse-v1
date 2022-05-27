@@ -23,7 +23,12 @@ contract ZeroPriceOracle is PriceOracle, BasePriceOracle {
      * @param underlying The underlying token address for which to get the price.
      * @return Price denominated in ETH (scaled by 1e18)
      */
-    function price(address underlying) external override view returns (uint) {
+    function price(address underlying)
+        external
+        view
+        override
+        returns (uint256)
+    {
         return _price(underlying);
     }
 
@@ -32,17 +37,25 @@ contract ZeroPriceOracle is PriceOracle, BasePriceOracle {
      * @dev Implements the `PriceOracle` interface for Fuse pools (and Compound v2).
      * @return Price in ETH of the token underlying `cToken`, scaled by `10 ** (36 - underlyingDecimals)`.
      */
-    function getUnderlyingPrice(CToken cToken) external override view returns (uint) {
+    function getUnderlyingPrice(CToken cToken)
+        external
+        view
+        override
+        returns (uint256)
+    {
         address underlying = CErc20(address(cToken)).underlying();
         // Comptroller needs prices to be scaled by 1e(36 - decimals)
         // Since `_price` returns prices scaled by 18 decimals, we must scale them by 1e(36 - 18 - decimals)
-        return _price(underlying).mul(1e18).div(10 ** uint256(ERC20Upgradeable(underlying).decimals()));
+        return
+            _price(underlying).mul(1e18).div(
+                10**uint256(ERC20Upgradeable(underlying).decimals())
+            );
     }
 
     /**
      * @notice Fetches the token/ETH price, with 18 decimals of precision.
      */
-    function _price(address token) internal view returns (uint) {
+    function _price(address token) internal view returns (uint256) {
         return 1;
     }
 }

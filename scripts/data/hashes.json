@@ -137,5 +137,6 @@
   "oracles/XVaultPriceOracle.sol": "0af7510c5423e955cf3e5120c74db1a069294f528c4f38ce58d3c883062ad079",
   "oracles/YVaultV1PriceOracle.sol": "a14db0885769ac440ff253c56374ca1a77915b0265508a92b248444370948fcd",
   "oracles/YVaultV2PriceOracle.sol": "ee7bf1eb0bc53e3bfd4807def3638f0270be78d8f3cd9d5e008f15247dd2cc59",
+  "oracles/ZeroPriceOracle.sol": "1b97f157a8bf199309fbb7f06e1792c0e3634960eedc26f38f518222145cd0cd",
   "utils/InitializableClones.sol": "cffec4fdbeec405808e73937685c37862b553ebe1cd3c69e9305774a68a5a1ea"
 }
