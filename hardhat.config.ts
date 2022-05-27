@@ -3,6 +3,7 @@ import Joi from "joi";
 import "@nomiclabs/hardhat-waffle";
 import "@nomiclabs/hardhat-ethers";
 import "@nomiclabs/hardhat-etherscan";
+import "@typechain/hardhat";
 import "hardhat-gas-reporter";
 import "solidity-coverage";
 import "hardhat-contract-sizer";
@@ -64,6 +65,7 @@ const config: HardhatUserConfig & {
   etherscan: {
     apiKey: string;
   };
+  typechain: { outDir: string; target: string };
 } = {
   paths: {
     cache: "hh-cache",
@@ -121,6 +123,10 @@ const config: HardhatUserConfig & {
   etherscan: {
     // API key for Etherscan: https://etherscan.io/
     apiKey: ETHERSCAN_API_KEY,
+  },
+  typechain: {
+    outDir: "typechain",
+    target: "ethers-v5",
   },
 };
 

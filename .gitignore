@@ -69,6 +69,7 @@ xcuserdata/
 /artifacts/
 /hh-cache/
 /cache/
+/typechain/
 
 # Python
 /env/
