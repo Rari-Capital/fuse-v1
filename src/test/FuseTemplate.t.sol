@@ -12,7 +12,6 @@ import {Unitroller} from "./interfaces/core/IUnitroller.sol";
 import {MockPriceOracle} from "./interfaces/mocks/IMockPriceOracle.sol";
 
 // Artifacts
-string constant FusePoolDirectoryArtifact = "./artifacts/FusePoolDirectory.sol/FusePoolDirectory.json";
 string constant MockPriceOracleArtifact = "./artifacts/MockPriceOracle.sol/MockPriceOracle.json";
 
 // Fixtures

@@ -15,17 +15,8 @@ import {Comptroller} from "../interfaces/core/IComptroller.sol";
 import {CErc20Delegate} from "../interfaces/core/ICErc20Delegate.sol";
 import {ComptrollerInterface} from "../interfaces/core/IComptrollerInterface.sol";
 import {InterestRateModel} from "../interfaces/core/IInterestRateModel.sol";
-import {FuseFeeDistributor} from "../interfaces/IFuseFeeDistributor.sol";
 import {FusePoolDirectory} from "../interfaces/IFusePoolDirectory.sol";
 import {MockPriceOracle} from "../interfaces/oracles/IMockPriceOracle.sol";
-
-// Artifacts
-string constant WhitePaperInterestRateModelArtifact = "./artifacts/WhitePaperInterestRateModel.sol/WhitePaperInterestRateModel.json";
-string constant ComptrollerArtifact = "./artifacts/Comptroller.sol/Comptroller.json";
-string constant CErc20DelegateArtifact = "./artifacts/CErc20Delegate.sol/CErc20Delegate.json";
-string constant FuseFeeDistributorArtifact = "./artifacts/FuseFeeDistributor.sol/FuseFeeDistributor.json";
-string constant FusePoolDirectoryArtifact = "./artifacts/FusePoolDirectory.sol/FusePoolDirectory.json";
-string constant MockPriceOracleArtifact = "./artifacts/MockPriceOracle.sol/MockPriceOracle.json";
 
 // Fixtures
 import {GeneralFixture} from "./GeneralFixture.sol";
@@ -54,24 +45,29 @@ contract PoolFixture is GeneralFixture {
         underlyingToken = new MockERC20("UnderlyingToken", "UT", 18);
         interestModel = WhitePaperInterestRateModel(
             deployCode(
-                WhitePaperInterestRateModelArtifact,
+                "WhitePaperInterestRateModel.sol:WhitePaperInterestRateModel",
                 abi.encode(1e18, 1e18)
             )
         );
-        fusePoolDirectory = FusePoolDirectory(fusePoolDirectoryAddress);
+        fusePoolDirectory = FusePoolDirectory(
+            deployCode("FusePoolDirectory.sol:FusePoolDirectory")
+        );
+        fusePoolDirectory.initialize(false, emptyAddresses);
 
-        cErc20Delegate = CErc20Delegate(deployCode(CErc20DelegateArtifact));
+        cErc20Delegate = CErc20Delegate(
+            deployCode("CErc20Delegate.sol:CErc20Delegate")
+        );
 
         vm.stopPrank();
 
         vm.startPrank(multisigAddress);
 
         MockPriceOracle priceOracle = MockPriceOracle(
-            deployCode(MockPriceOracleArtifact, abi.encode(10))
+            deployCode("MockPriceOracle.sol:MockPriceOracle", abi.encode(10))
         );
         emptyAddresses.push(address(0));
         Comptroller tempComptroller = Comptroller(
-            deployCode(ComptrollerArtifact)
+            deployCode("Comptroller.sol:Comptroller")
         );
         newUnitroller.push(address(tempComptroller));
         trueBoolArray.push(true);
@@ -83,6 +79,7 @@ contract PoolFixture is GeneralFixture {
         );
 
         vm.stopPrank();
+
         vm.startPrank(fuseAdminAddress);
 
         (, address unitrollerAddress) = fusePoolDirectory.deployPool(
