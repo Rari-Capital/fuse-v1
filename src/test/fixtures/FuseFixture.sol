@@ -1,8 +1,6 @@
 pragma solidity ^0.8.10;
 
 // Vendor
-// Automatically get access to vm, console.log(), console2.log() and many other utilities.
-// You don't need to import this again in your test if you inherit FuseFixture.
 import "forge-std/Test.sol";
 
 // Interfaces
