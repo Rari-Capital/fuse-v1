@@ -21,9 +21,9 @@ abstract contract FuseFixture is Test {
     address public constant multisigAddress =
         address(0x5eA4A9a7592683bF0Bc187d6Da706c6c4770976F);
 
-    Comptroller internal comptroller;
-    FusePoolDirectory internal fusePoolDirectory;
     FuseFeeDistributor internal fuseAdmin;
+    FusePoolDirectory internal fusePoolDirectory;
+    Comptroller internal comptroller;
 
     function setUp() public virtual {
         vm.label(fuseAdminAddress, "fuseAdmin");
