@@ -24,7 +24,7 @@ contract ComptrollerTest is Test, PoolFixture {
         // console2.log(deployCode("artifacts/Comptroller/Comptroller.json"));
 
         comptroller = Comptroller(
-            deployCode("artifacts/Comptroller/Comptroller.json")
+            deployCode("artifacts/Comptroller.sol/Comptroller.json")
         );
 
         console2.log(comptroller.borrowCapGuardian());
