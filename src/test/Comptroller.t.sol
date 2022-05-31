@@ -1,9 +1,15 @@
 pragma solidity ^0.8.10;
 
+// Vendor
+import "forge-std/Test.sol";
+
+// Interfaces
+import {Comptroller} from "./interfaces/core/IComptroller.sol";
+
 // Fixtures
 import {PoolFixture} from "./fixtures/PoolFixture.sol";
 
-contract ComptrollerTest is PoolFixture {
+contract ComptrollerTest is Test, PoolFixture {
     address internal alice = address(1337);
     address internal bob = address(1338);
     uint256 internal amount = 1 ether;
@@ -13,10 +19,23 @@ contract ComptrollerTest is PoolFixture {
     }
 
     function testExampleTrue() public {
+        // comptroller = Comptroller(comptrollerAddress);
+
+        // console2.log(deployCode("artifacts/Comptroller/Comptroller.json"));
+
+        comptroller = Comptroller(
+            deployCode("artifacts/Comptroller/Comptroller.json")
+        );
+
+        console2.log(comptroller.borrowCapGuardian());
+        console2.log(comptroller.autoImplementation());
+
         assertTrue(true);
     }
 
     // function testEnterMarkets() public {
+    //     underlyingToken = new MockERC20("UnderlyingToken", "UT", 18);
+
     //     underlyingToken.mint(alice, amount);
     //     startHoax(alice);
     //     underlyingToken.approve(address(cErc20), amount);

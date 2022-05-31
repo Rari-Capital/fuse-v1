@@ -1,7 +1,6 @@
 pragma solidity ^0.8.10;
 
 // Vendor
-import "forge-std/Test.sol";
 import {ERC20} from "solmate/tokens/ERC20.sol";
 import {Auth, Authority} from "solmate/auth/Auth.sol";
 import {MockERC20} from "solmate/test/utils/mocks/MockERC20.sol";
@@ -28,7 +27,7 @@ string constant MockPriceOracleArtifact = "./artifacts/MockPriceOracle.sol/MockP
 // Fixtures
 import {FuseFixture} from "./FuseFixture.sol";
 
-contract PoolFixture is FuseFixture {
+abstract contract PoolFixture is FuseFixture {
     MockERC20 internal underlyingToken;
     CErc20 internal cErc20;
     CToken internal cToken;
@@ -51,8 +50,8 @@ contract PoolFixture is FuseFixture {
 
         vm.startPrank(fuseAdminAddress);
 
-        setUpBaseContracts();
-        setUpPoolAndMarket();
+        // setUpBaseContracts();
+        // setUpPoolAndMarket();
 
         vm.stopPrank();
     }
