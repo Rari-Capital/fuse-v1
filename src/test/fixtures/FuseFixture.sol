@@ -7,6 +7,8 @@ import "forge-std/Test.sol";
 
 // Interfaces
 import {FuseFeeDistributor} from "../interfaces/IFuseFeeDistributor.sol";
+import {FusePoolDirectory} from "../interfaces/IFusePoolDirectory.sol";
+import {Comptroller} from "../interfaces/core/IComptroller.sol";
 
 abstract contract FuseFixture is Test {
     address public constant fuseAdminAddress =
@@ -21,6 +23,8 @@ abstract contract FuseFixture is Test {
     address public constant multisigAddress =
         address(0x5eA4A9a7592683bF0Bc187d6Da706c6c4770976F);
 
+    Comptroller internal comptroller;
+    FusePoolDirectory internal fusePoolDirectory;
     FuseFeeDistributor internal fuseAdmin;
 
     function setUp() public virtual {
@@ -30,5 +34,7 @@ abstract contract FuseFixture is Test {
         vm.label(multisigAddress, "multisig");
 
         fuseAdmin = FuseFeeDistributor(fuseAdminAddress);
+        fusePoolDirectory = FusePoolDirectory(fusePoolDirectoryAddress);
+        comptroller = Comptroller(comptrollerAddress);
     }
 }

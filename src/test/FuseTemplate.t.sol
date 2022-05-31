@@ -4,7 +4,6 @@ pragma solidity ^0.8.10;
 
 // Interfaces
 import {Comptroller} from "./interfaces/core/IComptroller.sol";
-import {FuseFeeDistributor} from "./interfaces/IFuseFeeDistributor.sol";
 import {FusePoolDirectory} from "./interfaces/IFusePoolDirectory.sol";
 import {Unitroller} from "./interfaces/core/IUnitroller.sol";
 
@@ -19,11 +18,6 @@ string constant MockPriceOracleArtifact = "./artifacts/MockPriceOracle.sol/MockP
 import {FuseFixture} from "./fixtures/FuseFixture.sol";
 
 contract FuseTemplateTest is FuseFixture {
-    Comptroller internal comptroller;
-    FusePoolDirectory internal fusePoolDirectory;
-
-    address[] internal emptyAddresses;
-
     function setUp() public virtual override {
         super.setUp();
 
@@ -32,12 +26,6 @@ contract FuseTemplateTest is FuseFixture {
         MockPriceOracle priceOracle = MockPriceOracle(
             deployCode(MockPriceOracleArtifact, abi.encode(10))
         );
-
-        fusePoolDirectory = FusePoolDirectory(
-            deployCode(FusePoolDirectoryArtifact)
-        );
-
-        fusePoolDirectory.initialize(false, emptyAddresses);
 
         (, address unitrollerAddress) = fusePoolDirectory.deployPool(
             "TestPool",
