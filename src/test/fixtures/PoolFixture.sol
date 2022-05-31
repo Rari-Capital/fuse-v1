@@ -19,9 +19,10 @@ import {FusePoolDirectory} from "../interfaces/IFusePoolDirectory.sol";
 import {MockPriceOracle} from "../interfaces/oracles/IMockPriceOracle.sol";
 
 // Artifacts
-string constant WhitePaperInterestRateModelArtifact = "./artifacts/WhitePaperInterestRateModel.sol/WhitePaperInterestRateModel.json";
 string constant CErc20DelegateArtifact = "./artifacts/CErc20Delegate.sol/CErc20Delegate.json";
+string constant ComptrollerArtifact = "./artifacts/Comptroller.sol/Comptroller.json";
 string constant FusePoolDirectoryArtifact = "./artifacts/FusePoolDirectory.sol/FusePoolDirectory.json";
+string constant WhitePaperInterestRateModelArtifact = "./artifacts/WhitePaperInterestRateModel.sol/WhitePaperInterestRateModel.json";
 string constant MockPriceOracleArtifact = "./artifacts/MockPriceOracle.sol/MockPriceOracle.json";
 
 // Fixtures
@@ -50,6 +51,13 @@ contract PoolFixture is FuseFixture {
 
         vm.startPrank(fuseAdminAddress);
 
+        setUpBaseContracts();
+        setUpPoolAndMarket();
+
+        vm.stopPrank();
+    }
+
+    function setUpBaseContracts() public {
         underlyingToken = new MockERC20("UnderlyingToken", "UT", 18);
         interestModel = WhitePaperInterestRateModel(
             deployCode(
@@ -60,18 +68,39 @@ contract PoolFixture is FuseFixture {
         fusePoolDirectory = FusePoolDirectory(
             deployCode(FusePoolDirectoryArtifact)
         );
-
         fusePoolDirectory.initialize(false, emptyAddresses);
-
         cErc20Delegate = CErc20Delegate(deployCode(CErc20DelegateArtifact));
+    }
 
+    function setUpPoolAndMarket() public {
         MockPriceOracle priceOracle = MockPriceOracle(
             deployCode(MockPriceOracleArtifact, abi.encode(10))
         );
 
+        emptyAddresses.push(address(0));
+
+        Comptroller tempComptroller = Comptroller(
+            deployCode(ComptrollerArtifact)
+        );
+        newUnitroller.push(address(comptroller));
+        trueBoolArray.push(true);
+        falseBoolArray.push(false);
+
+        vm.stopPrank();
+        vm.startPrank(multisigAddress);
+
+        fuseAdmin._editComptrollerImplementationWhitelist(
+            emptyAddresses,
+            newUnitroller,
+            trueBoolArray
+        );
+
+        vm.stopPrank();
+        vm.startPrank(fuseAdminAddress);
+
         (, address unitrollerAddress) = fusePoolDirectory.deployPool(
             "TestPool",
-            comptrollerAddress,
+            address(tempComptroller),
             false,
             0.1e18,
             1.1e18,
