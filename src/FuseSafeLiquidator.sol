@@ -10,9 +10,9 @@ import "@openzeppelin/contracts-upgradeable/token/ERC20/SafeERC20Upgradeable.sol
 
 import "./liquidators/IRedemptionStrategy.sol";
 
-import "./external/compound/CToken.sol";
-import "./external/compound/CErc20.sol";
-import "./external/compound/CEther.sol";
+import "./external/compound/ICToken.sol";
+import "./external/compound/ICErc20.sol";
+import "./external/compound/ICEther.sol";
 
 import "./external/aave/IWETH.sol";
 

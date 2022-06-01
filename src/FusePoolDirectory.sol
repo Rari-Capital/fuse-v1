@@ -5,9 +5,9 @@ pragma experimental ABIEncoderV2;
 import "@openzeppelin/contracts-upgradeable/proxy/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 
-import "./external/compound/Comptroller.sol";
-import "./external/compound/Unitroller.sol";
-import "./external/compound/PriceOracle.sol";
+import "./external/compound/IComptroller.sol";
+import "./external/compound/IUnitroller.sol";
+import "./external/compound/IPriceOracle.sol";
 
 /**
  * @title FusePoolDirectory
