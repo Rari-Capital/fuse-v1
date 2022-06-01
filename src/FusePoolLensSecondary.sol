@@ -6,11 +6,11 @@ import "@openzeppelin/contracts-upgradeable/proxy/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/math/SafeMathUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/token/ERC20/ERC20Upgradeable.sol";
 
-import "./external/compound/Comptroller.sol";
-import "./external/compound/PriceOracle.sol";
-import "./external/compound/CToken.sol";
-import "./external/compound/CErc20.sol";
-import "./external/compound/RewardsDistributor.sol";
+import "./external/compound/IComptroller.sol";
+import "./external/compound/IPriceOracle.sol";
+import "./external/compound/ICToken.sol";
+import "./external/compound/ICErc20.sol";
+import "./external/compound/IRewardsDistributor.sol";
 
 import "./external/uniswap/IUniswapV2Pair.sol";
 

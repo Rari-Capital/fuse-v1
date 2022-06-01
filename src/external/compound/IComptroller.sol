@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: BSD-3-Clause
 pragma solidity 0.6.12;
 
-import "./PriceOracle.sol";
-import "./CToken.sol";
-import "./Unitroller.sol";
-import "./RewardsDistributor.sol";
+import "./IPriceOracle.sol";
+import "./ICToken.sol";
+import "./IUnitroller.sol";
+import "./IRewardsDistributor.sol";
 
 /**
  * @title Compound's Comptroller Contract
