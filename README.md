@@ -33,6 +33,7 @@ The `master` branch should always have passing tests.
 
 The `development` branch should preferably have passing tests.
 
+- `docs/..` prefixed indicates that it is an update to the documentation and does not introduce new code
 - `audit/..` prefixed indicates that it is a prepared branch for auditors
 - `feat/..` or `feature/..` prefixed indicates that it is a feature we are developing
 - `core/..` prefixed indicates that it is a feature related to any core protocol updates we port over from Compound
