@@ -39,6 +39,7 @@ The `development` branch should preferably have passing tests.
 - `core/..` prefixed indicates that it is a feature related to any core protocol updates we port over from Compound
 - `archive/..` prefixed indicates that the branch is archived but would like to be kept around until further notice. You would update the branch name the moment you decide to archive the branch.
 - `bug/..` prefixed indicates that it is a bug fix (low priority)
+- `fix/..` prefixed indicates that it is a general fix (low priority)
 - `hotfix/..` prefixed indicates that it is a hot fix (high priority); hotfixes are branches off of `master` and then merged back into `development` after deployment
 
 All prefixed branches are merged through PRs (target: `development`), preferably code reviewed and include tests. The CI flow runs on every change in the PR targetting `development`. If you make any changes to the `ABI` make sure you run the `interfaces.sh` script.
