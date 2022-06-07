@@ -1,6 +1,8 @@
 pragma solidity ^0.8.10;
 
 interface IFuseFeeDistributor {
+    function _callPool(address[] memory targets, bytes[] memory data) external;
+
     function cErc20DelegateWhitelist(
         address oldImplementation,
         address newImplementation,
@@ -56,4 +58,6 @@ interface IFuseFeeDistributor {
     function maxUtilizationRate() external view returns (uint256);
 
     function minBorrowEth() external view returns (uint256);
+
+    function owner() external view returns (address);
 }
