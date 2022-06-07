@@ -1,4 +1,5 @@
 pragma solidity 0.5.17;
+pragma experimental ABIEncoderV2;
 
 interface IFuseFeeDistributor {
     function minBorrowEth() external view returns (uint256);
@@ -8,6 +9,11 @@ interface IFuseFeeDistributor {
     function maxUtilizationRate() external view returns (uint256);
 
     function interestFeeRate() external view returns (uint256);
+
+    function _callPool(address[] calldata targets, bytes[] calldata data)
+        external;
+
+    function owner() external view returns (address);
 
     function comptrollerImplementationWhitelist(
         address oldImplementation,
