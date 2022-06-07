@@ -12,7 +12,7 @@ import {Unitroller} from "../interfaces/core/IUnitroller.sol";
 import {CErc20} from "../interfaces/core/ICErc20.sol";
 
 // Artifacts
-string constant ComptrollerArtifact = "./artifacts/Comptroller.sol/Comptroller.json";
+// string constant ComptrollerArtifact = "./artifacts/Comptroller.sol/Comptroller.json";
 
 contract PauseBorrowOverrideTest is Test {
     function testPauseBorrowOverride() public {
