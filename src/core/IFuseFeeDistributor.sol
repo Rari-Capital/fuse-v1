@@ -7,33 +7,35 @@ interface IFuseFeeDistributor {
         address indexed newOwner
     );
 
-    function _callPool(address[] memory targets, bytes[] memory data) external;
+    function _callPool(address[] calldata targets, bytes[] calldata data)
+        external;
 
-    function _callPool(address[] memory targets, bytes memory data) external;
+    function _callPool(address[] calldata targets, bytes calldata data)
+        external;
 
     function _editCErc20DelegateWhitelist(
-        address[] memory oldImplementations,
-        address[] memory newImplementations,
-        bool[] memory allowResign,
-        bool[] memory statuses
+        address[] calldata oldImplementations,
+        address[] calldata newImplementations,
+        bool[] calldata allowResign,
+        bool[] calldata statuses
     ) external;
 
     function _editCEtherDelegateWhitelist(
-        address[] memory oldImplementations,
-        address[] memory newImplementations,
-        bool[] memory allowResign,
-        bool[] memory statuses
+        address[] calldata oldImplementations,
+        address[] calldata newImplementations,
+        bool[] calldata allowResign,
+        bool[] calldata statuses
     ) external;
 
     function _editComptrollerImplementationWhitelist(
-        address[] memory oldImplementations,
-        address[] memory newImplementations,
-        bool[] memory statuses
+        address[] calldata oldImplementations,
+        address[] calldata newImplementations,
+        bool[] calldata statuses
     ) external;
 
     function _editGuardianWhitelist(
-        address[] memory accounts,
-        bool[] memory status
+        address[] calldata accounts,
+        bool[] calldata status
     ) external;
 
     function _latestCErc20Delegate(address)
@@ -66,14 +68,14 @@ interface IFuseFeeDistributor {
         address oldImplementation,
         address newImplementation,
         bool allowResign,
-        bytes memory becomeImplementationData
+        bytes calldata becomeImplementationData
     ) external;
 
     function _setLatestCEtherDelegate(
         address oldImplementation,
         address newImplementation,
         bool allowResign,
-        bytes memory becomeImplementationData
+        bytes calldata becomeImplementationData
     ) external;
 
     function _setLatestComptrollerImplementation(
@@ -110,11 +112,11 @@ interface IFuseFeeDistributor {
 
     function defaultInterestFeeRate() external view returns (uint256);
 
-    function deployCErc20(bytes memory constructorData)
+    function deployCErc20(bytes calldata constructorData)
         external
         returns (address);
 
-    function deployCEther(bytes memory constructorData)
+    function deployCEther(bytes calldata constructorData)
         external
         returns (address);
 
