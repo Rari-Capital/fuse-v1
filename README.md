@@ -1,8 +1,6 @@
 # Fuse V1
 
-```
-WORK IN PROGRESS
-```
+Smart contracts for Fuse V1 by Rari Capital.
 
 ## Branches
 
