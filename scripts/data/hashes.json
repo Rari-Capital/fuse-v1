@@ -85,7 +85,7 @@
   "oracles/BadgerPriceOracle.sol": "1d8e06f95d30153c6bdcc49efdb1b78e13164372520abcc534ff33ebac611a9c",
   "oracles/BalancerLpTokenPriceOracle.sol": "aca742636d33f072ed245af616b62c14f16aa4386aac590dcd9bf01937630725",
   "oracles/BalancerStableLpTokenPriceOracle.sol": "00e996a739c7429183c17be64857a8d804105b460c1b956f2663820cd305a23b",
-  "oracles/BalancerV2TwapPriceOracle.sol": "0386782fde2136ea64128588d9a0420d3761a64dd845163985bf04b394f1f289",
+  "oracles/BalancerV2TwapPriceOracle.sol": "02a0ed9d7b7f39b79ad8005f35ec1af4bfd22c5ae3d24a24d169779b2e7d49d3",
   "oracles/BasePriceOracle.sol": "15547119c721fd74a6a441121a87cf383e9598c54cdd8e6e2a136e86da2ed5da",
   "oracles/ChainlinkPriceOracle.sol": "1fe7b979fad6d589ce4294c7b25b50cd65e7930b8788d154c65ee8282ff438bd",
   "oracles/ChainlinkPriceOracleV2.sol": "3317b1853635fa625bdd59e729c311d048b14f0123034816e90b5293f4c8a9fd",
