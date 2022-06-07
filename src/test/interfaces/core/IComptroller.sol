@@ -70,9 +70,7 @@ interface Comptroller {
         uint256 newCollateralFactorMantissa
     ) external returns (uint256);
 
-    function _setGlobalPauseBorrowOverride(
-        bool status)
-        external;
+    function _setGlobalPauseBorrowOverride(bool status) external;
 
     function _globalPauseBorrowOverride() external view returns (bool);
 
