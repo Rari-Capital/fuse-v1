@@ -9,6 +9,9 @@ import { getContracts } from "./contracts";
 
 export class Fuse {
   provider: providers.JsonRpcProvider;
+  abis: {
+    [key: string]: any;
+  };
   contracts: {
     [key: string]: Contract;
   };
@@ -19,10 +22,12 @@ export class Fuse {
     }
 
     this.provider = provider;
-    this.contracts = getContracts(provider, chainId);
+    const { abis, contracts } = getContracts(provider, chainId);
+    this.abis = abis;
+    this.contracts = contracts;
   }
 
-  public getPools = async () => {
+  public getAllPools = async () => {
     const [poolList, poolDescriptions] =
       await this.contracts.FusePoolDirectory.functions.getPublicPoolsByVerification(
         true
@@ -32,5 +37,17 @@ export class Fuse {
       poolList,
       poolDescriptions,
     };
+  };
+
+  public getComptroller = async (address: string) => {
+    return new Contract(this.abis.ComptrollerABI, address);
+  };
+
+  public getAllComptrollers = async () => {
+    const { poolList } = await this.getAllPools();
+
+    console.log(poolList.length);
+
+    return "";
   };
 }
