@@ -5,14 +5,14 @@ import Joi from "joi";
 import { providers } from "ethers";
 
 // Utilities
-import { validateEnvConfig } from "../scripts/utilities/validateConfig";
+import { validateEnvConfig } from "./utilities/validateConfig";
 
 // Fuse
-import { Fuse } from "./Fuse";
+import { Fuse } from "../sdk/Fuse";
 
 // Validate values from .env file
 const { CHAIN_ID, ETH_RPC_URL } = validateEnvConfig(
-  "../.env",
+  ".env",
   Joi.object({
     CHAIN_ID: Joi.number().default(1),
     ETH_RPC_URL: Joi.string().default(""),

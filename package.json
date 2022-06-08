@@ -12,6 +12,7 @@
     "hh:build": "hardhat compile",
     "hh:clean": "hardhat clean",
     "scripts:interfaces": "ts-node scripts/interfaces.ts",
+    "scripts:testbench": "ts-node scripts/testbench.ts",
     "prepare": "husky install"
   },
   "dependencies": {
