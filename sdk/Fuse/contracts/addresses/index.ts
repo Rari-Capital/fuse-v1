@@ -4,7 +4,7 @@ import { arbitrumRinkeby } from "./arbitrumRinkeby";
 import { mainnet } from "./mainnet";
 
 // Utilities
-import { ChainID } from "../../../../utilities/networks";
+import { ChainID } from "../../../utilities/networks";
 
 export const ADDRESSES: any = {
   [ChainID.ARBITRUM]: arbitrum,

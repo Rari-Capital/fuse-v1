@@ -4,8 +4,8 @@ import { providers, Contract } from "ethers";
 // Utilities
 import { ChainID, isSupportedChainId } from "../utilities/networks";
 
-// Data
-import { getContracts } from "./data/contracts";
+// Contracts
+import { getContracts } from "./contracts";
 
 export class Fuse {
   provider: providers.JsonRpcProvider;
