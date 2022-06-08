@@ -52,7 +52,6 @@
   "liquidators/CEtherLiquidator.sol": "a3a6208ea013f46ee56cd19d44a6477ed7d974a999883a3e8d0c3de2f20bedd1",
   "liquidators/CurveLiquidityGaugeV2Liquidator.sol": "2be7210056ba62087db426ad959ea19cf3f5fc4b12b6d482c40f4af93a537d2b",
   "liquidators/CurveLpTokenLiquidator.sol": "895f546b0a5bfaa79777f83e23a5407c7e5e49d649e097db050f32db38f54d59",
-  "liquidators/CurveMetapoolLpTokenLiquidator.sol": "6e9e49a8418e9f0d3dfa9aa7af82a31b1c3331dec0a89ee1321834bb13b51b71",
   "liquidators/CurveSwapLiquidator.sol": "c7654bc12af60ab93bc52ae0f4a4357ea32f4102812c8cf89126f4663cff1597",
   "liquidators/CurveTriCryptoLpTokenLiquidator.sol": "3b630bafabb9a9b5fbcee0bb2fc8ac099989221ee975293e87dad4574612783f",
   "liquidators/CustomLiquidator.sol": "5bf479d03c0b1e4269d3b361193e688e3e72b8ccc5913c3951fe3aa2ad0f5ba5",
