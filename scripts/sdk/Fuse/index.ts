@@ -2,7 +2,7 @@
 import { providers, Contract } from "ethers";
 
 // Utilities
-import { ChainID, isSupportedChainId } from "./utilities";
+import { ChainID, isSupportedChainId } from "../../utilities/network";
 
 // Contracts
 import { getContracts } from "./contracts";

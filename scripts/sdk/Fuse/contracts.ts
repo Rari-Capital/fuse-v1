@@ -3,7 +3,9 @@ import { Contract, providers } from "ethers";
 
 // Fuse
 import { getAddresses } from "./addresses";
-import { ChainID, isSupportedChainId } from "./utilities";
+
+// Utilities
+import { ChainID, isSupportedChainId } from "../../utilities/network";
 
 // ABI Core
 import BaseJumpRateModelV2ABI from "../../../abi/core/BaseJumpRateModelV2.json";
