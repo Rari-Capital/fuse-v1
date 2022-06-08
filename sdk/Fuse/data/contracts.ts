@@ -1,0 +1,79 @@
+// ABI
+import FuseFeeDistributorABI from "../../../abi/FuseFeeDistributor.json";
+import FusePoolDirectoryABI from "../../../abi/FuseFeeDistributor.json";
+import FusePoolLensABI from "../../../abi/FusePoolLens.json";
+import FusePoolLensSecondaryABI from "../../../abi/FusePoolLensSecondary.json";
+import FuseSafeLiquidatorABI from "../../../abi/FuseSafeLiquidator.json";
+
+// ABI Core
+import CErc20DelegateABI from "../../../abi/core/CErc20Delegate.json";
+import CErc20DelegatorABI from "../../../abi/core/CErc20Delegator.json";
+import CEtherDelegateABI from "../../../abi/core/CEtherDelegate.json";
+import CEtherDelegatorABI from "../../../abi/core/CEtherDelegator.json";
+// import CTokenInterfacesABI from "../../../abi/core/CTokenInterfaces.json";
+import ComptrollerABI from "../../../abi/core/Comptroller.json";
+import EIP20InterfaceABI from "../../../abi/core/EIP20Interface.json";
+import JumpRateModelABI from "../../../abi/core/JumpRateModel.json";
+import RewardsDistributorDelegateABI from "../../../abi/core/RewardsDistributorDelegate.json";
+import RewardsDistributorDelegatorABI from "../../../abi/core/RewardsDistributorDelegator.json";
+import SimplePriceOracleABI from "../../../abi/core/SimplePriceOracle.json";
+import UnitrollerABI from "../../../abi/core/Unitroller.json";
+import WhitePaperInterestRateModelABI from "../../../abi/core/WhitePaperInterestRateModel.json";
+
+// ABI Oracles
+import AlphaHomoraV1PriceOracleABI from "../../../abi/oracles/AlphaHomoraV1PriceOracle.json";
+import BalancerLpTokenPriceOracleABI from "../../../abi/oracles/BalancerLpTokenPriceOracle.json";
+import ChainlinkPriceOracleABI from "../../../abi/oracles/ChainlinkPriceOracle.json";
+import CurveLpTokenPriceOracleABI from "../../../abi/oracles/CurveLpTokenPriceOracle.json";
+import Keep3rPriceOracleABI from "../../../abi/oracles/Keep3rPriceOracle.json";
+import MasterPriceOracleABI from "../../../abi/oracles/MasterPriceOracle.json";
+import PreferredPriceOracleABI from "../../../abi/oracles/PreferredPriceOracle.json";
+import RecursivePriceOracleABI from "../../../abi/oracles/RecursivePriceOracle.json";
+import SynthetixPriceOracleABI from "../../../abi/oracles/SynthetixPriceOracle.json";
+import UniswapLpTokenPriceOracleABI from "../../../abi/oracles/UniswapLpTokenPriceOracle.json";
+import UniswapTwapPriceOracleV2FactoryABI from "../../../abi/oracles/UniswapTwapPriceOracleV2Factory.json";
+import UniswapV3TwapPriceOracleV2FactoryABI from "../../../abi/oracles/UniswapV3TwapPriceOracleV2Factory.json";
+import YVaultV1PriceOracleABI from "../../../abi/oracles/YVaultV1PriceOracle.json";
+import YVaultV2PriceOracleABI from "../../../abi/oracles/YVaultV2PriceOracle.json";
+
+export const FUSE_CONTRACTS = {
+  ["FuseFeeDistributorABI"]: FuseFeeDistributorABI,
+  ["FusePoolDirectoryABI"]: FusePoolDirectoryABI,
+  ["FusePoolLensABI"]: FusePoolLensABI,
+  ["FusePoolLensSecondaryABI"]: FusePoolLensSecondaryABI,
+  ["FuseSafeLiquidatorABI"]: FuseSafeLiquidatorABI,
+};
+
+export const CORE_CONTRACTS = {
+  ["CErc20DelegateABI"]: CErc20DelegateABI,
+  ["CErc20DelegatorABI"]: CErc20DelegatorABI,
+  ["CEtherDelegateABI"]: CEtherDelegateABI,
+  ["CEtherDelegatorABI"]: CEtherDelegatorABI,
+  // ["CTokenInterfacesABI"]: CTokenInterfacesABI,
+  ["ComptrollerABI"]: ComptrollerABI,
+  ["EIP20InterfaceABI"]: EIP20InterfaceABI,
+  ["JumpRateModelABI"]: JumpRateModelABI,
+  ["RewardsDistributorDelegateABI"]: RewardsDistributorDelegateABI,
+  ["RewardsDistributorDelegatorABI"]: RewardsDistributorDelegatorABI,
+  ["SimplePriceOracleABI"]: SimplePriceOracleABI,
+  ["UnitrollerABI"]: UnitrollerABI,
+  ["WhitePaperInterestRateModelABI"]: WhitePaperInterestRateModelABI,
+};
+
+export const ORACLE_CONTRACTS = {
+  ["AlphaHomoraV1PriceOracleABI"]: AlphaHomoraV1PriceOracleABI,
+  ["BalancerLpTokenPriceOracleABI"]: BalancerLpTokenPriceOracleABI,
+  ["ChainlinkPriceOracleABI"]: ChainlinkPriceOracleABI,
+  ["CurveLpTokenPriceOracleABI"]: CurveLpTokenPriceOracleABI,
+  ["Keep3rPriceOracleABI"]: Keep3rPriceOracleABI,
+  ["MasterPriceOracleABI"]: MasterPriceOracleABI,
+  ["PreferredPriceOracleABI"]: PreferredPriceOracleABI,
+  ["RecursivePriceOracleABI"]: RecursivePriceOracleABI,
+  ["SynthetixPriceOracleABI"]: SynthetixPriceOracleABI,
+  ["UniswapLpTokenPriceOracleABI"]: UniswapLpTokenPriceOracleABI,
+  ["UniswapTwapPriceOracleV2FactoryABI"]: UniswapTwapPriceOracleV2FactoryABI,
+  ["UniswapV3TwapPriceOracleV2FactoryABI"]:
+    UniswapV3TwapPriceOracleV2FactoryABI,
+  ["YVaultV1PriceOracleABI"]: YVaultV1PriceOracleABI,
+  ["YVaultV2PriceOracleABI"]: YVaultV2PriceOracleABI,
+};
