@@ -8,7 +8,7 @@ import { providers } from "ethers";
 import { validateEnvConfig } from "./utilities/validateConfig";
 
 // Fuse
-import { Fuse } from "../sdk/Fuse";
+import { Fuse } from "./sdk/Fuse";
 
 // Validate values from .env file
 const { CHAIN_ID, ETH_RPC_URL } = validateEnvConfig(

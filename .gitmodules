@@ -10,3 +10,6 @@
 [submodule "lib/fuse-flywheel"]
 	path = lib/fuse-flywheel
 	url = https://github.com/fei-protocol/fuse-flywheel
+[submodule "lib/RariSDK"]
+	path = lib/RariSDK
+	url = git@github.com:Rari-Capital/RariSDK.git
