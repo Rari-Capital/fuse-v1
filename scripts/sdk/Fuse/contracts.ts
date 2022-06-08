@@ -1,12 +1,8 @@
 // Vendor
 import { Contract, providers } from "ethers";
 
-// SDK
-import arbitrum from "../../../lib/RariSDK/src/Fuse/addresses/arbitrum";
-import arbitrumRinkeby from "../../../lib/RariSDK/src/Fuse/addresses/arbitrumRinkeby";
-import mainnet from "../../../lib/RariSDK/src/Fuse/addresses/mainnet";
-
-// Utilities
+// Fuse
+import { getAddresses } from "./addresses";
 import { ChainID, isSupportedChainId } from "./utilities";
 
 // ABI Core
@@ -158,12 +154,6 @@ import FusePoolDirectoryABI from "../../../abi/FusePoolDirectory.json";
 import FusePoolLensABI from "../../../abi/FusePoolLens.json";
 import FusePoolLensSecondaryABI from "../../../abi/FusePoolLensSecondary.json";
 import FuseSafeLiquidatorABI from "../../../abi/FuseSafeLiquidator.json";
-
-const ADDRESSES: any = {
-  [ChainID.ARBITRUM]: arbitrum,
-  [ChainID.ARBITRUM_RINKEBY]: arbitrumRinkeby,
-  [ChainID.ETHEREUM]: mainnet,
-};
 
 export const getContracts = (
   provider: providers.JsonRpcProvider,
@@ -325,7 +315,7 @@ export const getContracts = (
     FuseSafeLiquidatorABI,
   };
 
-  const addresses = ADDRESSES[chainId];
+  const addresses = getAddresses(chainId);
 
   const contracts = {
     // Core contracts
