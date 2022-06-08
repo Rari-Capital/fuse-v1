@@ -23,7 +23,7 @@ const main = async () => {
   const provider = new providers.JsonRpcProvider(ETH_RPC_URL);
   const fuse = new Fuse(provider, CHAIN_ID);
 
-  const comptrollers = await fuse.getAllComptrollers();
+  const comptrollers = await fuse.getComptrollersOfAllPools();
 
   console.log(comptrollers);
 };

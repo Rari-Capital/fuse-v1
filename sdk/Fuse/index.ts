@@ -40,14 +40,21 @@ export class Fuse {
   };
 
   public getComptroller = async (address: string) => {
-    return new Contract(this.abis.ComptrollerABI, address);
+    return new Contract(address, this.abis.ComptrollerABI, this.provider);
   };
 
-  public getAllComptrollers = async () => {
-    const { poolList } = await this.getAllPools();
+  public getComptrollersOfAllPools = async () => {
+    const { poolDescriptions } = await this.getAllPools();
 
-    console.log(poolList.length);
+    return Promise.all(
+      poolDescriptions.map(async (poolDescription: any, poolIndex: number) => {
+        const comptroller = await this.getComptroller(poolDescription[2]);
 
-    return "";
+        return [
+          poolIndex,
+          await comptroller.functions.comptrollerImplementation(),
+        ];
+      })
+    );
   };
 }

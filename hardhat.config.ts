@@ -22,6 +22,7 @@ const {
   CMC_API_KEY,
   ETHERSCAN_API_KEY,
 } = validateEnvConfig(
+  ".env",
   Joi.object({
     PRIVATE_KEY: Joi.string().default("1".repeat(64)),
     FORK_BLOCK: Joi.number(),

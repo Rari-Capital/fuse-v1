@@ -15,5 +15,5 @@
     "target": "ESNext"
   },
   "exclude": ["node_modules"],
-  "include": ["scripts"]
+  "include": ["scripts", "sdk"]
 }
