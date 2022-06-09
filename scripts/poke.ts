@@ -33,9 +33,7 @@ const main = async () => {
   const provider = new providers.JsonRpcProvider(RPC_URLS[CHAIN_ID]);
   const fuse = new Fuse(provider, CHAIN_ID);
 
-  const comptrollers = await fuse.getComptrollersOfAllPools();
-
-  console.log(comptrollers);
+  console.log(fuse);
 };
 
 main().catch((error) => {
