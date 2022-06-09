@@ -25,4 +25,4 @@ hh-build:; npm run hh:build
 lint:; npm run lint
 lint-fix:; npm run lint:fix
 scripts-interfaces:; npm run scripts:interfaces
-scripts-testbench:; npm run scripts:testbench
+scripts-poke:; npm run scripts:poke
