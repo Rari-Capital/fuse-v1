@@ -31,7 +31,9 @@ const main = async () => {
   const provider = new providers.JsonRpcProvider(RPC_URLS[CHAIN_ID]);
   const fuse = new Fuse(provider, CHAIN_ID);
 
-  console.log(fuse);
+  // Pause all borrowable tokens for a given pool
+
+  console.log(await fuse.pauseAllBorrowableTokensByIndex(8));
 
   // TODO: Add scripts to generate calldata for common actions given to fuseAdmin.
   // Particularly, pause all borrowable tokens on a given pool, fix "interest rate too high error" and maybe some more

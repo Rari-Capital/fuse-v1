@@ -24,7 +24,7 @@ export class Fuse {
     this.contracts = contracts;
   }
 
-  // General
+  // Common
 
   public getComptroller = (address: string) => {
     return new Contract(address, this.abis.ComptrollerABI, this.provider);
@@ -59,8 +59,6 @@ export class Fuse {
 
     return await comptroller.functions.getRewardsDistributors();
   };
-
-  // FusePoolDirectory
 
   public getAllPools = async () => {
     const poolDescriptions =
@@ -104,7 +102,19 @@ export class Fuse {
     };
   };
 
-  // Custom
+  // Admin
+
+  public pauseAllBorrowableTokensByIndex = async (index: number) => {
+    const { name, comptroller, borrowableAssets } =
+      await this.getBorrowableAssetsByIndex(index);
+
+    console.warn(`Pausing all borrowable assets in pool ${index}: ${name}`);
+    console.log(`Comptroller address: ${comptroller}`);
+
+    console.log(borrowableAssets);
+  };
+
+  // Poke
 
   public getComptrollersOfPublicPoolsByVerification = async () => {
     const { poolDescriptions } = await this.getPublicPoolsByVerification();
