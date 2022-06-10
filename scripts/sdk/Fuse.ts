@@ -1,5 +1,5 @@
 // Vendor
-import { providers, Contract } from "ethers";
+import { providers, Contract, BigNumber } from "ethers";
 
 // Contracts
 import { getContracts } from "./contracts";
@@ -32,6 +32,10 @@ export class Fuse {
 
   public getCErc20Delegate = (address: string) => {
     return new Contract(address, this.abis.CErc20DelegateABI, this.provider);
+  };
+
+  public getCToken = (address: string) => {
+    return new Contract(address, this.abis.CTokenABI, this.provider);
   };
 
   public getAllMarketsByComptroller = async (comptrollerAddress: string) => {
@@ -114,31 +118,91 @@ export class Fuse {
     console.log(borrowableAssets);
   };
 
-  // Poke
+  public getPoolsWithTooHighBorrowRate = async () => {
+    // Maximum borrow rate that can ever be applied (.0005% / block)
+    const borrowRateMaxMantissa = BigNumber.from(0.0005e16);
 
-  public getComptrollersOfPublicPoolsByVerification = async () => {
     const { poolDescriptions } = await this.getPublicPoolsByVerification();
 
-    return Object.assign(
-      {},
-      ...Object.values(
-        await Promise.all(
-          poolDescriptions.map(
-            async (poolDescription: any, poolIndex: number) => {
-              const comptroller = this.getComptroller(poolDescription[2]);
+    const pools = poolDescriptions.slice(0, 3);
 
-              return {
-                [poolIndex]: [
-                  poolDescription[2],
-                  (await comptroller.functions.comptrollerImplementation())[0],
-                ],
-              };
-            }
+    pools.forEach(async (pool: any) => {
+      const comptrollerAddress = pool[2];
+
+      const cTokens = (
+        await this.getAllMarketsByComptroller(comptrollerAddress)
+      ).flat();
+
+      // console.log(cTokens);
+
+      // const cTokensWithTooHighBorrowRate = await Promise.all(
+      //   cTokens.map(async (market: string) => {
+      //     const borrowRate = BigNumber.from(
+      //       (
+      //         await this.getCToken(market).functions.borrowRatePerBlock()
+      //       ).toString()
+      //     );
+
+      //     if (!borrowRate.gte(borrowRateMaxMantissa)) {
+      //       return market;
+      //     }
+      //   })
+      // );
+
+      // console.log(await cTokensWithTooHighBorrowRate);
+    });
+  };
+
+  public fixBorrowRateTooHigh = async (ctokenAddress: string) => {
+    // const calls = [];
+    // const cToken = this.getCErc20Delegate(ctokenAddress);
+    // const calldataA = cToken.interface.encodeFunctionData(
+    //   "_setImplementationSafe",
+    //   ["0x46f196f21f420e3ea159b706d249046e80f05f7e", false, 0x0]
+    // );
+    // const calldataB = cToken.interface.encodeFunctionData(
+    //   "_setImplementationSafe",
+    //   ["0x67db14e73c2dce786b5bbbfa4d010deab4bbfcf9", false, 0x0]
+    // );
+    // calls.push(calldataA);
+    // calls.push(calldataB);
+    // try {
+    //   await swapRouter.methods
+    //     .multicall(calls)
+    //     .send({ from: owner, gas: 1000000, value: quotedAmountIn });
+    // } catch (err) {
+    //   console.log(err);
+    // }
+  };
+
+  // Poke
+
+  public getComptrollersImplementationOfPublicPoolsByVerification =
+    async () => {
+      const { poolDescriptions } = await this.getPublicPoolsByVerification();
+
+      return Object.assign(
+        {},
+        ...Object.values(
+          await Promise.all(
+            poolDescriptions.map(
+              async (poolDescription: any, poolIndex: number) => {
+                const comptroller = this.getComptroller(poolDescription[2]);
+
+                return {
+                  [poolIndex]: [
+                    poolDescription[2],
+                    (
+                      await comptroller.functions.comptrollerImplementation()
+                    )[0],
+                  ],
+                };
+              }
+            )
           )
         )
-      )
-    );
-  };
+      );
+    };
 
   public getBorrowableAssetsByComptroller = async (
     comptrollerAddress: string
