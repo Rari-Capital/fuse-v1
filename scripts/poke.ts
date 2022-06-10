@@ -28,6 +28,8 @@ const RPC_URLS: any = {
   [ChainID.ETHEREUM]: ETH_RPC_URL,
 };
 
+// TODO: possibly properly encode / type commands as parser args but I like the flexibility
+
 const createParserArguments = (): {
   flags: any[];
 } => {
