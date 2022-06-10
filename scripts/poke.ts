@@ -55,6 +55,11 @@ const main = async () => {
     const [command, a, b, c] = parsedArgs.flags;
 
     switch (command) {
+      // npm run scripts:poke -- -f getAllMarketsByComptroller 0xc54172e34046c1653d1920d40333Dd358c7a1aF4
+      case "getAllMarketsByComptroller":
+        console.log(await fuse.getAllMarketsByComptroller(a));
+        break;
+
       // npm run scripts:poke -- -f getComptrollersOfPublicPoolsByVerification
       case "getComptrollersOfPublicPoolsByVerification":
         console.log(await fuse.getComptrollersOfPublicPoolsByVerification());
