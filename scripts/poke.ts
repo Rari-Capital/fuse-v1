@@ -33,7 +33,11 @@ const main = async () => {
   const provider = new providers.JsonRpcProvider(RPC_URLS[CHAIN_ID]);
   const fuse = new Fuse(provider, CHAIN_ID);
 
-  console.log(fuse);
+  console.log(
+    await fuse.getBorrowableAssetsByComptroller(
+      "0x88F7c23EA6C4C404dA463Bc9aE03b012B32DEf9e"
+    )
+  );
 };
 
 main().catch((error) => {
