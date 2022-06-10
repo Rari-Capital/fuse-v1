@@ -49,19 +49,27 @@ const main = async () => {
   const provider = new providers.JsonRpcProvider(RPC_URLS[CHAIN_ID]);
   const fuse = new Fuse(provider, CHAIN_ID);
 
+  // npm run scripts:poke -- -f
   if (parsedArgs.flags) {
-    // npm run scripts:poke -- -f
-    const [command, args] = parsedArgs.flags;
+    // [function name, arguments]
+    const [command, a, b, c] = parsedArgs.flags;
 
     switch (command) {
+      // npm run scripts:poke -- -f getComptrollersOfPublicPoolsByVerification
+      case "getComptrollersOfPublicPoolsByVerification":
+        console.log(await fuse.getComptrollersOfPublicPoolsByVerification());
+        break;
+
       // npm run scripts:poke -- -f getBorrowableAssetsByIndex 8
       case "getBorrowableAssetsByIndex":
-        console.log(await fuse.getBorrowableAssetsByIndex(args));
+        console.log(await fuse.getBorrowableAssetsByIndex(a));
         break;
+
       // npm run scripts:poke -- -f getBorrowableAssetsByComptroller 0xc54172e34046c1653d1920d40333Dd358c7a1aF4
       case "getBorrowableAssetsByComptroller":
-        console.log(await fuse.getBorrowableAssetsByComptroller(args));
+        console.log(await fuse.getBorrowableAssetsByComptroller(a));
         break;
+
       default:
         console.log("Did not find matching function to call with args");
         break;

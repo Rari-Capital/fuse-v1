@@ -112,17 +112,24 @@ export class Fuse {
   public getComptrollersOfPublicPoolsByVerification = async () => {
     const { poolDescriptions } = await this.getPublicPoolsByVerification();
 
-    return Promise.all(
-      poolDescriptions.map(async (poolDescription: any, poolIndex: number) => {
-        const comptroller = this.getComptroller(poolDescription[2]);
+    return Object.assign(
+      {},
+      ...Object.values(
+        await Promise.all(
+          poolDescriptions.map(
+            async (poolDescription: any, poolIndex: number) => {
+              const comptroller = this.getComptroller(poolDescription[2]);
 
-        return {
-          poolIndex,
-          comptroller,
-          implementation:
-            await comptroller.functions.comptrollerImplementation(),
-        };
-      })
+              return {
+                [poolIndex]: [
+                  poolDescription[2],
+                  (await comptroller.functions.comptrollerImplementation())[0],
+                ],
+              };
+            }
+          )
+        )
+      )
     );
   };
 
