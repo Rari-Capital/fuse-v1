@@ -1,5 +1,3 @@
-// Common ways of scripted interacting with the Fuse-SDK
-
 // Vendor
 import { ArgumentParser } from "argparse";
 import Joi from "joi";
@@ -35,6 +33,7 @@ const createParserArguments = (): {
 } => {
   const parser = new ArgumentParser({ add_help: true });
 
+  // Accept any args after -f, or --flags
   parser.add_argument("-f", "--flags", {
     nargs: "*",
   });
@@ -49,15 +48,15 @@ const main = async () => {
 
   // npm run scripts:poke -- -f command arg1 arg2 arg3
   if (parsedArgs.flags) {
-    // [function name, arguments]
-    const [command, a, b, c] = parsedArgs.flags;
+    // [function name, arg1, arg2, arg3, etc..]
+    const [command, arg1, arg2, arg3] = parsedArgs.flags;
 
     switch (command) {
       // Comptroller
 
       // npm run scripts:poke -- -f getAllMarketsByComptroller 0xc54172e34046c1653d1920d40333Dd358c7a1aF4
       case "getAllMarketsByComptroller":
-        console.log(await fuse.getAllMarketsByComptroller(a));
+        console.log(await fuse.getAllMarketsByComptroller(arg1));
         break;
 
       // Custom
@@ -69,12 +68,12 @@ const main = async () => {
 
       // npm run scripts:poke -- -f getBorrowableAssetsByIndex 8
       case "getBorrowableAssetsByIndex":
-        console.log(await fuse.getBorrowableAssetsByIndex(a));
+        console.log(await fuse.getBorrowableAssetsByIndex(arg1));
         break;
 
       // npm run scripts:poke -- -f getBorrowableAssetsByComptroller 0xc54172e34046c1653d1920d40333Dd358c7a1aF4
       case "getBorrowableAssetsByComptroller":
-        console.log(await fuse.getBorrowableAssetsByComptroller(a));
+        console.log(await fuse.getBorrowableAssetsByComptroller(arg1));
         break;
 
       default:
@@ -86,6 +85,8 @@ const main = async () => {
   }
 
   console.log("Scratchpad");
+
+  // ...
 };
 
 main().catch((error) => {

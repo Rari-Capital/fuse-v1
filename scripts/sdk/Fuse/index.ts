@@ -17,8 +17,9 @@ export class Fuse {
       throw new Error(`Unsupported chainid: ${chainId}`);
     }
 
-    this.provider = provider;
     const { abis, contracts } = getContracts(provider, chainId);
+
+    this.provider = provider;
     this.abis = abis;
     this.contracts = contracts;
   }
@@ -27,10 +28,6 @@ export class Fuse {
 
   public getComptroller = (address: string) => {
     return new Contract(address, this.abis.ComptrollerABI, this.provider);
-  };
-
-  public getCErc20Delegator = (address: string) => {
-    return new Contract(address, this.abis.CErc20DelegatorABI, this.provider);
   };
 
   public getCErc20Delegate = (address: string) => {
