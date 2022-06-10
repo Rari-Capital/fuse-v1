@@ -11,6 +11,7 @@
     "lint:fix": "prettier --write 'src/**/*.sol' && solhint --config .solhint.json 'src/**/*.sol' --fix",
     "hh:build": "hardhat compile",
     "hh:clean": "hardhat clean",
+    "scripts:admin": "ts-node scripts/admin.ts",
     "scripts:interfaces": "ts-node scripts/interfaces.ts",
     "scripts:poke": "ts-node scripts/poke.ts",
     "prepare": "husky install"
