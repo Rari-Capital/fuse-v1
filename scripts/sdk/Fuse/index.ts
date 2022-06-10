@@ -132,16 +132,19 @@ export class Fuse {
     );
   };
 
-  public getBorrowableAssetsByComptroller = async (
-    comptrollerAddress: string
-  ) => {
-    const comptroller = this.getComptroller(comptrollerAddress);
-
-    const cTokens = await Promise.all(
+  public getCTokensByComptroller = async (comptrollerAddress: string) => {
+    return await Promise.all(
       (
         await this.getAllMarketsByComptroller(comptrollerAddress)
       )[0].map((market: string) => this.getCErc20Delegate(market))
     );
+  };
+
+  public getBorrowableAssetsByComptroller = async (
+    comptrollerAddress: string
+  ) => {
+    const comptroller = this.getComptroller(comptrollerAddress);
+    const cTokens = await this.getCTokensByComptroller(comptrollerAddress);
 
     return (
       await Promise.all(
