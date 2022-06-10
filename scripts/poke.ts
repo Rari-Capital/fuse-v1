@@ -30,11 +30,9 @@ const RPC_URLS: any = {
   [ChainID.ETHEREUM]: ETH_RPC_URL,
 };
 
-interface ICLIArgs {
+const createParserArguments = (): {
   flags: any[];
-}
-
-const createParserArguments = (): ICLIArgs => {
+} => {
   const parser = new ArgumentParser({ add_help: true });
 
   parser.add_argument("-f", "--flags", {
@@ -49,16 +47,20 @@ const main = async () => {
   const provider = new providers.JsonRpcProvider(RPC_URLS[CHAIN_ID]);
   const fuse = new Fuse(provider, CHAIN_ID);
 
-  // npm run scripts:poke -- -f
+  // npm run scripts:poke -- -f command arg1 arg2 arg3
   if (parsedArgs.flags) {
     // [function name, arguments]
     const [command, a, b, c] = parsedArgs.flags;
 
     switch (command) {
+      // Comptroller
+
       // npm run scripts:poke -- -f getAllMarketsByComptroller 0xc54172e34046c1653d1920d40333Dd358c7a1aF4
       case "getAllMarketsByComptroller":
         console.log(await fuse.getAllMarketsByComptroller(a));
         break;
+
+      // Custom
 
       // npm run scripts:poke -- -f getComptrollersOfPublicPoolsByVerification
       case "getComptrollersOfPublicPoolsByVerification":
