@@ -1,13 +1,11 @@
 // Vendor
 import { providers, Contract, BigNumber } from "ethers";
-import addresses from "../../lib/RariSDK/src/Fuse/addresses/mainnet";
 
 // Contracts
 import { getContracts } from "./contracts";
 
 // Utilities
 import { ChainID, isSupportedChainId } from "../utilities/network";
-import { logger } from "../utilities/logger";
 import { promiseAllInBatches } from "../utilities/promiseAllInBatches";
 
 export class Fuse {
@@ -84,15 +82,6 @@ export class Fuse {
 
     return {
       poolIndexes,
-      poolDescriptions,
-    };
-  };
-
-  public getPublicPools = async () => {
-    const poolDescriptions =
-      await this.contracts.FusePoolDirectory.functions.getAllPools();
-
-    return {
       poolDescriptions,
     };
   };
