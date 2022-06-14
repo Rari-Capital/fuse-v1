@@ -332,26 +332,6 @@ export const getContracts = (
       FusePoolDirectoryABI,
       provider
     ),
-    FusePoolLens: new Contract(
-      addresses.FUSE_POOL_LENS_CONTRACT_ADDRESS,
-      FusePoolLensABI,
-      provider
-    ),
-    FusePoolLensSecondary: new Contract(
-      addresses.FUSE_POOL_LENS_SECONDARY_CONTRACT_ADDRESS,
-      FusePoolLensSecondaryABI,
-      provider
-    ),
-    FuseSafeLiquidator: new Contract(
-      addresses.FUSE_SAFE_LIQUIDATOR_CONTRACT_ADDRESS,
-      FuseSafeLiquidatorABI,
-      provider
-    ),
-    FuseFeeDistributor: new Contract(
-      addresses.FUSE_FEE_DISTRIBUTOR_CONTRACT_ADDRESS,
-      FuseFeeDistributorABI,
-      provider
-    ),
   };
 
   return {
