@@ -63,9 +63,9 @@ const main = async () => {
 
       // Custom
 
-      // npm run scripts:poke -- -f getComptrollersImplementationOfPools
-      case "getComptrollersImplementationOfPools":
-        console.log(await fuse.getComptrollersImplementationOfPools());
+      // npm run scripts:poke -- -f getComptrollerImplementationOfPools
+      case "getComptrollerImplementationOfPools":
+        console.log(await fuse.getComptrollerImplementationOfPools());
         break;
 
       // npm run scripts:poke -- -f getBorrowableAssetsByIndex 8

@@ -193,7 +193,7 @@ export class Fuse {
 
   // Poke
 
-  public getComptrollersImplementationOfPools = async () => {
+  public getComptrollerImplementationOfPools = async () => {
     const { poolDescriptions } = await this.getPublicPoolsByVerification();
 
     return Object.assign(
