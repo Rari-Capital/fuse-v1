@@ -71,6 +71,10 @@ const main = async () => {
 
     return;
   }
+
+  console.log("Scratchpad");
+
+  // ...
 };
 
 main().catch((error) => {
