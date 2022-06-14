@@ -71,21 +71,6 @@ const main = async () => {
 
     return;
   }
-
-  // ...
-
-  // TODO: Add scripts to generate calldata for common actions given to fuseAdmin.
-
-  // Pause all borrowable tokens for a given pool
-  // Perhaps with an Ethers multicall?
-
-  //   console.log(await fuse.pauseAllBorrowableTokensByIndex(8));
-
-  // Fix interest rate too high error
-
-  //   await fuse.getCalldataBorrowRateTooHigh();
-
-  // ...
 };
 
 main().catch((error) => {

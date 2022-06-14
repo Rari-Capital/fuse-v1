@@ -101,6 +101,7 @@ export class Fuse {
     console.log(borrowableAssets);
   };
 
+  // Happens when someone is able to withdraw past 100% utilization rate because of accumulated Fuse fees/reserves
   public getPoolsWithTooHighBorrowRate = async () => {
     // Maximum borrow rate that can ever be applied (.0005% / block)
     const borrowRateMaxMantissa = BigNumber.from(0.0005e16);
@@ -145,31 +146,31 @@ export class Fuse {
     return results;
   };
 
-  // [
-  //   '0x6d53B483ad27907109a853fBD8aBe58a59f7ad41',
-  //   '0x7322B10Db09687fe8889aD8e87f333f95104839F'
-  // ]
-
-  // https://ethtx.info/mainnet/0x9166e125841b9ffe29b2bcb4e5e4bd9a1e31ec117834d9c4f1ea2c851c048bf8/
-
   public getCalldataBorrowRateTooHigh = async (ctokenAddress: string) => {
+    const CTOKEN_IRM_FIX_IMPLEMENTATION =
+      "0x46f196f21f420e3ea159b706d249046e80f05f7e";
+
+    const CTOKEN_DEFAULT_IMPLEMENTATION =
+      "0x67db14e73c2dce786b5bbbfa4d010deab4bbfcf9";
+
     const cToken = this.getCErc20Delegate(ctokenAddress);
 
-    // TODO: replace addresses with SDK mainnet addresses
-    const calls = [
+    const targets = [ctokenAddress, ctokenAddress];
+
+    const data = [
       cToken.interface.encodeFunctionData("_setImplementationSafe", [
-        "0x46f196f21f420e3ea159b706d249046e80f05f7e",
+        CTOKEN_IRM_FIX_IMPLEMENTATION,
         false,
         0x0,
       ]),
       cToken.interface.encodeFunctionData("_setImplementationSafe", [
-        "0x67db14e73c2dce786b5bbbfa4d010deab4bbfcf9",
+        CTOKEN_DEFAULT_IMPLEMENTATION,
         false,
         0x0,
       ]),
     ];
 
-    console.log(calls);
+    return [targets, data];
   };
 
   // Poke
