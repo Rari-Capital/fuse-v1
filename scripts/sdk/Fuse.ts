@@ -193,32 +193,29 @@ export class Fuse {
 
   // Poke
 
-  public getComptrollersImplementationOfPublicPoolsByVerification =
-    async () => {
-      const { poolDescriptions } = await this.getPublicPoolsByVerification();
+  public getComptrollersImplementationOfPools = async () => {
+    const { poolDescriptions } = await this.getPublicPoolsByVerification();
 
-      return Object.assign(
-        {},
-        ...Object.values(
-          await Promise.all(
-            poolDescriptions.map(
-              async (poolDescription: any, poolIndex: number) => {
-                const comptroller = this.getComptroller(poolDescription[2]);
+    return Object.assign(
+      {},
+      ...Object.values(
+        await Promise.all(
+          poolDescriptions.map(
+            async (poolDescription: any, poolIndex: number) => {
+              const comptroller = this.getComptroller(poolDescription[2]);
 
-                return {
-                  [poolIndex]: [
-                    poolDescription[2],
-                    (
-                      await comptroller.functions.comptrollerImplementation()
-                    )[0],
-                  ],
-                };
-              }
-            )
+              return {
+                [poolIndex]: [
+                  poolDescription[2],
+                  (await comptroller.functions.comptrollerImplementation())[0],
+                ],
+              };
+            }
           )
         )
-      );
-    };
+      )
+    );
+  };
 
   public getBorrowableAssetsByComptroller = async (
     comptrollerAddress: string
