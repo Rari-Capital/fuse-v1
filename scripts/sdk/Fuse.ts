@@ -146,11 +146,10 @@ export class Fuse {
             return false;
           }
 
-          logger.warn(
-            `Found pool with too high borrow rate: ${comptrollerAddress} - ${market}`
-          );
-
-          return market;
+          return {
+            comptroller: comptrollerAddress,
+            market,
+          };
         })
       );
     };
@@ -164,22 +163,29 @@ export class Fuse {
     return results;
   };
 
-  public fixBorrowRateTooHigh = async (ctokenAddress: string) => {
-    const calls = [];
+  // [
+  //   '0x6d53B483ad27907109a853fBD8aBe58a59f7ad41',
+  //   '0x7322B10Db09687fe8889aD8e87f333f95104839F'
+  // ]
+
+  // https://ethtx.info/mainnet/0x9166e125841b9ffe29b2bcb4e5e4bd9a1e31ec117834d9c4f1ea2c851c048bf8/
+
+  public getCalldataBorrowRateTooHigh = async (ctokenAddress: string) => {
     const cToken = this.getCErc20Delegate(ctokenAddress);
 
     // TODO: replace addresses with SDK mainnet addresses
-    const calldataA = cToken.interface.encodeFunctionData(
-      "_setImplementationSafe",
-      ["0x46f196f21f420e3ea159b706d249046e80f05f7e", false, 0x0]
-    );
-    const calldataB = cToken.interface.encodeFunctionData(
-      "_setImplementationSafe",
-      ["0x67db14e73c2dce786b5bbbfa4d010deab4bbfcf9", false, 0x0]
-    );
-
-    calls.push(calldataA);
-    calls.push(calldataB);
+    const calls = [
+      cToken.interface.encodeFunctionData("_setImplementationSafe", [
+        "0x46f196f21f420e3ea159b706d249046e80f05f7e",
+        false,
+        0x0,
+      ]),
+      cToken.interface.encodeFunctionData("_setImplementationSafe", [
+        "0x67db14e73c2dce786b5bbbfa4d010deab4bbfcf9",
+        false,
+        0x0,
+      ]),
+    ];
 
     console.log(calls);
   };

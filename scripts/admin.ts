@@ -59,9 +59,9 @@ const main = async () => {
         console.log(await fuse.getPoolsWithTooHighBorrowRate());
         break;
 
-      // npm run scripts:admin -- -f fixBorrowRateTooHigh 0x647A36d421183a0a9Fa62717a64B664a24E469C7
-      case "fixBorrowRateTooHigh":
-        console.log(await fuse.fixBorrowRateTooHigh(arg1));
+      // npm run scripts:admin -- -f getCalldataBorrowRateTooHigh 0x647A36d421183a0a9Fa62717a64B664a24E469C7
+      case "getCalldataBorrowRateTooHigh":
+        console.log(await fuse.getCalldataBorrowRateTooHigh(arg1));
         break;
 
       default:
@@ -83,7 +83,7 @@ const main = async () => {
 
   // Fix interest rate too high error
 
-  //   await fuse.fixBorrowRateTooHigh();
+  //   await fuse.getCalldataBorrowRateTooHigh();
 
   // ...
 };
