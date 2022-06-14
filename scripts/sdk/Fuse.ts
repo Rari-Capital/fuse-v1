@@ -1,11 +1,14 @@
 // Vendor
 import { providers, Contract, BigNumber } from "ethers";
+import addresses from "../../lib/RariSDK/src/Fuse/addresses/mainnet";
 
 // Contracts
 import { getContracts } from "./contracts";
 
 // Utilities
 import { ChainID, isSupportedChainId } from "../utilities/network";
+import { logger } from "../utilities/logger";
+import { promiseAllInBatches } from "../utilities/promiseAllInBatches";
 
 export class Fuse {
   public provider: providers.JsonRpcProvider;
@@ -124,55 +127,61 @@ export class Fuse {
 
     const { poolDescriptions } = await this.getPublicPoolsByVerification();
 
-    const pools = poolDescriptions.slice(0, 3);
-
-    pools.forEach(async (pool: any) => {
+    const checkBorrowRate = async (pool: any) => {
       const comptrollerAddress = pool[2];
 
       const cTokens = (
         await this.getAllMarketsByComptroller(comptrollerAddress)
       ).flat();
 
-      // console.log(cTokens);
+      return await Promise.all(
+        cTokens.map(async (market: string) => {
+          const borrowRate = BigNumber.from(
+            (
+              await this.getCToken(market).functions.borrowRatePerBlock()
+            ).toString()
+          );
 
-      // const cTokensWithTooHighBorrowRate = await Promise.all(
-      //   cTokens.map(async (market: string) => {
-      //     const borrowRate = BigNumber.from(
-      //       (
-      //         await this.getCToken(market).functions.borrowRatePerBlock()
-      //       ).toString()
-      //     );
+          if (!borrowRate.gte(borrowRateMaxMantissa)) {
+            return false;
+          }
 
-      //     if (!borrowRate.gte(borrowRateMaxMantissa)) {
-      //       return market;
-      //     }
-      //   })
-      // );
+          logger.warn(
+            `Found pool with too high borrow rate: ${comptrollerAddress} - ${market}`
+          );
 
-      // console.log(await cTokensWithTooHighBorrowRate);
-    });
+          return market;
+        })
+      );
+    };
+
+    const results = (
+      await promiseAllInBatches(checkBorrowRate, poolDescriptions, 3)
+    )
+      .flat()
+      .filter(Boolean);
+
+    return results;
   };
 
   public fixBorrowRateTooHigh = async (ctokenAddress: string) => {
-    // const calls = [];
-    // const cToken = this.getCErc20Delegate(ctokenAddress);
-    // const calldataA = cToken.interface.encodeFunctionData(
-    //   "_setImplementationSafe",
-    //   ["0x46f196f21f420e3ea159b706d249046e80f05f7e", false, 0x0]
-    // );
-    // const calldataB = cToken.interface.encodeFunctionData(
-    //   "_setImplementationSafe",
-    //   ["0x67db14e73c2dce786b5bbbfa4d010deab4bbfcf9", false, 0x0]
-    // );
-    // calls.push(calldataA);
-    // calls.push(calldataB);
-    // try {
-    //   await swapRouter.methods
-    //     .multicall(calls)
-    //     .send({ from: owner, gas: 1000000, value: quotedAmountIn });
-    // } catch (err) {
-    //   console.log(err);
-    // }
+    const calls = [];
+    const cToken = this.getCErc20Delegate(ctokenAddress);
+
+    // TODO: replace addresses with SDK mainnet addresses
+    const calldataA = cToken.interface.encodeFunctionData(
+      "_setImplementationSafe",
+      ["0x46f196f21f420e3ea159b706d249046e80f05f7e", false, 0x0]
+    );
+    const calldataB = cToken.interface.encodeFunctionData(
+      "_setImplementationSafe",
+      ["0x67db14e73c2dce786b5bbbfa4d010deab4bbfcf9", false, 0x0]
+    );
+
+    calls.push(calldataA);
+    calls.push(calldataB);
+
+    console.log(calls);
   };
 
   // Poke
