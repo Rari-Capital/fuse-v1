@@ -149,6 +149,7 @@ export class Fuse {
           return {
             comptroller: comptrollerAddress,
             market,
+            borrowRate: borrowRate.toString(),
           };
         })
       );

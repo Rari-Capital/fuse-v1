@@ -1,8 +1,8 @@
-export async function promiseAllInBatches(
+export const promiseAllInBatches = async (
   task: (arg: any) => any,
-  items: any,
+  items: any[],
   batchSize: number
-) {
+) => {
   let position = 0;
   let results: any[] = [];
 
@@ -20,4 +20,4 @@ export async function promiseAllInBatches(
   }
 
   return results;
-}
+};
