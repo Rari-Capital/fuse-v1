@@ -6,7 +6,7 @@ import { getContracts } from "./contracts";
 
 // Utilities
 import { ChainID, isSupportedChainId } from "../utilities/network";
-import { promiseAllInBatches } from "../utilities/promiseAllInBatches";
+import { promiseAllBatch } from "../utilities/promiseAllBatch";
 
 export class Fuse {
   public provider: providers.JsonRpcProvider;
@@ -145,7 +145,7 @@ export class Fuse {
     };
 
     const results = (
-      await promiseAllInBatches(checkBorrowRate, poolDescriptions, 3)
+      await promiseAllBatch(checkBorrowRate, poolDescriptions, 3)
     )
       .flat()
       .filter(Boolean);

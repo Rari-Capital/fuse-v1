@@ -1,4 +1,4 @@
-export const promiseAllInBatches = async (
+export const promiseAllBatch = async (
   task: (arg: any) => any,
   items: any[],
   batchSize: number
