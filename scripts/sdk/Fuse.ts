@@ -65,15 +65,6 @@ export class Fuse {
     return await comptroller.functions.getRewardsDistributors();
   };
 
-  public getAllPools = async () => {
-    const poolDescriptions =
-      await this.contracts.FusePoolDirectory.functions.getAllPools();
-
-    return {
-      poolDescriptions,
-    };
-  };
-
   public getPoolsByAccount = async (address: string) => {
     const [poolIndexes, poolDescriptions] =
       await this.contracts.FusePoolDirectory.functions.getPoolsByAccount(
@@ -117,10 +108,10 @@ export class Fuse {
     const { poolDescriptions } = await this.getPublicPoolsByVerification();
 
     const checkBorrowRate = async (pool: any) => {
-      const comptrollerAddress = pool[2];
+      const [name, , comptroller] = pool;
 
       const cTokens = (
-        await this.getAllMarketsByComptroller(comptrollerAddress)
+        await this.getAllMarketsByComptroller(comptroller)
       ).flat();
 
       return await Promise.all(
@@ -136,7 +127,8 @@ export class Fuse {
           }
 
           return {
-            comptroller: comptrollerAddress,
+            name,
+            comptroller,
             market,
             borrowRate: borrowRate.toString(),
           };
@@ -182,7 +174,18 @@ export class Fuse {
 
   // Poke
 
-  public getComptrollerImplementationOfPools = async () => {
+  public getAllVerifiedPools = async () => {
+    const pools: any = {};
+    const { poolDescriptions } = await this.getPublicPoolsByVerification();
+
+    poolDescriptions.forEach((poolDescription: any, poolIndex: number) => {
+      pools[poolIndex] = poolDescription[0];
+    });
+
+    return pools;
+  };
+
+  public getComptrollerImplementationOfVerifiedPools = async () => {
     const { poolDescriptions } = await this.getPublicPoolsByVerification();
 
     return Object.assign(
