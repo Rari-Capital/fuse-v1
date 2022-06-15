@@ -79,3 +79,14 @@ xcuserdata/
 
 # Environment
 .env
+
+
+# ============================================================================ #
+# Packages
+# ============================================================================ #
+
+/abi/packages/**/src
+/abi/packages/**/dist
+/abi/packages/**/tsconfig-base.json
+/abi/packages/**/tsconfig-esm.json
+/abi/packages/**/tsconfig-cjs.json
