@@ -35,7 +35,7 @@ const main = async () => {
   ];
 
   const PROJECT_ROOT_DIR = `${__dirname}/..`;
-  const ABI_DIR = `${PROJECT_ROOT_DIR}/abi`;
+  const ABI_DIR = `${PROJECT_ROOT_DIR}/abi/src`;
   const DATA_DIR = `${PROJECT_ROOT_DIR}/scripts/data`;
   const INTERFACES_DIR = `${PROJECT_ROOT_DIR}/src/test/interfaces`;
 
@@ -146,7 +146,9 @@ const main = async () => {
       // Write ABI
       mkdirSync(`${ABI_DIR}/${dirPath}`, { recursive: true });
 
-      await writeFile(abiOutputPath, abiOutput);
+      if (abiOutput.length > 0) {
+        await writeFile(abiOutputPath, abiOutput);
+      }
 
       const rawInterfaceOutput = (await spawnProcess(
         `cast interface ${abiOutputPath}`
