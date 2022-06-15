@@ -27,10 +27,11 @@ const main = async () => {
     "core/CTokenInterfaces.sol",
     "core/ErrorReporter.sol",
     "core/RewardsDistributorStorage.sol",
-    "src/FusePoolDirectory",
+    "src/FusePoolDirectory.sol",
     "src/FusePoolLens.sol",
     "src/FusePoolLensSecondary.sol",
     "src/FuseSafeLiquidator.sol",
+    "liquidators/CurveMetapoolLpTokenLiquidator.sol",
   ];
 
   const PROJECT_ROOT_DIR = `${__dirname}/..`;

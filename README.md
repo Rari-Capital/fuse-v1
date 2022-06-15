@@ -38,6 +38,7 @@ Copy `.env.template` into `.env` and add your details.
 Required:
 
 ```
+CHAIN_ID=
 ETH_RPC_URL=
 ETHERSCAN_API_KEY=
 ```

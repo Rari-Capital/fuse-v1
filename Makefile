@@ -24,4 +24,6 @@ hh-build:; npm run hh:build
 # Node tasks
 lint:; npm run lint
 lint-fix:; npm run lint:fix
+scripts-admin:; npm run scripts:admin
 scripts-interfaces:; npm run scripts:interfaces
+scripts-poke:; npm run scripts:poke
