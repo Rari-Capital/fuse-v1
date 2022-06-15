@@ -1,0 +1,31 @@
+{
+  "name": "@fuse-v1/arbitrum",
+  "version": "1.0.2",
+  "types": "./dist/types/index.d.ts",
+  "exports": {
+    "require": "./dist/cjs/index.js",
+    "import": "./dist/esm/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Rari-Capital/fuse-v1.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Rari-Capital/fuse-v1/issues"
+  },
+  "homepage": "https://github.com/Rari-Capital/fuse-v1#readme",
+  "dependencies": {
+    "@typechain/ethers-v5": "^10.1.0",
+    "ethers": "^5.6.8",
+    "typechain": "^8.1.0",
+    "typescript": "^4.7.3"
+  },
+  "main": "index.js",
+  "scripts": {
+    "build": "rm -rf dist && tsc -p tsconfig-esm.json && tsc -p tsconfig-cjs.json"
+  },
+  "devDependencies": {},
+  "description": ""
+}
