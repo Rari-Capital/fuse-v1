@@ -12,7 +12,7 @@
     "hh:build": "hardhat compile",
     "hh:clean": "hardhat clean",
     "scripts:admin": "ts-node scripts/admin.ts",
-    "scripts:abis": "./abi/scripts/typechain.sh && ./abi/scripts/tsconfig/tsconfig.sh && ./abi/scripts/typescript/typescript.sh && ./abi/scripts/after-build/after-build.sh",
+    "scripts:abis": "./scripts/abi/typechain.sh && ./scripts/abi/tsconfig/tsconfig.sh && ./scripts/abi/typescript/typescript.sh && ./scripts/abi/after-build/after-build.sh",
     "scripts:interfaces": "ts-node scripts/interfaces.ts",
     "scripts:poke": "ts-node scripts/poke.ts",
     "prepare": "husky install"
