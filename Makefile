@@ -25,5 +25,6 @@ hh-build:; npm run hh:build
 lint:; npm run lint
 lint-fix:; npm run lint:fix
 scripts-admin:; npm run scripts:admin
+scripts-abis:; npm run scripts:abis
 scripts-interfaces:; npm run scripts:interfaces
 scripts-poke:; npm run scripts:poke
