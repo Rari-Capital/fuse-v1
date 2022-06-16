@@ -7,7 +7,10 @@ For more information, visit the [repository](https://github.com/Rari-Capital/fus
 ## Usage
 
 ```js
-import { InitializableClones__factory } from '@fuse-v1/utils'
+import { InitializableClones__factory } from "@fuse-v1/utils";
 
-const contract = InitializableClones__factory.connect(contractAddress, web3Provider)
+const contract = InitializableClones__factory.connect(
+  contractAddress,
+  web3Provider
+);
 ```

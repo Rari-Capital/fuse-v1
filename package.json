@@ -1,6 +1,6 @@
 {
   "name": "fuse-v1",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "license": "UNLICENSED",
   "private": true,
   "engines": {
@@ -21,9 +21,7 @@
     "@openzeppelin/contracts-upgradeable": "^3.4.0",
     "@testoneortwoorthreeorfive/arbitrum": "^1.0.0",
     "@uniswap/v3-core": "^1.0.1",
-    "@uniswap/v3-periphery": "^1.4.1",
-    "i": "^0.3.7",
-    "npm": "^8.12.2"
+    "@uniswap/v3-periphery": "^1.4.1"
   },
   "devDependencies": {
     "@nomiclabs/hardhat-ethers": "^2.0.6",

@@ -12,13 +12,13 @@ echo "\n${GREEN}Building typechain for the oracle contracts${NOCOLOR}"
 npx typechain --target=ethers-v5 './abi/src/oracles/*.json' --out-dir="./abi/packages/oracles/src"
 
 echo "\n${GREEN}Building typechain for the liquidator contracts${NOCOLOR}"
-npx typechain --target=ethers-v5 './abi/src/liquidators/*.json' --out-dir="./abi/packages/liquidators/src"  
+npx typechain --target=ethers-v5 './abi/src/liquidators/*.json' --out-dir="./abi/packages/liquidators/src"
 
 echo "\n${GREEN}Building typechain for the core contracts${NOCOLOR}"
-npx typechain --target=ethers-v5 './abi/src/core/*.json' --out-dir="./abi/packages/core/src"  
+npx typechain --target=ethers-v5 './abi/src/core/*.json' --out-dir="./abi/packages/core/src"
 
 echo "\n${GREEN}Building typechain for arbitrum contracts${NOCOLOR}"
 npx typechain --target=ethers-v5 './abi/src/arbitrum/*.json' --out-dir="./abi/packages/arbitrum/src"
 
 echo "\n${GREEN}Building typechain for utility contracts${NOCOLOR}"
-npx typechain --target=ethers-v5 './abi/src/utils/*.json' --out-dir="./abi/packages/utils/src"  
+npx typechain --target=ethers-v5 './abi/src/utils/*.json' --out-dir="./abi/packages/utils/src"
