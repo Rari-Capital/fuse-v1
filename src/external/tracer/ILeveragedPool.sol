@@ -32,7 +32,12 @@ interface ILeveragedPool {
      * @param quoteToken The address of the digital asset that the pool accepts
      * @param poolName The pool code for the pool
      */
-    event PoolInitialized(address indexed longToken, address indexed shortToken, address quoteToken, string poolName);
+    event PoolInitialized(
+        address indexed longToken,
+        address indexed shortToken,
+        address quoteToken,
+        string poolName
+    );
 
     /**
      * @notice Creates a notification when the pool is rebalanced
@@ -60,21 +65,30 @@ interface ILeveragedPool {
      * @param oldAddress Previous address
      * @param newAddress Address after change
      */
-    event FeeAddressUpdated(address indexed oldAddress, address indexed newAddress);
+    event FeeAddressUpdated(
+        address indexed oldAddress,
+        address indexed newAddress
+    );
 
     /**
      * @notice Represents change in secondary fee receiver's address
      * @param oldAddress Previous address
      * @param newAddress Address after change
      */
-    event SecondaryFeeAddressUpdated(address indexed oldAddress, address indexed newAddress);
+    event SecondaryFeeAddressUpdated(
+        address indexed oldAddress,
+        address indexed newAddress
+    );
 
     /**
      * @notice Represents change in keeper's address
      * @param oldAddress Previous address
      * @param newAddress Address after change
      */
-    event KeeperAddressChanged(address indexed oldAddress, address indexed newAddress);
+    event KeeperAddressChanged(
+        address indexed oldAddress,
+        address indexed newAddress
+    );
 
     /**
      * @notice Represents proposed change in governance address
@@ -87,7 +101,10 @@ interface ILeveragedPool {
      * @param oldAddress Previous address
      * @param newAddress Address after change
      */
-    event GovernanceAddressChanged(address indexed oldAddress, address indexed newAddress);
+    event GovernanceAddressChanged(
+        address indexed oldAddress,
+        address indexed newAddress
+    );
 
     function leverageAmount() external view returns (bytes16);
 
@@ -129,7 +146,9 @@ interface ILeveragedPool {
         uint256 amount
     ) external;
 
-    function payKeeperFromBalances(address to, uint256 amount) external returns (bool);
+    function payKeeperFromBalances(address to, uint256 amount)
+        external
+        returns (bool);
 
     function quoteTokenTransfer(address to, uint256 amount) external;
 
@@ -139,7 +158,8 @@ interface ILeveragedPool {
         uint256 amount
     ) external;
 
-    function setNewPoolBalances(uint256 _longBalance, uint256 _shortBalance) external;
+    function setNewPoolBalances(uint256 _longBalance, uint256 _shortBalance)
+        external;
 
     /**
      * @return _latestPrice The oracle price
@@ -162,7 +182,10 @@ interface ILeveragedPool {
 
     function intervalPassed() external view returns (bool);
 
-    function balances() external view returns (uint256 _shortBalance, uint256 _longBalance);
+    function balances()
+        external
+        view
+        returns (uint256 _shortBalance, uint256 _longBalance);
 
     function setKeeper(address _keeper) external;
 

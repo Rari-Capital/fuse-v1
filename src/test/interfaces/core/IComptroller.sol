@@ -53,6 +53,8 @@ interface Comptroller {
         uint256 collateralFactorMantissa
     ) external returns (uint256);
 
+    function _globalPauseBorrowOverride() external view returns (bool);
+
     function _mintGuardianPaused() external view returns (bool);
 
     function _setBorrowCapGuardian(address newBorrowCapGuardian) external;
@@ -69,6 +71,8 @@ interface Comptroller {
         address cToken,
         uint256 newCollateralFactorMantissa
     ) external returns (uint256);
+
+    function _setGlobalPauseBorrowOverride(bool status) external;
 
     function _setLiquidationIncentive(uint256 newLiquidationIncentiveMantissa)
         external

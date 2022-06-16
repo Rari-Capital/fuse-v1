@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: BSD-3-Clause
 pragma solidity 0.5.17;
 
 import "./IFuseFeeDistributor.sol";
@@ -173,4 +174,8 @@ contract ComptrollerV3Storage is ComptrollerV2Storage {
 
     /// @dev Whether or not _notEntered has been initialized
     bool internal _notEnteredInitialized;
+}
+
+contract ComptrollerV4Storage is ComptrollerV3Storage {
+    bool public _globalPauseBorrowOverride;
 }

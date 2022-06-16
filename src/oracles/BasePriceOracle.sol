@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity 0.6.12;
 
-import "../external/compound/PriceOracle.sol";
+import "../external/compound/IPriceOracle.sol";
 
 /**
  * @title BasePriceOracle

@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: BSD-3-Clause
 pragma solidity 0.6.12;
 
-import "./CToken.sol";
+import "./ICToken.sol";
 
 /**
  * @title Compound's CEther Contract
@@ -9,5 +9,7 @@ import "./CToken.sol";
  * @author Compound
  */
 interface CEther is CToken {
-    function liquidateBorrow(address borrower, CToken cTokenCollateral) external payable;
+    function liquidateBorrow(address borrower, CToken cTokenCollateral)
+        external
+        payable;
 }

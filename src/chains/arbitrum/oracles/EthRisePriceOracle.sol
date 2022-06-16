@@ -4,8 +4,8 @@ pragma solidity 0.6.12;
 import "@openzeppelin/contracts-upgradeable/math/SafeMathUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/token/ERC20/ERC20Upgradeable.sol";
 
-import "../../../external/compound/PriceOracle.sol";
-import "../../../external/compound/CErc20.sol";
+import "../../../external/compound/IPriceOracle.sol";
+import "../../../external/compound/ICErc20.sol";
 
 import "../../../external/risedle/IRiseTokenVault.sol";
 
@@ -23,12 +23,13 @@ contract EthRisePriceOracle is PriceOracle, BasePriceOracle {
     /**
      * @notice Risedle Vault
      */
-    IRiseTokenVault public rVault = IRiseTokenVault(0xf7EDB240DbF7BBED7D321776AFe87D1FBcFD0A94);
-    
+    IRiseTokenVault public rVault =
+        IRiseTokenVault(0xf7EDB240DbF7BBED7D321776AFe87D1FBcFD0A94);
+
     /**
      * @notice ETHRISE address
      */
-     address public ETHRISE = 0x46D06cf8052eA6FdbF71736AF33eD23686eA1452;
+    address public ETHRISE = 0x46D06cf8052eA6FdbF71736AF33eD23686eA1452;
 
     /**
      * @notice USDC address
@@ -40,7 +41,12 @@ contract EthRisePriceOracle is PriceOracle, BasePriceOracle {
      * @param underlying The underlying token address for which to get the price.
      * @return Price denominated in ETH (scaled by 1e18)
      */
-    function price(address underlying) external override view returns (uint) {
+    function price(address underlying)
+        external
+        view
+        override
+        returns (uint256)
+    {
         return _price(underlying);
     }
 
@@ -49,18 +55,33 @@ contract EthRisePriceOracle is PriceOracle, BasePriceOracle {
      * @dev Implements the `PriceOracle` interface for Fuse pools (and Compound v2).
      * @return Price in ETH of the token underlying `cToken`, scaled by `10 ** (36 - underlyingDecimals)`.
      */
-    function getUnderlyingPrice(CToken cToken) external override view returns (uint) {
+    function getUnderlyingPrice(CToken cToken)
+        external
+        view
+        override
+        returns (uint256)
+    {
         address underlying = CErc20(address(cToken)).underlying();
         // Comptroller needs prices to be scaled by 1e(36 - decimals)
         // Since `_price` returns prices scaled by 18 decimals, we must scale them by 1e(36 - 18 - decimals)
-        return _price(underlying).mul(1e18).div(10 ** uint256(ERC20Upgradeable(underlying).decimals()));
+        return
+            _price(underlying).mul(1e18).div(
+                10**uint256(ERC20Upgradeable(underlying).decimals())
+            );
     }
 
     /**
      * @notice Fetches the token/ETH price, with 18 decimals of precision.
      */
-    function _price(address token) internal view returns (uint) {
-        require(token == ETHRISE, "Invalid token passed to RisedlePriceOracle.");
-        return rVault.getNAV(ETHRISE).mul(BasePriceOracle(msg.sender).price(USDC)).div(1e6); // 1e6 = USDC decimals as returned by getNAV()
+    function _price(address token) internal view returns (uint256) {
+        require(
+            token == ETHRISE,
+            "Invalid token passed to RisedlePriceOracle."
+        );
+        return
+            rVault
+                .getNAV(ETHRISE)
+                .mul(BasePriceOracle(msg.sender).price(USDC))
+                .div(1e6); // 1e6 = USDC decimals as returned by getNAV()
     }
 }
