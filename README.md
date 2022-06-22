@@ -55,11 +55,8 @@ It is recommended you install the following [VSCode extensions](.vscode/extensio
 
 # Available Scripts
 
-For interface and abi generation after editing a contract run `npm scripts:interfaces`
+For interface and abi generation after editing a contract run `npm scripts:interfaces`.
 
-To generate typechain packages run `npm scripts:abis` and to publish run `./scripts/abi/publish.sh`
+To generate typechain packages run `npm scripts:abis` and to publish run `./scripts/abi/publish.sh`.
 
-To get fuse data run `npm scripts:poke ${funtion name}` or `npm scripts:admin #{function name}`
-
-
-
+To get fuse data run `npm scripts:poke` or `npm scripts:admin`.
