@@ -52,3 +52,11 @@ Run `make scripts-interfaces` to automatically (re)generate interfaces and ABIs 
 Run `make lint-fix` to run the automatic linter across the entire codebase and autofix any issues.
 
 It is recommended you install the following [VSCode extensions](.vscode/extensions.json) if you use VSCode.
+
+# Available Scripts
+
+For interface and abi generation after editing a contract run `npm scripts:interfaces`.
+
+To generate typechain packages run `npm scripts:abis` and to publish run `./scripts/abi/publish.sh`.
+
+To get fuse data run `npm scripts:poke` or `npm scripts:admin`.

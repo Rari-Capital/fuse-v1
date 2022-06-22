@@ -1,6 +1,6 @@
 {
   "name": "fuse-v1",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "license": "UNLICENSED",
   "private": true,
   "engines": {
@@ -12,12 +12,14 @@
     "hh:build": "hardhat compile",
     "hh:clean": "hardhat clean",
     "scripts:admin": "ts-node scripts/admin.ts",
+    "scripts:abis": "./scripts/abi/typechain.sh && ./scripts/abi/tsconfig/tsconfig.sh && ./scripts/abi/typescript/typescript.sh && ./scripts/abi/after-build/after-build.sh",
     "scripts:interfaces": "ts-node scripts/interfaces.ts",
     "scripts:poke": "ts-node scripts/poke.ts",
     "prepare": "husky install"
   },
   "dependencies": {
     "@openzeppelin/contracts-upgradeable": "^3.4.0",
+    "@testoneortwoorthreeorfive/arbitrum": "^1.0.0",
     "@uniswap/v3-core": "^1.0.1",
     "@uniswap/v3-periphery": "^1.4.1"
   },
@@ -56,5 +58,13 @@
   },
   "lint-staged": {
     "*.sol": "prettier --write 'src/**/*.sol'"
-  }
+  },
+  "workspaces": [
+    "abi/packages/arbitrum",
+    "abi/packages/core",
+    "abi/packages/periphery",
+    "abi/packages/oracles",
+    "abi/packages/liquidators",
+    "abi/packages/utils"
+  ]
 }
